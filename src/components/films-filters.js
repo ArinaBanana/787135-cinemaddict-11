@@ -1,4 +1,4 @@
-const createFilmsTemplate = () => {
+const createFilmsFiltersTemplate = () => {
   return (
     `<section class="films">
       <section class="films-list">
@@ -16,4 +16,4 @@ const createFilmsTemplate = () => {
   );
 };
 
-export {createFilmsTemplate};
+export {createFilmsFiltersTemplate};
