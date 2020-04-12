@@ -6,6 +6,10 @@ import {createFilmsFiltersTemplate} from "./components/films-filters";
 import {createFilmsContainerTemplate} from "./components/films-container";
 import {createFilmCardTemplate} from "./components/film-card";
 import {createButtonShowMoreTemplate} from "./components/button-show-more";
+import {createPopupFilmDetailsTemplate} from "./components/popup-film-details";
+import {createCommentsContainerTemplate} from "./components/comments-container";
+import {createCommentsTemplate} from "./components/comments";
+import {createNewCommentTemplate} from "./components/new-comment";
 
 import {generateFilms} from "./moks/film";
 
@@ -56,4 +60,14 @@ for (let i = 0; i < films.length; i++) {
   render(containerAllFilms, createFilmCardTemplate(film), `beforeend`);
 }
 
+render(elementMain, createPopupFilmDetailsTemplate(), `beforeend`);
 
+const filmDetailsPopup = elementMain.querySelector(`.film-details`);
+const detailsBottomContainer = filmDetailsPopup.querySelector(`.form-details__bottom-container`);
+
+render(detailsBottomContainer, createCommentsContainerTemplate(), `beforeend`);
+
+const commentsContainer = detailsBottomContainer.querySelector(`.film-details__comments-wrap`);
+
+render(commentsContainer, createCommentsTemplate(), `beforeend`);
+render(commentsContainer, createNewCommentTemplate(), `beforeend`);
