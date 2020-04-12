@@ -7,8 +7,13 @@ import {createFilmsContainerTemplate} from "./components/films-container";
 import {createFilmCardTemplate} from "./components/film-card";
 import {createButtonShowMoreTemplate} from "./components/button-show-more";
 
+import {generateFilms} from "./moks/film";
+
 const FILMS_COUNT = 5;
 const FILMS_EXTRA_COUNT = 2;
+
+const films = generateFilms(FILMS_COUNT);
+const filmsExtra = generateFilms(FILMS_EXTRA_COUNT);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -34,8 +39,10 @@ elementFilmsExtra.forEach((elementFilm) => {
   render(elementFilm, createFilmsContainerTemplate(), `beforeend`);
   const container = elementFilm.querySelector(`.films-list__container`);
 
-  for (let i = 0; i < FILMS_EXTRA_COUNT; i++) {
-    render(container, createFilmCardTemplate(), `beforeend`);
+  for (let i = 0; i < filmsExtra.length; i++) {
+    const film = filmsExtra[i];
+
+    render(container, createFilmCardTemplate(film), `beforeend`);
   }
 });
 
@@ -44,8 +51,9 @@ render(elementFilmsList, createButtonShowMoreTemplate(), `beforeend`);
 
 const containerAllFilms = elementFilmsList.querySelector(`.films-list__container`);
 
-for (let i = 0; i < FILMS_COUNT; i++) {
-  render(containerAllFilms, createFilmCardTemplate(), `beforeend`);
+for (let i = 0; i < films.length; i++) {
+  const film = films[i];
+  render(containerAllFilms, createFilmCardTemplate(film), `beforeend`);
 }
 
 
