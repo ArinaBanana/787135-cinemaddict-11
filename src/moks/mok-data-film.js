@@ -32,7 +32,7 @@ const DescriptionItem = [
   `In rutrum ac purus sit amet tempus.`,
 ];
 
-const Genre = [
+const Genres = [
   `Musical`,
   `Western`,
   `Drama`,
@@ -41,4 +41,4 @@ const Genre = [
   `Mystery`,
 ];
 
-export {MovieTitles, PostersUrl, DescriptionItem, Genre};
+export {MovieTitles, PostersUrl, DescriptionItem, Genres};

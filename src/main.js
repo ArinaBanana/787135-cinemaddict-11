@@ -60,7 +60,7 @@ for (let i = 0; i < films.length; i++) {
   render(containerAllFilms, createFilmCardTemplate(film), `beforeend`);
 }
 
-render(elementMain, createPopupFilmDetailsTemplate(), `beforeend`);
+render(elementMain, createPopupFilmDetailsTemplate(films[0]), `beforeend`);
 
 const filmDetailsPopup = elementMain.querySelector(`.film-details`);
 const detailsBottomContainer = filmDetailsPopup.querySelector(`.form-details__bottom-container`);

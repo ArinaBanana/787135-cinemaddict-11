@@ -1,21 +1,14 @@
-import {MovieTitles, DescriptionItem, PostersUrl, Genre} from "./mok-data-film";
-
-const getRandomNumber = (min, max) => {
-  return min + Math.floor(Math.random() * (max - min));
-};
-
-const getRandomFloatNumber = (min, max, precision = 1) => {
-  return (min + Math.random() * (max - min)).toFixed(precision);
-};
-
-const getRandomArrayItem = (array) => {
-  const randomIndex = getRandomNumber(0, array.length);
-
-  return array[randomIndex];
-};
+import {MovieTitles, DescriptionItem, PostersUrl, Genres} from "./mok-data-film";
+import {getRandomNumber, getRandomArrayItem, getRandomFloatNumber} from "../utils/utils";
 
 const getRandomUrlPoster = () => {
   return `./images/posters${getRandomArrayItem(PostersUrl)}`;
+};
+
+const getRandomGenres = () => {
+  return new Array(3)
+    .fill(null)
+    .map(() => getRandomArrayItem(Genres));
 };
 
 const generateDescription = () => {
@@ -26,8 +19,11 @@ const generateDescription = () => {
 };
 
 const generateFilm = () => {
+  const genres = getRandomGenres();
+
   return {
     title: getRandomArrayItem(MovieTitles),
+    originalTitle: getRandomArrayItem(MovieTitles),
     poster: {
       url: getRandomUrlPoster(),
     },
@@ -35,8 +31,16 @@ const generateFilm = () => {
     rating: getRandomFloatNumber(0, 10),
     year: getRandomNumber(1920, 2000),
     duration: getRandomNumber(10, 120), // продолжительность в минутах
-    genre: getRandomArrayItem(Genre),
+    genres,
     commentsCount: getRandomNumber(0, 5),
+    creators: {
+      director: `Anthony Mann`,
+      writers: `Anne Wigton, Heinz Herald, Richard Weil`,
+      actors: `Erich von Stroheim, Mary Beth Hughes, Dan Duryea`,
+      country: `USA`,
+    },
+    date: `30 March`,
+    ageRating: `18+`,
   };
 };
 

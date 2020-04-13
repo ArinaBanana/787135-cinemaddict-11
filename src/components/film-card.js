@@ -1,18 +1,4 @@
-const leadingZero = (num, size) => {
-  return String(num).padStart(size, `0`);
-};
-
-const convertDuration = (allMinutes) => {
-  const hours = Math.floor(allMinutes / 60);
-  const hoursInMin = hours * 60;
-  const minutes = allMinutes - hoursInMin;
-
-  if (hours === 0) {
-    return `${leadingZero(minutes, 2)}m`;
-  }
-
-  return `${leadingZero(hours, 2)}h ${leadingZero(minutes, 2)}m`;
-};
+import {convertDuration} from "../utils/convert-duration";
 
 const createFilmCardTemplate = (film) => {
   const {
@@ -22,7 +8,7 @@ const createFilmCardTemplate = (film) => {
     rating,
     year,
     duration,
-    genre,
+    genres,
     commentsCount
   } = film;
 
@@ -33,7 +19,7 @@ const createFilmCardTemplate = (film) => {
       <p class="film-card__info">
         <span class="film-card__year">${year}</span>
         <span class="film-card__duration">${convertDuration(duration)}</span>
-        <span class="film-card__genre">${genre}</span>
+        <span class="film-card__genre">${genres[0]}</span>
       </p>
       <img src="${poster.url}" alt="${title}" class="film-card__poster">
       <p class="film-card__description">${description}</p>
