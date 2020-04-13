@@ -10,6 +10,7 @@ import {createPopupFilmDetailsTemplate} from "./components/popup-film-details";
 import {createCommentsContainerTemplate} from "./components/comments-container";
 import {createCommentsTemplate} from "./components/comments";
 import {createNewCommentTemplate} from "./components/new-comment";
+import {generateFilters} from "./moks/filters";
 
 import {generateFilms} from "./moks/film";
 import {generateComments} from "./moks/comments";
@@ -24,6 +25,8 @@ const filmsExtra = generateFilms(FILMS_EXTRA_COUNT);
 
 const comments = generateComments();
 
+const filters = generateFilters(films.length);
+
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -35,7 +38,7 @@ const elementMain = document.querySelector(`.main`);
 render(elementHeader, createUserProfileTemplate(), `beforeend`);
 render(elementFooterStatistic, createStatisticTemplate(), `beforeend`);
 
-render(elementMain, createMainNavigationTemplate(), `beforeend`);
+render(elementMain, createMainNavigationTemplate(filters), `beforeend`);
 render(elementMain, createSortElementsTemplate(), `beforeend`);
 render(elementMain, createFilmsFiltersTemplate(), `beforeend`);
 
