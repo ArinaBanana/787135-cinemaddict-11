@@ -12,12 +12,15 @@ import {createCommentsTemplate} from "./components/comments";
 import {createNewCommentTemplate} from "./components/new-comment";
 
 import {generateFilms} from "./moks/film";
+import {generateComments} from "./moks/comments";
 
 const FILMS_COUNT = 5;
 const FILMS_EXTRA_COUNT = 2;
 
 const films = generateFilms(FILMS_COUNT);
 const filmsExtra = generateFilms(FILMS_EXTRA_COUNT);
+
+const comments = generateComments();
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -62,12 +65,17 @@ for (let i = 0; i < films.length; i++) {
 
 render(elementMain, createPopupFilmDetailsTemplate(films[0]), `beforeend`);
 
+// рендерим окно с подробным описанием фильма
 const filmDetailsPopup = elementMain.querySelector(`.film-details`);
 const detailsBottomContainer = filmDetailsPopup.querySelector(`.form-details__bottom-container`);
 
-render(detailsBottomContainer, createCommentsContainerTemplate(), `beforeend`);
+render(detailsBottomContainer, createCommentsContainerTemplate(comments.length), `beforeend`);
 
-const commentsContainer = detailsBottomContainer.querySelector(`.film-details__comments-wrap`);
+const commentsWrap = detailsBottomContainer.querySelector(`.film-details__comments-wrap`);
+const commentsList = detailsBottomContainer.querySelector(`.film-details__comments-list`);
 
-render(commentsContainer, createCommentsTemplate(), `beforeend`);
-render(commentsContainer, createNewCommentTemplate(), `beforeend`);
+for (let i = 0; i < comments.length; i++) {
+  render(commentsList, createCommentsTemplate(comments[i]), `beforeend`);
+}
+
+render(commentsWrap, createNewCommentTemplate(), `beforeend`);
