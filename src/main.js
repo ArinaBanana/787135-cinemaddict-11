@@ -14,8 +14,10 @@ import {createNewCommentTemplate} from "./components/new-comment";
 import {generateFilms} from "./moks/film";
 import {generateComments} from "./moks/comments";
 
-const FILMS_COUNT = 5;
+const FILMS_COUNT = 20;
 const FILMS_EXTRA_COUNT = 2;
+
+const SHOWING_FILMS_COUNT = 5;
 
 const films = generateFilms(FILMS_COUNT);
 const filmsExtra = generateFilms(FILMS_EXTRA_COUNT);
@@ -58,14 +60,31 @@ render(elementFilmsList, createButtonShowMoreTemplate(), `beforeend`);
 
 const containerAllFilms = elementFilmsList.querySelector(`.films-list__container`);
 
-for (let i = 0; i < films.length; i++) {
+let showingCountFilms = SHOWING_FILMS_COUNT;
+
+for (let i = 0; i < showingCountFilms; i++) {
   const film = films[i];
   render(containerAllFilms, createFilmCardTemplate(film), `beforeend`);
 }
 
-render(elementMain, createPopupFilmDetailsTemplate(films[0]), `beforeend`);
+const buttonShowFilms = elementFilmsList.querySelector(`.films-list__show-more`);
+
+buttonShowFilms.addEventListener(`click`, () => {
+  const prevCount = showingCountFilms;
+  showingCountFilms += SHOWING_FILMS_COUNT;
+
+  films
+    .slice(prevCount, showingCountFilms)
+    .forEach((film) => render(containerAllFilms, createFilmCardTemplate(film), `beforeend`));
+
+  if (showingCountFilms === films.length) {
+    buttonShowFilms.remove();
+  }
+});
 
 // рендерим окно с подробным описанием фильма
+render(elementMain, createPopupFilmDetailsTemplate(films[0]), `beforeend`);
+
 const filmDetailsPopup = elementMain.querySelector(`.film-details`);
 const detailsBottomContainer = filmDetailsPopup.querySelector(`.form-details__bottom-container`);
 
