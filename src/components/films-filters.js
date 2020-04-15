@@ -1,3 +1,5 @@
+import {createElement} from "../utils/utils";
+
 const createFilmsFiltersTemplate = () => {
   return (
     `<section class="films">
@@ -16,4 +18,24 @@ const createFilmsFiltersTemplate = () => {
   );
 };
 
-export {createFilmsFiltersTemplate};
+export default class FilmsFilters {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmsFiltersTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
