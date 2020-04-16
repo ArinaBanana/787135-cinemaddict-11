@@ -13,10 +13,10 @@ import {initFilmList} from "./init-film-list";
 import {initPopupFilm} from "./init-film-list";
 
 const FILMS_COUNT = 20;
-const FILMS_EXTRA_COUNT = 2;
+// const FILMS_EXTRA_COUNT = 2;
 
 const films = generateFilms(FILMS_COUNT);
-const filmsExtra = generateFilms(FILMS_EXTRA_COUNT);
+// const filmsExtra = generateFilms(FILMS_EXTRA_COUNT);
 const comments = generateComments();
 const filters = generateFilters(films.length);
 
