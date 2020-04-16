@@ -7,13 +7,52 @@ import PopupFilmDetails from "./components/popup-film-details";
 import NewComment from "./components/new-comment";
 
 import {render} from "./utils/utils";
+import {generateComments} from "./moks/comments";
 
 const SHOWING_FILMS_COUNT = 5;
 
+const commentsCount = generateComments();
+const body = document.querySelector(`body`);
+
+const initComments = (container, comments) => {
+  const commentsContainer = new CommentsContainer(comments.length);
+  render(container, commentsContainer.getElement());
+
+  const commentList = commentsContainer.getElement().querySelector(`.film-details__comments-list`);
+
+  for (let i = 0; i < comments.length; i++) {
+    const commentComponent = new Comment(comments[i]);
+    render(commentList, commentComponent.getElement());
+  }
+
+  const newCommentComponent = new NewComment();
+  render(commentsContainer.getElement(), newCommentComponent.getElement());
+};
+
+const initPopupFilm = (container, film, comments) => {
+  const popupComponent = new PopupFilmDetails(film);
+  render(container, popupComponent.getElement());
+
+  const bottomContainer = popupComponent.getElement().querySelector(`.form-details__bottom-container`);
+  initComments(bottomContainer, comments);
+
+  // реализует закрытие попапа
+  const buttonClose = popupComponent.getElement().querySelector(`.film-details__close-btn`);
+  buttonClose.addEventListener(`click`, () => {
+    popupComponent.getElement().remove();
+    popupComponent.removeElement();
+  });
+};
+
 const initFilm = (container, film) => {
   const filmComponent = new FilmCard(film);
-
   render(container, filmComponent.getElement());
+
+  // реализует открытие большого попапа
+  const poster = filmComponent.getElement().querySelector(`.film-card__poster`);
+  poster.addEventListener(`click`, () => {
+    initPopupFilm(body, film, commentsCount);
+  });
 };
 
 const initFilmList = (filmsFiltersElement, films) => {
@@ -46,29 +85,4 @@ const initFilmList = (filmsFiltersElement, films) => {
   });
 };
 
-const initComments = (container, comments) => {
-  const commentsContainer = new CommentsContainer(comments.length);
-  render(container, commentsContainer.getElement());
-
-  const commentList = commentsContainer.getElement().querySelector(`.film-details__comments-list`);
-
-  for (let i = 0; i < comments.length; i++) {
-    const commentComponent = new Comment(comments[i]);
-    render(commentList, commentComponent.getElement());
-  }
-
-  const newCommentComponent = new NewComment();
-  render(commentsContainer.getElement(), newCommentComponent.getElement());
-};
-
-const initPopupFilm = (container, film, comments) => {
-  const popupComponent = new PopupFilmDetails(film);
-  render(container, popupComponent.getElement());
-
-  const popup = container.querySelector(`.film-details`);
-  const bottomContainer = popup.querySelector(`.form-details__bottom-container`);
-
-  initComments(bottomContainer, comments);
-};
-
-export {initFilmList, initPopupFilm};
+export {initFilmList};
