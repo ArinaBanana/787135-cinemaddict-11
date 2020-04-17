@@ -1,3 +1,5 @@
+import {createElement} from "../utils/utils";
+
 const createCommentsContainerTemplate = (commentsLength) => {
   return (
     `<section class="film-details__comments-wrap">
@@ -9,4 +11,25 @@ const createCommentsContainerTemplate = (commentsLength) => {
   );
 };
 
-export {createCommentsContainerTemplate};
+export default class CommentsContainer {
+  constructor(commentsLength) {
+    this._commentsLength = commentsLength;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createCommentsContainerTemplate(this._commentsLength);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
