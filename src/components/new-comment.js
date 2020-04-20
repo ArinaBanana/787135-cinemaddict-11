@@ -1,4 +1,4 @@
-import {createElement} from "../utils/utils";
+import AbstractComponent from "./abstract";
 
 const createNewCommentTemplate = () => {
   return (
@@ -34,24 +34,8 @@ const createNewCommentTemplate = () => {
   );
 };
 
-export default class NewComment {
-  constructor() {
-    this._element = null;
-  }
-
+export default class NewComment extends AbstractComponent {
   getTemplate() {
     return createNewCommentTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

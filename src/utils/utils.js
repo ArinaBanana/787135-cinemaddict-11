@@ -12,15 +12,4 @@ const getRandomArrayItem = (array) => {
   return array[randomIndex];
 };
 
-const createElement = (template) => {
-  const element = document.createElement(`div`);
-  element.innerHTML = template;
-
-  return element.firstChild;
-};
-
-const render = (container, element) => {
-  container.append(element);
-};
-
-export {getRandomNumber, getRandomFloatNumber, getRandomArrayItem, createElement, render};
+export {getRandomNumber, getRandomFloatNumber, getRandomArrayItem};

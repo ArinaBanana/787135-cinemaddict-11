@@ -1,4 +1,4 @@
-import {createElement} from "../utils/utils";
+import AbstractComponent from "./abstract";
 
 const createCommentsContainerTemplate = (commentsLength) => {
   return (
@@ -11,25 +11,13 @@ const createCommentsContainerTemplate = (commentsLength) => {
   );
 };
 
-export default class CommentsContainer {
+export default class CommentsContainer extends AbstractComponent {
   constructor(commentsLength) {
+    super();
     this._commentsLength = commentsLength;
-    this._element = null;
   }
 
   getTemplate() {
     return createCommentsContainerTemplate(this._commentsLength);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
