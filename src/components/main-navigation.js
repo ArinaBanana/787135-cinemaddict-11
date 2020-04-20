@@ -1,4 +1,4 @@
-import {createElement} from "../utils/utils";
+import AbstractComponent from "./abstract";
 
 const activeClass = `main-navigation__item--active`;
 
@@ -10,7 +10,7 @@ const createNavItem = (filter) => {
   } = filter;
 
   return (
-    `<a href="#${name}" class="main-navigation__item ${isActive ? activeClass : ``}">
+    `<a href="#${name}" class="main-navigation__item ${isActive ? ACTIVE_CLASS : ``}">
       ${name}
       <span class="main-navigation__item-count">${count}</span>
     </a>`
@@ -32,25 +32,13 @@ const createMainNavigationTemplate = (filters) => {
   );
 };
 
-export default class MainNavigation {
+export default class MainNavigation extends AbstractComponent {
   constructor(filters) {
+    super();
     this._filters = filters;
-    this._element = null;
   }
 
   getTemplate() {
     return createMainNavigationTemplate(this._filters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
