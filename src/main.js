@@ -7,8 +7,7 @@ import FilmsFilters from "./components/films-filters";
 import {generateFilters} from "./moks/filters";
 import {generateFilms} from "./moks/film";
 import {render} from "./utils/methods-for-components";
-
-import {initFilmList} from "./init-film-list";
+import FilmListController from "./init/init-film-list";
 
 const FILMS_COUNT = 20;
 // const FILMS_EXTRA_COUNT = 2;
@@ -29,4 +28,5 @@ render(elementMain, new SortElement());
 const filmsFiltersComponent = new FilmsFilters();
 render(elementMain, filmsFiltersComponent);
 
-initFilmList(filmsFiltersComponent.getElement(), films);
+const filmList = new FilmListController(filmsFiltersComponent);
+filmList.init(films);
