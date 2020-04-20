@@ -10,7 +10,7 @@ const createFilmCardTemplate = (film) => {
     year,
     duration,
     genres,
-    commentsCount
+    commentsCount,
   } = film;
 
   return (
@@ -42,5 +42,11 @@ export default class FilmCard extends AbstractComponent {
 
   getTemplate() {
     return createFilmCardTemplate(this._film);
+  }
+
+  setOpenPopupHandler(handler) {
+    this.getElement()
+      .querySelector(`.film-card__poster`)
+      .addEventListener(`click`, handler);
   }
 }

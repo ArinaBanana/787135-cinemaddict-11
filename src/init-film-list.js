@@ -37,10 +37,11 @@ const initPopupFilm = (container, film, comments) => {
   initComments(bottomContainer, comments);
 
   // реализует закрытие попапа
-  const buttonClose = popupComponent.getElement().querySelector(`.film-details__close-btn`);
-  buttonClose.addEventListener(`click`, () => {
+  const onButtonClose = () => {
     remove(popupComponent);
-  });
+  };
+
+  popupComponent.setButtonCloseHandler(onButtonClose);
 };
 
 const initFilm = (container, film) => {
@@ -48,10 +49,11 @@ const initFilm = (container, film) => {
   render(container, filmComponent);
 
   // реализует открытие большого попапа
-  const poster = filmComponent.getElement().querySelector(`.film-card__poster`);
-  poster.addEventListener(`click`, () => {
+  const onOpenPopup = () => {
     initPopupFilm(BODY_ELEMENT, film, commentsCount);
-  });
+  };
+
+  filmComponent.setOpenPopupHandler(onOpenPopup);
 };
 
 const initFilmList = (filmsFiltersElement, films) => {
@@ -69,7 +71,7 @@ const initFilmList = (filmsFiltersElement, films) => {
   const buttonComponent = new ButtonShowMore();
   render(filmList, buttonComponent);
 
-  buttonComponent.getElement().addEventListener(`click`, () => {
+  const onButtonShowMore = () => {
     const prevCount = showingCountFilms;
     showingCountFilms += SHOWING_FILMS_COUNT;
 
@@ -80,7 +82,9 @@ const initFilmList = (filmsFiltersElement, films) => {
     if (showingCountFilms === films.length) {
       remove(buttonComponent);
     }
-  });
+  };
+
+  buttonComponent.setShowMoreHandler(onButtonShowMore);
 };
 
 export {initFilmList};
