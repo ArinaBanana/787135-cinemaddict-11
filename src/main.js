@@ -6,7 +6,7 @@ import FilmsFilters from "./components/films-filters";
 
 import {generateFilters} from "./moks/filters";
 import {generateFilms} from "./moks/film";
-import {render} from "./utils/utils";
+import {render} from "./utils/methods-for-components";
 
 import {initFilmList} from "./init-film-list";
 
@@ -21,12 +21,12 @@ const elementHeader = document.querySelector(`.header`);
 const elementFooterStatistic = document.querySelector(`.footer__statistics`);
 const elementMain = document.querySelector(`.main`);
 
-render(elementHeader, new UserProfile().getElement());
-render(elementFooterStatistic, new Statistic().getElement());
-render(elementMain, new MainNavigation(filters).getElement());
-render(elementMain, new SortElement().getElement());
+render(elementHeader, new UserProfile());
+render(elementFooterStatistic, new Statistic());
+render(elementMain, new MainNavigation(filters));
+render(elementMain, new SortElement());
 
 const filmsFiltersComponent = new FilmsFilters();
-render(elementMain, filmsFiltersComponent.getElement());
+render(elementMain, filmsFiltersComponent);
 
 initFilmList(filmsFiltersComponent.getElement(), films);
