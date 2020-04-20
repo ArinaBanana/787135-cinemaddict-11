@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract";
 
-const activeClass = `main-navigation__item--active`;
+const ACTIVE_CLASS = `main-navigation__item--active`;
 
 const createNavItem = (filter) => {
   const {
