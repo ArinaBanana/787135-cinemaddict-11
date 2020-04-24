@@ -1,5 +1,6 @@
 import {MovieTitles, DescriptionItem, PostersUrl, Genres} from "./mok-data-film";
 import {getRandomNumber, getRandomArrayItem, getRandomFloatNumber} from "../utils/utils";
+import {generateComments} from "./comments";
 
 const getRandomUrlPoster = () => {
   return `./images/posters${getRandomArrayItem(PostersUrl)}`;
@@ -19,7 +20,10 @@ const generateDescription = () => {
 };
 
 const generateFilm = () => {
+  const countComments = getRandomNumber(0, 5);
+
   const genres = getRandomGenres();
+  const comments = generateComments(countComments);
 
   return {
     title: getRandomArrayItem(MovieTitles),
@@ -32,7 +36,7 @@ const generateFilm = () => {
     year: getRandomNumber(1920, 2000),
     duration: getRandomNumber(10, 120), // продолжительность в минутах
     genres,
-    commentsCount: getRandomNumber(0, 5),
+    comments,
     creators: {
       director: `Anthony Mann`,
       writers: `Anne Wigton, Heinz Herald, Richard Weil`,

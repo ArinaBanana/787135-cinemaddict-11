@@ -7,12 +7,10 @@ import PopupFilmDetails from "../components/popup-film-details";
 import NewComment from "../components/new-comment";
 
 import {remove, render} from "../utils/methods-for-components";
-import {generateComments} from "../moks/comments";
+
 
 const SHOWING_FILMS_COUNT = 5;
 const BODY_ELEMENT = document.querySelector(`body`);
-
-const commentsCount = generateComments();
 
 const initComments = (container, comments) => {
   const commentsContainer = new CommentsContainer(comments.length);
@@ -50,7 +48,7 @@ const initFilm = (container, film) => {
 
   // реализует открытие большого попапа
   const onOpenPopup = () => {
-    initPopupFilm(BODY_ELEMENT, film, commentsCount);
+    initPopupFilm(BODY_ELEMENT, film, film.comments);
   };
 
   filmComponent.setOpenPopupHandler(onOpenPopup);
