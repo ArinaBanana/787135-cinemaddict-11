@@ -28,7 +28,7 @@ const getRandomEmoji = () => {
 
 const generateComment = () => {
   return {
-    emoji: getRandomEmoji(), // должно быть только название angry
+    emoji: getRandomEmoji(),
     author: getRandomArrayItem(Author),
     date: `2019/12/31 23:59`,
     message: getRandomArrayItem(Messages),
