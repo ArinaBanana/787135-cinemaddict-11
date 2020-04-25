@@ -1,57 +1,18 @@
-import FilmCard from "../components/film-card";
 import FilmsContainer from "../components/films-container";
 import ButtonShowMore from "../components/button-show-more";
-import CommentsContainer from "../components/comments-container";
-import Comment from "../components/comment";
-import PopupFilmDetails from "../components/popup-film-details";
-import NewComment from "../components/new-comment";
+import FilmController from "./film";
 
 import {remove, render} from "../utils/methods-for-components";
 
-
 const SHOWING_FILMS_COUNT = 5;
-const BODY_ELEMENT = document.querySelector(`body`);
 
-const initComments = (container, comments) => {
-  const commentsContainer = new CommentsContainer(comments.length);
-  render(container, commentsContainer);
+const renderFilms = (filmList, films) => {
+  return films.map((film) => {
+    const filmController = new FilmController(filmList);
+    filmController.init(film);
 
-  const commentList = commentsContainer.getElement().querySelector(`.film-details__comments-list`);
-
-  for (let i = 0; i < comments.length; i++) {
-    const commentComponent = new Comment(comments[i]);
-    render(commentList, commentComponent);
-  }
-
-  const newCommentComponent = new NewComment();
-  render(commentsContainer.getElement(), newCommentComponent);
-};
-
-const initPopupFilm = (container, film, comments) => {
-  const popupComponent = new PopupFilmDetails(film);
-  render(container, popupComponent);
-
-  const bottomContainer = popupComponent.getElement().querySelector(`.form-details__bottom-container`);
-  initComments(bottomContainer, comments);
-
-  // реализует закрытие попапа
-  const onButtonClose = () => {
-    remove(popupComponent);
-  };
-
-  popupComponent.setButtonCloseHandler(onButtonClose);
-};
-
-const initFilm = (container, film) => {
-  const filmComponent = new FilmCard(film);
-  render(container, filmComponent);
-
-  // реализует открытие большого попапа
-  const onOpenPopup = () => {
-    initPopupFilm(BODY_ELEMENT, film, film.comments);
-  };
-
-  filmComponent.setOpenPopupHandler(onOpenPopup);
+    return filmController;
+  });
 };
 
 export default class FilmListController {
@@ -69,9 +30,7 @@ export default class FilmListController {
 
     let showingCountFilms = SHOWING_FILMS_COUNT;
 
-    films
-      .slice(0, showingCountFilms)
-      .forEach((film) => initFilm(this._filmsContainer.getElement(), film));
+    renderFilms(this._filmsContainer.getElement(), films.slice(0, showingCountFilms));
 
     render(filmList, this._button);
 
@@ -79,9 +38,7 @@ export default class FilmListController {
       const prevCount = showingCountFilms;
       showingCountFilms += SHOWING_FILMS_COUNT;
 
-      films
-        .slice(prevCount, showingCountFilms)
-        .forEach((film) => initFilm(this._filmsContainer.getElement(), film));
+      renderFilms(this._filmsContainer.getElement(), films.slice(prevCount, showingCountFilms));
 
       if (showingCountFilms === films.length) {
         remove(this._button);
