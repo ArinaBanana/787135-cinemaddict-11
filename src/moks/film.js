@@ -45,6 +45,9 @@ const generateFilm = () => {
     },
     date: `30 March`,
     ageRating: `18+`,
+    addedToWatchlist: false,
+    alreadyWatched: false,
+    addedToFavorite: false,
   };
 };
 
