@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract";
+import AbstractSmartComponent from "./abstract-smart";
 import {convertDuration} from "../utils/convert-duration";
 
 const createPopupFilmDetailsTemplate = (film) => {
@@ -109,10 +109,12 @@ const createPopupFilmDetailsTemplate = (film) => {
   );
 };
 
-export default class PopupFilmDetails extends AbstractComponent {
+export default class PopupFilmDetails extends AbstractSmartComponent {
   constructor(film) {
     super();
     this._film = film;
+
+    this._buttonCloseHandler = null;
   }
 
   getTemplate() {
@@ -120,8 +122,20 @@ export default class PopupFilmDetails extends AbstractComponent {
   }
 
   setButtonCloseHandler(handler) {
+    this._buttonCloseHandler = handler;
+
     this.getElement()
       .querySelector(`.film-details__close-btn`)
       .addEventListener(`click`, handler);
+  }
+
+  rerender(film) {
+    this._film = film;
+    console.log('rerendering')
+    super.rerender();
+  }
+
+  recoveryListeners() {
+    this.setButtonCloseHandler(this._buttonCloseHandler);
   }
 }
