@@ -19,10 +19,8 @@ export default class CommentsController {
 
     render(this._container, this._commentsContainer);
 
-    const commentList = this._commentsContainer.getElement().querySelector(`.film-details__comments-list`);
-
     this._commentComponents = this._comments.map((comment) => new Comment(comment));
-    this._commentComponents.forEach((commentComponent) => render(commentList, commentComponent));
+    this._commentComponents.forEach((commentComponent) => render(this._commentsContainer.getListComments(), commentComponent));
 
     this._newCommentComponent = new NewComment();
     render(this._commentsContainer.getElement(), this._newCommentComponent);
