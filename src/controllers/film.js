@@ -29,14 +29,13 @@ export default class FilmController {
     render(this._container, this._filmComponent);
 
     this._filmComponent.setOpenPopupHandler(this._onOpenPopup);
-
-    // TODO передать колбек с новыми данными для отрисовки
+    
     this._filmComponent.setAddedToWatchlistHandler((evt) => {
       evt.preventDefault();
 
       const oldFilm = this._film;
       const newFilm = Object.assign({}, oldFilm, {
-        addedToWatchlist: true,
+        addedToWatchlist: !(oldFilm.addedToWatchlist),
       });
 
       this._onDataChange(this, oldFilm, newFilm);
@@ -47,7 +46,7 @@ export default class FilmController {
 
       const oldFilm = this._film;
       const newFilm = Object.assign({}, oldFilm, {
-        alreadyWatched: true,
+        alreadyWatched: !(oldFilm.alreadyWatched),
       });
 
       this._onDataChange(this, oldFilm, newFilm);
@@ -58,7 +57,7 @@ export default class FilmController {
 
       const oldFilm = this._film;
       const newFilm = Object.assign({}, oldFilm, {
-        addedToFavorite: true,
+        addedToFavorite: !(oldFilm.addedToFavorite),
       });
 
       this._onDataChange(this, oldFilm, newFilm);
