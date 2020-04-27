@@ -1,9 +1,11 @@
-import AbstractComponent from "./abstract";
+import AbstractSmartComponent from "./abstract-smart";
 
-const createNewCommentTemplate = () => {
+const createNewCommentTemplate = (currentEmoji) => {
   return (
     `<div class="film-details__new-comment">
-      <div for="add-emoji" class="film-details__add-emoji-label"></div>
+      <div for="add-emoji" class="film-details__add-emoji-label">
+       ${currentEmoji ? `<img src="./images/emoji/${currentEmoji}.png" width="55" height="55" alt="emoji">` : ``}
+      </div>
 
       <label class="film-details__comment-label">
         <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
@@ -34,8 +36,40 @@ const createNewCommentTemplate = () => {
   );
 };
 
-export default class NewComment extends AbstractComponent {
+export default class NewComment extends AbstractSmartComponent {
+  constructor(emoji) {
+    super();
+    this._emoji = emoji;
+
+    this._originalCurrentEmojiHandler = null;
+    this._wrappedCurrentEmojiHandler = null;
+  }
+
   getTemplate() {
-    return createNewCommentTemplate();
+    return createNewCommentTemplate(this._emoji);
+  }
+
+  setCurrentEmojiHandler(handler) {
+    this._originalCurrentEmojiHandler = handler;
+    this._wrappedCurrentEmojiHandler = function (evt) {
+      handler(evt.target.value);
+    };
+
+    const element = this.getElement().querySelector(`.film-details__emoji-list`);
+
+    if (this._originalCurrentEmojiHandler) {
+      element.removeEventListener(`change`, this._wrappedCurrentEmojiHandler);
+    }
+
+    element.addEventListener(`change`, this._wrappedCurrentEmojiHandler);
+  }
+
+  rerender(emoji) {
+    this._emoji = emoji;
+    super.rerender();
+  }
+
+  recoveryListeners() {
+    this.setCurrentEmojiHandler(this._originalCurrentEmojiHandler);
   }
 }
