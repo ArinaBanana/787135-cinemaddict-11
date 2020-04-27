@@ -3,12 +3,14 @@ import ButtonShowMore from "../components/button-show-more";
 import FilmController from "./film";
 
 import {remove, render} from "../utils/methods-for-components";
+import PopupController from "./popup";
+import {BODY_ELEMENT} from "../utils/utils";
 
 const SHOWING_FILMS_COUNT = 5;
 
-const renderFilms = (filmList, films, onDataChange) => {
+const renderFilms = (filmList, films, onDataChange, onClick) => {
   return films.map((film) => {
-    const filmController = new FilmController(filmList, onDataChange);
+    const filmController = new FilmController(filmList, onDataChange, onClick);
     filmController.init(film);
 
     return filmController;
@@ -21,9 +23,12 @@ export default class FilmListController {
     this._button = new ButtonShowMore();
     this._filmsContainer = new FilmsContainer();
 
+    this._currentFilm = null;
+
     this._films = null;
 
     this._onDataChange = this._onDataChange.bind(this);
+    this._onClick = this._onClick.bind(this);
   }
 
   init(films) {
@@ -36,7 +41,7 @@ export default class FilmListController {
 
     let showingCountFilms = SHOWING_FILMS_COUNT;
 
-    renderFilms(this._filmsContainer.getElement(), this._films.slice(0, showingCountFilms), this._onDataChange);
+    renderFilms(this._filmsContainer.getElement(), this._films.slice(0, showingCountFilms), this._onDataChange, this._onClick);
 
     render(filmList, this._button);
 
@@ -44,7 +49,7 @@ export default class FilmListController {
       const prevCount = showingCountFilms;
       showingCountFilms += SHOWING_FILMS_COUNT;
 
-      renderFilms(this._filmsContainer.getElement(), this._films.slice(prevCount, showingCountFilms), this._onDataChange);
+      renderFilms(this._filmsContainer.getElement(), this._films.slice(prevCount, showingCountFilms), this._onDataChange, this._onClick);
 
       if (showingCountFilms === this._films.length) {
         remove(this._button);
@@ -52,6 +57,8 @@ export default class FilmListController {
     };
 
     this._button.setShowMoreHandler(onButtonShowMore);
+
+    this._popupController = new PopupController(BODY_ELEMENT);
   }
 
   _onDataChange(controller, oldFilm, newFilm) {
@@ -64,5 +71,10 @@ export default class FilmListController {
     this._films = [].concat(this._films.slice(0, index), newFilm, this._films.slice(index + 1));
 
     controller.init(this._films[index]);
+  }
+
+  _onClick(film) {
+    this._currentFilm = film;
+    this._popupController.setFilm(this._currentFilm);
   }
 }

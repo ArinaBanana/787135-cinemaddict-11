@@ -1,22 +1,17 @@
 import FilmCard from "../components/film-card";
-import PopupFilmDetails from "../components/popup-film-details";
-import CommentsController from "./comment";
 
-import {remove, render, replace} from "../utils/methods-for-components";
-
-const BODY_ELEMENT = document.querySelector(`body`);
+import {render, replace} from "../utils/methods-for-components";
 
 export default class FilmController {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onClick) {
     this._container = container;
     this._onDataChange = onDataChange;
+    this._onClick = onClick
 
     this._film = null;
     this._filmComponent = null;
-    this._popupComponent = null;
 
     this._onOpenPopup = this._onOpenPopup.bind(this);
-    this._onButtonClose = this._onButtonClose.bind(this);
   }
 
   init(film) {
@@ -24,7 +19,6 @@ export default class FilmController {
     const oldFilmComponent = this._filmComponent;
 
     this._filmComponent = new FilmCard(this._film);
-    this._popupComponent = new PopupFilmDetails(this._film);
 
     render(this._container, this._filmComponent);
 
@@ -71,23 +65,6 @@ export default class FilmController {
   }
 
   _onOpenPopup() {
-    this._initPopupFilm(BODY_ELEMENT, this._film, this._film.comments);
-  }
-
-  _onButtonClose() {
-    remove(this._popupComponent);
-  }
-
-  _initPopupFilm(container, film, comments) {
-    render(container, this._popupComponent);
-
-    const bottomContainer = this._popupComponent.getElement().querySelector(`.form-details__bottom-container`);
-    this._initComments(bottomContainer, comments);
-
-    this._popupComponent.setButtonCloseHandler(this._onButtonClose);
-  }
-
-  _initComments(container, comments) {
-    new CommentsController(container).init(comments);
+    this._onClick(this._film);
   }
 }
