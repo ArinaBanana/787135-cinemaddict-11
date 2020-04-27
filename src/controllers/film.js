@@ -29,7 +29,7 @@ export default class FilmController {
     render(this._container, this._filmComponent);
 
     this._filmComponent.setOpenPopupHandler(this._onOpenPopup);
-    
+
     this._filmComponent.setAddedToWatchlistHandler((evt) => {
       evt.preventDefault();
 
