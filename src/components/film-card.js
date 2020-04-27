@@ -58,4 +58,22 @@ export default class FilmCard extends AbstractComponent {
       .querySelector(`.film-card__poster`)
       .addEventListener(`click`, handler);
   }
+
+  setAddedToWatchlistHandler(handler) {
+    this.getElement()
+      .querySelector(`.film-card__controls-item--add-to-watchlist`)
+      .addEventListener(`click`, handler);
+  }
+
+  setAddedToWatchedHandler(handler) {
+    this.getElement()
+      .querySelector(`.film-card__controls-item--mark-as-watched`)
+      .addEventListener(`click`, handler);
+  }
+
+  setAddedToFavoriteHandler(handler) {
+    this.getElement()
+      .querySelector(`.film-card__controls-item--favorite`)
+      .addEventListener(`click`, handler);
+  }
 }

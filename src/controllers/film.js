@@ -2,13 +2,15 @@ import FilmCard from "../components/film-card";
 import PopupFilmDetails from "../components/popup-film-details";
 import CommentsController from "./comment";
 
-import {remove, render} from "../utils/methods-for-components";
+import {remove, render, replace} from "../utils/methods-for-components";
 
 const BODY_ELEMENT = document.querySelector(`body`);
 
 export default class FilmController {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._container = container;
+    this._onDataChange = onDataChange;
+
     this._film = null;
     this._filmComponent = null;
     this._popupComponent = null;
@@ -19,6 +21,7 @@ export default class FilmController {
 
   init(film) {
     this._film = film;
+    const oldFilmComponent = this._filmComponent;
 
     this._filmComponent = new FilmCard(this._film);
     this._popupComponent = new PopupFilmDetails(this._film);
@@ -26,6 +29,46 @@ export default class FilmController {
     render(this._container, this._filmComponent);
 
     this._filmComponent.setOpenPopupHandler(this._onOpenPopup);
+
+    // TODO передать колбек с новыми данными для отрисовки
+    this._filmComponent.setAddedToWatchlistHandler((evt) => {
+      evt.preventDefault();
+
+      const oldFilm = this._film;
+      const newFilm = Object.assign({}, oldFilm, {
+        addedToWatchlist: true,
+      });
+
+      this._onDataChange(this, oldFilm, newFilm);
+    });
+
+    this._filmComponent.setAddedToWatchedHandler((evt) => {
+      evt.preventDefault();
+
+      const oldFilm = this._film;
+      const newFilm = Object.assign({}, oldFilm, {
+        alreadyWatched: true,
+      });
+
+      this._onDataChange(this, oldFilm, newFilm);
+    });
+
+    this._filmComponent.setAddedToFavoriteHandler((evt) => {
+      evt.preventDefault();
+
+      const oldFilm = this._film;
+      const newFilm = Object.assign({}, oldFilm, {
+        addedToFavorite: true,
+      });
+
+      this._onDataChange(this, oldFilm, newFilm);
+    });
+
+    if (oldFilmComponent) {
+      replace(this._filmComponent, oldFilmComponent);
+    } else {
+      render(this._container, this._filmComponent);
+    }
   }
 
   _onOpenPopup() {
