@@ -32,6 +32,16 @@ export default class CommentsController {
     render(this._commentsContainer.getElement(), this._newCommentComponent);
   }
 
+  setContainer(container) {
+    this._container = container;
+    render(this._container, this._commentsContainer);
+  }
+
+  setComments(comments) {
+    this._comments = comments;
+    this._commentComponents.forEach((component, index) => component.rerender(this._comments[index]));
+  }
+
   _onChangeEmoji(emoji) {
     this._currentEmoji = emoji;
     this._newCommentComponent.rerender(this._currentEmoji);

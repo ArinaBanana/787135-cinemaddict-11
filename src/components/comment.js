@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract";
+import AbstractSmartComponent from "./abstract-smart";
 
 const createCommentTemplate = (comment) => {
   const {
@@ -25,7 +25,7 @@ const createCommentTemplate = (comment) => {
   );
 };
 
-export default class Comment extends AbstractComponent {
+export default class Comment extends AbstractSmartComponent {
   constructor(comment) {
     super();
     this._comment = comment;
@@ -33,5 +33,15 @@ export default class Comment extends AbstractComponent {
 
   getTemplate() {
     return createCommentTemplate(this._comment);
+  }
+
+  rerender(comment) {
+    this._comment = comment;
+    console.log('do rerender comment', this._comment)
+    super.rerender();
+  }
+
+  recoveryListeners() {
+    return null;
   }
 }
