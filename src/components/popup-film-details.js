@@ -131,7 +131,6 @@ export default class PopupFilmDetails extends AbstractSmartComponent {
 
   rerender(film) {
     this._film = film;
-    console.log('rerendering')
     super.rerender();
   }
 

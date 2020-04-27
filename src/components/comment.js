@@ -37,7 +37,6 @@ export default class Comment extends AbstractSmartComponent {
 
   rerender(comment) {
     this._comment = comment;
-    console.log('do rerender comment', this._comment)
     super.rerender();
   }
 

@@ -6,7 +6,7 @@ export default class FilmController {
   constructor(container, onDataChange, onClick) {
     this._container = container;
     this._onDataChange = onDataChange;
-    this._onClick = onClick
+    this._onClick = onClick;
 
     this._film = null;
     this._filmComponent = null;

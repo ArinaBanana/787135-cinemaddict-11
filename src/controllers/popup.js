@@ -18,7 +18,7 @@ export default class PopupController {
 
   _initComments(comments) {
     const container = this._popupComponent.getElement().querySelector(`.form-details__bottom-container`);
-    this._commentsController = new CommentsController(container)
+    this._commentsController = new CommentsController(container);
     this._commentsController.init(comments);
   }
 
