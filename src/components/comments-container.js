@@ -20,4 +20,8 @@ export default class CommentsContainer extends AbstractComponent {
   getTemplate() {
     return createCommentsContainerTemplate(this._commentsLength);
   }
+
+  getListComments() {
+    return this.getElement().querySelector(`.film-details__comments-list`);
+  }
 }

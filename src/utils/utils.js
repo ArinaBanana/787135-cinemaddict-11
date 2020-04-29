@@ -1,3 +1,5 @@
+const BODY_ELEMENT = document.querySelector(`body`);
+
 const getRandomNumber = (min, max) => {
   return min + Math.floor(Math.random() * (max - min));
 };
@@ -12,4 +14,4 @@ const getRandomArrayItem = (array) => {
   return array[randomIndex];
 };
 
-export {getRandomNumber, getRandomFloatNumber, getRandomArrayItem};
+export {getRandomNumber, getRandomFloatNumber, getRandomArrayItem, BODY_ELEMENT};

@@ -7,7 +7,7 @@ import FilmsFilters from "./components/films-filters";
 import {generateFilters} from "./moks/filters";
 import {generateFilms} from "./moks/film";
 import {render} from "./utils/methods-for-components";
-import FilmListController from "./init/init-film-list";
+import FilmListController from "./controllers/film-list";
 
 const FILMS_COUNT = 20;
 // const FILMS_EXTRA_COUNT = 2;

@@ -1,6 +1,4 @@
-import {getRandomNumber, getRandomArrayItem} from "../utils/utils";
-
-const COMMENTS_COUNT = getRandomNumber(0, 5);
+import {getRandomArrayItem} from "../utils/utils";
 
 const Emoji = [
   `angry`,
@@ -30,15 +28,15 @@ const getRandomEmoji = () => {
 
 const generateComment = () => {
   return {
-    emoji: getRandomEmoji(), // должно быть только название angry
+    emoji: getRandomEmoji(),
     author: getRandomArrayItem(Author),
     date: `2019/12/31 23:59`,
     message: getRandomArrayItem(Messages),
   };
 };
 
-const generateComments = () => {
-  return new Array(COMMENTS_COUNT)
+const generateComments = (count) => {
+  return new Array(count)
     .fill(null)
     .map(generateComment);
 };
