@@ -18,8 +18,7 @@ const createFilmCardTemplate = (film) => {
     addedToFavorite,
   } = film;
 
-  const date = new Date(releaseDate);
-  const year = moment(date).year();
+  const year = moment(releaseDate).year();
 
   return (
     `<article class="film-card">

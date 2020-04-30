@@ -20,8 +20,7 @@ const createPopupFilmDetailsTemplate = (film) => {
     releaseDate,
   } = film;
 
-  const date = new Date(releaseDate);
-  const convertDate = moment(date).format(`D MMMM YYYY`);
+  const convertDate = moment(releaseDate).format(`D MMMM YYYY`);
 
   return (
     `<section class="film-details">
