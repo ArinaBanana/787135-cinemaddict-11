@@ -1,6 +1,8 @@
 import AbstractSmartComponent from "./abstract-smart";
 import {convertDuration} from "../utils/convert-duration";
 
+import moment from "moment";
+
 const createPopupFilmDetailsTemplate = (film) => {
   const {
     title,
@@ -8,16 +10,18 @@ const createPopupFilmDetailsTemplate = (film) => {
     poster,
     description,
     rating,
-    year,
     duration,
     genres,
     creators,
-    date,
     ageRating,
     addedToWatchlist,
     alreadyWatched,
     addedToFavorite,
+    releaseDate,
   } = film;
+
+  const date = new Date(releaseDate);
+  const convertDate = moment(date).format(`D MMMM YYYY`);
 
   return (
     `<section class="film-details">
@@ -60,7 +64,7 @@ const createPopupFilmDetailsTemplate = (film) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
-                  <td class="film-details__cell">${date} ${year}</td>
+                  <td class="film-details__cell">${convertDate}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>

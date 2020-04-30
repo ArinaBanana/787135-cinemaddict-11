@@ -2,6 +2,9 @@ import {MovieTitles, DescriptionItem, PostersUrl, Genres} from "./mok-data-film"
 import {getRandomNumber, getRandomArrayItem, getRandomFloatNumber} from "../utils/utils";
 import {generateComments} from "./comments";
 
+const START_OF_PERIOD_TIMESTAMP = -1577934000000;
+const END_OF_PERIOD_TIMESTAMP = 978210000000;
+
 const getRandomUrlPoster = () => {
   return `./images/posters${getRandomArrayItem(PostersUrl)}`;
 };
@@ -33,7 +36,6 @@ const generateFilm = () => {
     },
     description: generateDescription(),
     rating: getRandomFloatNumber(0, 10),
-    year: getRandomNumber(1920, 2000),
     duration: getRandomNumber(10, 120), // продолжительность в минутах
     genres,
     comments,
@@ -43,11 +45,11 @@ const generateFilm = () => {
       actors: `Erich von Stroheim, Mary Beth Hughes, Dan Duryea`,
       country: `USA`,
     },
-    date: `30 March`,
     ageRating: `18+`,
     addedToWatchlist: false,
     alreadyWatched: false,
     addedToFavorite: false,
+    releaseDate: getRandomNumber(START_OF_PERIOD_TIMESTAMP, END_OF_PERIOD_TIMESTAMP),
   };
 };
 
