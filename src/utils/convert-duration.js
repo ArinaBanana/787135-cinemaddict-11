@@ -1,17 +1,16 @@
-const leadingZero = (num, size) => {
-  return String(num).padStart(size, `0`);
-};
+import moment from "moment";
 
 const convertDuration = (allMinutes) => {
-  const hours = Math.floor(allMinutes / 60);
-  const hoursInMin = hours * 60;
-  const minutes = allMinutes - hoursInMin;
+  const duration = moment.duration(allMinutes, `minutes`);
+
+  const hours = duration.hours();
+  const minutes = duration.minutes();
 
   if (hours === 0) {
-    return `${leadingZero(minutes, 2)}m`;
+    return `${minutes}m`;
   }
 
-  return `${leadingZero(hours, 2)}h ${leadingZero(minutes, 2)}m`;
+  return `${hours}h ${minutes}m`;
 };
 
 export {convertDuration};

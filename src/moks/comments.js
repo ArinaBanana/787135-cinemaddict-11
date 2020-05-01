@@ -1,4 +1,6 @@
-import {getRandomArrayItem} from "../utils/utils";
+import {getRandomArrayItem, getRandomNumber} from "../utils/utils";
+
+const START_COMMENT_PERIOD_TIMESTAMP = 1580231110511;
 
 const Emoji = [
   `angry`,
@@ -26,19 +28,39 @@ const getRandomEmoji = () => {
   return `./images/emoji/${emoji}.png`;
 };
 
-const generateComment = () => {
+const generateComment = (date) => {
   return {
     emoji: getRandomEmoji(),
     author: getRandomArrayItem(Author),
-    date: `2019/12/31 23:59`,
+    date,
     message: getRandomArrayItem(Messages),
   };
 };
 
+const getNextDate = (prevDate) => {
+  const minute = 1000 * 60;
+  const multiplier = 20000;
+  const delta = getRandomNumber(minute, multiplier * minute);
+
+  const now = new Date().valueOf();
+  let newDate = prevDate + delta;
+
+  if (newDate > now) {
+    newDate = now;
+  }
+
+  return newDate;
+};
+
 const generateComments = (count) => {
+  let lastDate = START_COMMENT_PERIOD_TIMESTAMP;
+
   return new Array(count)
     .fill(null)
-    .map(generateComment);
+    .map(() => {
+      lastDate = getNextDate(lastDate);
+      return generateComment(lastDate);
+    });
 };
 
 export {generateComments};

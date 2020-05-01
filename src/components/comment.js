@@ -1,4 +1,18 @@
 import AbstractSmartComponent from "./abstract-smart";
+import moment from "moment";
+
+const getFormattingDate = (timestamp) => {
+  const date = moment(timestamp);
+
+  const now = moment().startOf(`day`);
+  const diff = now.diff(date, `days`);
+
+  if (diff > 3) {
+    return date.format(`YYYY/MM/DD HH:mm`);
+  }
+
+  return date.fromNow();
+};
 
 const createCommentTemplate = (comment) => {
   const {
@@ -17,7 +31,7 @@ const createCommentTemplate = (comment) => {
         <p class="film-details__comment-text">${message}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
-          <span class="film-details__comment-day">${date}</span>
+          <span class="film-details__comment-day">${getFormattingDate(date)}</span>
           <button class="film-details__comment-delete">Delete</button>
         </p>
       </div>

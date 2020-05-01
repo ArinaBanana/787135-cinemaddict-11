@@ -1,20 +1,24 @@
 import AbstractComponent from "./abstract";
 import {convertDuration} from "../utils/convert-duration";
 
+import moment from "moment";
+
 const createFilmCardTemplate = (film) => {
   const {
     title,
     poster,
     description,
     rating,
-    year,
     duration,
     genres,
     comments,
+    releaseDate,
     addedToWatchlist,
     alreadyWatched,
     addedToFavorite,
   } = film;
+
+  const year = moment(releaseDate).year();
 
   return (
     `<article class="film-card">
