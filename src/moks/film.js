@@ -22,6 +22,16 @@ const generateDescription = () => {
     .join(` `);
 };
 
+const makeIdGenerator = () => {
+  let counter = 0;
+
+  return () => {
+    return counter++;
+  };
+};
+
+const getNextId = makeIdGenerator();
+
 const generateFilm = () => {
   const countComments = getRandomNumber(0, 5);
 
@@ -29,6 +39,7 @@ const generateFilm = () => {
   const comments = generateComments(countComments);
 
   return {
+    id: getNextId(),
     title: getRandomArrayItem(MovieTitles),
     originalTitle: getRandomArrayItem(MovieTitles),
     poster: {
