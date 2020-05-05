@@ -28,36 +28,34 @@ export default class FilmListController {
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onClick = this._onClick.bind(this);
+    this._onButtonShowMore = this._onButtonShowMore.bind(this);
   }
 
   init() {
     this._films = this._filmsModel.getAllMovies();
+    this._showingCountFilms = SHOWING_FILMS_COUNT;
 
     const container = this._container.getElement();
     const filmList = container.querySelector(`.films-list`);
 
     render(filmList, this._filmsContainer);
-
-    let showingCountFilms = SHOWING_FILMS_COUNT;
-
-    renderFilms(this._filmsContainer.getElement(), this._films.slice(0, showingCountFilms), this._onDataChange, this._onClick);
-
+    renderFilms(this._filmsContainer.getElement(), this._films.slice(0, this._showingCountFilms), this._onDataChange, this._onClick);
     render(filmList, this._button);
 
-    const onButtonShowMore = () => {
-      const prevCount = showingCountFilms;
-      showingCountFilms += SHOWING_FILMS_COUNT;
-
-      renderFilms(this._filmsContainer.getElement(), this._films.slice(prevCount, showingCountFilms), this._onDataChange, this._onClick);
-
-      if (showingCountFilms === this._films.length) {
-        remove(this._button);
-      }
-    };
-
-    this._button.setShowMoreHandler(onButtonShowMore);
+    this._button.setShowMoreHandler(this._onButtonShowMore);
 
     this._popupController = new PopupController(BODY_ELEMENT);
+  }
+
+  _onButtonShowMore() {
+    const prevCount = this._showingCountFilms;
+    this._showingCountFilms += SHOWING_FILMS_COUNT;
+
+    renderFilms(this._filmsContainer.getElement(), this._films.slice(prevCount, this._showingCountFilms), this._onDataChange, this._onClick);
+
+    if (this._showingCountFilms === this._films.length) {
+      remove(this._button);
+    }
   }
 
   _onDataChange(controller, oldFilm, newFilm) {
