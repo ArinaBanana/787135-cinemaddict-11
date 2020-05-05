@@ -1,5 +1,5 @@
 import {MovieTitles, DescriptionItem, PostersUrl, Genres} from "./mok-data-film";
-import {getRandomNumber, getRandomArrayItem, getRandomFloatNumber} from "../utils/utils";
+import {getRandomNumber, getRandomArrayItem, getRandomFloatNumber, getRandomBoolean, makeIdGenerator} from "../utils/utils";
 import {generateComments} from "./comments";
 
 const START_OF_PERIOD_TIMESTAMP = -1577934000000;
@@ -20,14 +20,6 @@ const generateDescription = () => {
     .fill(null)
     .map(() => getRandomArrayItem(DescriptionItem))
     .join(` `);
-};
-
-const makeIdGenerator = () => {
-  let counter = 0;
-
-  return () => {
-    return counter++;
-  };
 };
 
 const getNextId = makeIdGenerator();
@@ -57,9 +49,9 @@ const generateFilm = () => {
       country: `USA`,
     },
     ageRating: `18+`,
-    addedToWatchlist: false,
-    alreadyWatched: false,
-    addedToFavorite: false,
+    addedToWatchlist: getRandomBoolean(),
+    alreadyWatched: getRandomBoolean(),
+    addedToFavorite: getRandomBoolean(),
     releaseDate: getRandomNumber(START_OF_PERIOD_TIMESTAMP, END_OF_PERIOD_TIMESTAMP),
   };
 };
