@@ -18,21 +18,20 @@ const renderFilms = (filmList, films, onDataChange, onClick) => {
 };
 
 export default class FilmListController {
-  constructor(container) {
+  constructor(container, filmsModel) {
     this._container = container;
     this._button = new ButtonShowMore();
     this._filmsContainer = new FilmsContainer();
 
+    this._filmsModel = filmsModel;
     this._currentFilm = null;
-
-    this._films = null;
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onClick = this._onClick.bind(this);
   }
 
-  init(films) {
-    this._films = films;
+  init() {
+    this._films = this._filmsModel.getAllMovies();
 
     const container = this._container.getElement();
     const filmList = container.querySelector(`.films-list`);

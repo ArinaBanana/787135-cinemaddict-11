@@ -4,15 +4,20 @@ import MainNavigation from "./components/main-navigation";
 import SortElement from "./components/sort-elements";
 import FilmsFilters from "./components/films-filters";
 
+import FilmListController from "./controllers/film-list";
+import MoviesModel from "./models/movies";
+
 import {generateFilters} from "./moks/filters";
 import {generateFilms} from "./moks/film";
 import {render} from "./utils/methods-for-components";
-import FilmListController from "./controllers/film-list";
 
 const FILMS_COUNT = 20;
 // const FILMS_EXTRA_COUNT = 2;
 
 const films = generateFilms(FILMS_COUNT);
+const filmsModel = new MoviesModel();
+filmsModel.setMovies(films);
+
 // const filmsExtra = generateFilms(FILMS_EXTRA_COUNT);
 const filters = generateFilters(films.length);
 
@@ -28,5 +33,5 @@ render(elementMain, new SortElement());
 const filmsFiltersComponent = new FilmsFilters();
 render(elementMain, filmsFiltersComponent);
 
-const filmList = new FilmListController(filmsFiltersComponent);
-filmList.init(films);
+const filmList = new FilmListController(filmsFiltersComponent, filmsModel);
+filmList.init();
