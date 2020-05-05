@@ -27,7 +27,7 @@ render(elementHeader, new UserProfile());
 render(elementFooterStatistic, new Statistic());
 
 const filtersController = new MainNavFiltersController(elementMain, filmsModel);
-filtersController.init(filters);
+filtersController.init();
 
 render(elementMain, new SortElement());
 

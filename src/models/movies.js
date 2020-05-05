@@ -1,3 +1,5 @@
+import {getFilmsByFilters} from "../utils/filtration";
+
 export default class MoviesModel {
   constructor() {
     this._movies = [];
@@ -6,6 +8,10 @@ export default class MoviesModel {
 
   getAllMovies() {
     return this._movies;
+  }
+
+  getMoviesByFiltration() {
+    return getFilmsByFilters(this._movies);
   }
 
   setMovies(movies) {
