@@ -7,7 +7,6 @@ import FilmListController from "./controllers/film-list";
 import MainNavFiltersController from "./controllers/main-nav-filters";
 import MoviesModel from "./models/movies";
 
-import {generateFilters} from "./moks/filters";
 import {generateFilms} from "./moks/film";
 import {render} from "./utils/methods-for-components";
 
@@ -19,8 +18,6 @@ const filmsModel = new MoviesModel();
 filmsModel.setMovies(films);
 
 // const filmsExtra = generateFilms(FILMS_EXTRA_COUNT);
-
-const filters = generateFilters(films.length);
 
 const elementHeader = document.querySelector(`.header`);
 const elementFooterStatistic = document.querySelector(`.footer__statistics`);
