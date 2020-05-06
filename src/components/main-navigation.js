@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract";
+import AbstractSmartComponent from "./abstract-smart";
 
 const ACTIVE_CLASS = `main-navigation__item--active`;
 
@@ -10,7 +10,7 @@ const createNavItem = (filter) => {
   } = filter;
 
   return (
-    `<a href="#${name}" class="main-navigation__item ${isActive ? ACTIVE_CLASS : ``}">
+    `<a href="#${name}" class="main-navigation__item ${isActive ? ACTIVE_CLASS : ``}" data-filter="${name}">
       ${name}
       <span class="main-navigation__item-count">${count}</span>
     </a>`
@@ -32,7 +32,7 @@ const createMainNavigationTemplate = (filters) => {
   );
 };
 
-export default class MainNavigation extends AbstractComponent {
+export default class MainNavigation extends AbstractSmartComponent {
   constructor(filters) {
     super();
     this._filters = filters;
@@ -40,5 +40,27 @@ export default class MainNavigation extends AbstractComponent {
 
   getTemplate() {
     return createMainNavigationTemplate(this._filters);
+  }
+
+  setFilterChangeHandlers(handler) {
+    this._handler = handler;
+
+    const links = this.getElement().querySelectorAll(`.main-navigation__item`);
+
+    Array.prototype.forEach.call(links, (link) => link.addEventListener(`click`, (evt) => {
+      const filter = evt.currentTarget.dataset.filter;
+      if (filter) {
+        handler(filter);
+      }
+    }));
+  }
+
+  setFilters(filters) {
+    this._filters = filters;
+    this.rerender();
+  }
+
+  recoveryListeners() {
+    this.setFilterChangeHandlers(this._handler);
   }
 }
