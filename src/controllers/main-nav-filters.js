@@ -11,18 +11,20 @@ export default class MainNavFiltersController {
   }
 
   init() {
+    const filters = this._createFilters();
+    const navComponent = new MainNavigation(filters);
+    render(this._container, navComponent);
+  }
+
+  _createFilters() {
     const films = this._moviesModel.getAllMovies();
 
-    const filters = Object.values(FilterTypes).map((filterType) => {
+    return Object.values(FilterTypes).map((filterType) => {
       return {
         name: filterType,
-        count: getFilmsByFilters(films).length,
+        count: getFilmsByFilters(films, filterType).length,
         isActive: filterType === this._activeFilterType,
       };
     });
-
-    const navComponent = new MainNavigation(filters);
-
-    render(this._container, navComponent);
   }
 }
