@@ -8,12 +8,19 @@ export default class MainNavFiltersController {
     this._moviesModel = moviesModel;
 
     this._activeFilterType = FilterTypes.ALL_MOVIES;
+
+    this._onViewFilterChange = this._onViewFilterChange.bind(this);
+    this._onModelFilterChange = this._onModelFilterChange.bind(this);
   }
 
   init() {
     const filters = this._createFilters();
-    const navComponent = new MainNavigation(filters);
-    render(this._container, navComponent);
+    this._navComponent = new MainNavigation(filters);
+    this._navComponent.setFilterChangeHandlers(this._onViewFilterChange);
+
+    render(this._container, this._navComponent);
+
+    this._moviesModel.setFilterChangeHandlers(this._onModelFilterChange);
   }
 
   _createFilters() {
@@ -26,5 +33,16 @@ export default class MainNavFiltersController {
         isActive: filterType === this._activeFilterType,
       };
     });
+  }
+
+  _onModelFilterChange(filterType) {
+    this._activeFilterType = filterType;
+
+    const newFilters = this._createFilters();
+    this._navComponent.setFilters(newFilters);
+  }
+
+  _onViewFilterChange(filterType) {
+    this._moviesModel.setFilter(filterType);
   }
 }
