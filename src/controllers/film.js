@@ -1,6 +1,6 @@
 import FilmCard from "../components/film-card";
 
-import {render, replace} from "../utils/methods-for-components";
+import {remove, render, replace} from "../utils/methods-for-components";
 
 export default class FilmController {
   constructor(container, onDataChange, onClick) {
@@ -62,6 +62,10 @@ export default class FilmController {
     } else {
       render(this._container, this._filmComponent);
     }
+  }
+
+  destroy() {
+    remove(this._filmComponent);
   }
 
   _onOpenPopup() {
