@@ -56,7 +56,7 @@ export default class FilmController {
       addedToWatchlist: !(oldFilm.addedToWatchlist),
     });
 
-    this._onDataChange(this, oldFilm, newFilm);
+    this._onDataChange(newFilm);
   }
 
   _addToWatched(evt) {
@@ -67,7 +67,7 @@ export default class FilmController {
       alreadyWatched: !(oldFilm.alreadyWatched),
     });
 
-    this._onDataChange(this, oldFilm, newFilm);
+    this._onDataChange(newFilm);
   }
 
   _addToFavorites(evt) {
@@ -78,6 +78,6 @@ export default class FilmController {
       addedToFavorite: !(oldFilm.addedToFavorite),
     });
 
-    this._onDataChange(this, oldFilm, newFilm);
+    this._onDataChange(newFilm);
   }
 }
