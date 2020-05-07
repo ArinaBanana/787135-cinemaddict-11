@@ -28,7 +28,7 @@ export default class MoviesModel {
     }
 
     this._activeFilterType = filterType;
-    this._callHandlers(this._filterChangeHandlers);
+    this._callHandlers(this._filterChangeHandlers, this._activeFilterType);
 
     return true;
   }
@@ -49,12 +49,12 @@ export default class MoviesModel {
     }
 
     this._movies = [].concat(this._movies.slice(0, index), movie, this._movies.slice(index + 1));
-    this._callHandlers(this._dataChangeHandlers);
+    this._callHandlers(this._dataChangeHandlers, movie);
 
     return true;
   }
 
-  _callHandlers(handlers) {
-    handlers.forEach((handler) => handler(this._activeFilterType));
+  _callHandlers(handlers, data) {
+    handlers.forEach((handler) => handler(data));
   }
 }
