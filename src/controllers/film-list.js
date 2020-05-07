@@ -8,13 +8,17 @@ import {BODY_ELEMENT} from "../utils/utils";
 
 const SHOWING_FILMS_COUNT = 5;
 
-const renderFilms = (filmList, films, onDataChange, onClick) => {
-  return films.map((film) => {
+const createFilmControllers = (filmList, films, onDataChange, onClick) => {
+  return films.reduce((acc, film) => {
+    const key = film.id;
+
     const filmController = new FilmController(filmList, onDataChange, onClick);
     filmController.init(film);
 
-    return filmController;
-  });
+    acc[key] = filmController;
+
+    return acc;
+  }, {});
 };
 
 export default class FilmListController {
@@ -26,7 +30,7 @@ export default class FilmListController {
     this._moviesModel = moviesModel;
     this._currentFilm = null;
 
-    this._showedFilmControllers = [];
+    this._showedFilmControllers = {};
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onClick = this._onClick.bind(this);
@@ -53,12 +57,13 @@ export default class FilmListController {
 
   _renderFilms() {
     this._showingCountFilms = SHOWING_FILMS_COUNT;
-    this._showedFilmControllers = renderFilms(this._filmsContainer.getElement(), this._moviesModel.getMoviesByFiltration().slice(0, this._showingCountFilms), this._onDataChange, this._onClick);
+    this._showedFilmControllers = createFilmControllers(this._filmsContainer.getElement(), this._moviesModel.getMoviesByFiltration().slice(0, this._showingCountFilms), this._onDataChange, this._onClick);
   }
 
   _remove() {
-    this._showedFilmControllers.map((controller) => controller.destroy());
-    this._showedFilmControllers = [];
+    Object.values(this._showedFilmControllers).forEach((controller) => controller.destroy());
+
+    this._showedFilmControllers = {};
     this._renderFilms();
   }
 
@@ -78,8 +83,8 @@ export default class FilmListController {
       this._showingCountFilms = prevCount + filmsForRender.length;
     }
 
-    const newControllers = renderFilms(this._filmsContainer.getElement(), filmsForRender, this._onDataChange, this._onClick);
-    this._showedFilmControllers = this._showedFilmControllers.concat(newControllers);
+    const newControllers = createFilmControllers(this._filmsContainer.getElement(), filmsForRender, this._onDataChange, this._onClick);
+    Object.assign(this._showedFilmControllers, newControllers);
 
     if (this._showingCountFilms === this._moviesModel.getMoviesByFiltration().length) {
       remove(this._button);
@@ -87,11 +92,12 @@ export default class FilmListController {
   }
 
   _onFilmUpdate(film) {
-    const filmController = this._showedFilmControllers.find((controller) => {
-      return controller.getFilm().id === film.id;
-    });
-    filmController.setFilm(film);
-    this._popupController.setFilm(film);
+    const filmController = this._showedFilmControllers[film.id];
+
+    if (filmController) {
+      filmController.setFilm(film);
+      this._popupController.setFilm(film);
+    }
   }
 
   _onDataChange(newFilm) {
