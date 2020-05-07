@@ -4,6 +4,7 @@ export default class MoviesModel {
   constructor() {
     this._movies = [];
     this._filterChangeHandlers = [];
+    this._dataChangeHandlers = [];
 
     this._activeFilterType = FilterTypes.ALL_MOVIES;
   }
@@ -36,15 +37,19 @@ export default class MoviesModel {
     this._filterChangeHandlers.push(handler);
   }
 
-  updateMovie(id, movie) {
-    const index = this._movies.findIndex((it) => it.id === id);
+  setDataChangeHandlers(handler) {
+    this._dataChangeHandlers.push(handler);
+  }
+
+  updateMovie(movie) {
+    const index = this._movies.findIndex((it) => it.id === movie.id);
 
     if (index === -1) {
       return false;
     }
 
     this._movies = [].concat(this._movies.slice(0, index), movie, this._movies.slice(index + 1));
-    this._callHandlers(this._filterChangeHandlers);
+    this._callHandlers(this._dataChangeHandlers);
 
     return true;
   }

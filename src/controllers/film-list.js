@@ -35,7 +35,6 @@ export default class FilmListController {
   }
 
   init() {
-
     this._moviesModel.setFilterChangeHandlers(this._onFilterChange);
 
     const container = this._container.getElement();
@@ -92,9 +91,12 @@ export default class FilmListController {
       return;
     }
 
-    this._movies = [].concat(this._movies.slice(0, index), newFilm, this._movies.slice(index + 1));
+    const isSuccess = this._moviesModel.updateMovie(newFilm);
 
-    controller.init(this._movies[index]);
+    if (isSuccess) {
+      this._movies = [].concat(this._movies.slice(0, index), newFilm, this._movies.slice(index + 1));
+      controller.init(this._movies[index]);
+    }
   }
 
   _onClick(film) {

@@ -11,6 +11,7 @@ export default class MainNavFiltersController {
 
     this._onViewFilterChange = this._onViewFilterChange.bind(this);
     this._onModelFilterChange = this._onModelFilterChange.bind(this);
+    this._onModelDataChange = this._onModelDataChange.bind(this);
   }
 
   init() {
@@ -21,6 +22,7 @@ export default class MainNavFiltersController {
     render(this._container, this._navComponent);
 
     this._moviesModel.setFilterChangeHandlers(this._onModelFilterChange);
+    this._moviesModel.setDataChangeHandlers(this._onModelDataChange);
   }
 
   _createFilters() {
@@ -36,7 +38,17 @@ export default class MainNavFiltersController {
   }
 
   _onModelFilterChange(filterType) {
-    this._activeFilterType = filterType;
+    this._updateFilter(filterType);
+  }
+
+  _onModelDataChange() {
+    this._updateFilter();
+  }
+
+  _updateFilter(filterType) {
+    if (filterType) {
+      this._activeFilterType = filterType;
+    }
 
     const newFilters = this._createFilters();
     this._navComponent.setFilters(newFilters);
