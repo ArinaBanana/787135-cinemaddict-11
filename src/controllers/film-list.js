@@ -18,12 +18,12 @@ const renderFilms = (filmList, films, onDataChange, onClick) => {
 };
 
 export default class FilmListController {
-  constructor(container, filmsModel) {
+  constructor(container, moviesModel) {
     this._container = container;
     this._button = new ButtonShowMore();
     this._filmsContainer = new FilmsContainer();
 
-    this._filmsModel = filmsModel;
+    this._moviesModel = moviesModel;
     this._currentFilm = null;
 
     this._showedFilmControllers = [];
@@ -36,7 +36,7 @@ export default class FilmListController {
 
   init() {
 
-    this._filmsModel.setFilterChangeHandlers(this._onFilterChange);
+    this._moviesModel.setFilterChangeHandlers(this._onFilterChange);
 
     const container = this._container.getElement();
     this._filmList = container.querySelector(`.films-list`);
@@ -50,9 +50,9 @@ export default class FilmListController {
   }
 
   _renderFilms() {
-    this._films = this._filmsModel.getMoviesByFiltration();
+    this._movies = this._moviesModel.getMoviesByFiltration();
     this._showingCountFilms = SHOWING_FILMS_COUNT;
-    this._showedFilmControllers = renderFilms(this._filmsContainer.getElement(), this._films.slice(0, this._showingCountFilms), this._onDataChange, this._onClick);
+    this._showedFilmControllers = renderFilms(this._filmsContainer.getElement(), this._movies.slice(0, this._showingCountFilms), this._onDataChange, this._onClick);
   }
 
   _remove() {
@@ -71,7 +71,7 @@ export default class FilmListController {
     const prevCount = this._showingCountFilms;
     this._showingCountFilms += SHOWING_FILMS_COUNT;
 
-    const filmsForRender = this._films.slice(prevCount, this._showingCountFilms);
+    const filmsForRender = this._movies.slice(prevCount, this._showingCountFilms);
 
     if (filmsForRender.length !== SHOWING_FILMS_COUNT) {
       this._showingCountFilms = prevCount + filmsForRender.length;
@@ -80,21 +80,21 @@ export default class FilmListController {
     const newControllers = renderFilms(this._filmsContainer.getElement(), filmsForRender, this._onDataChange, this._onClick);
     this._showedFilmControllers = this._showedFilmControllers.concat(newControllers);
 
-    if (this._showingCountFilms === this._films.length) {
+    if (this._showingCountFilms === this._movies.length) {
       remove(this._button);
     }
   }
 
   _onDataChange(controller, oldFilm, newFilm) {
-    const index = this._films.findIndex((film) => film === oldFilm);
+    const index = this._movies.findIndex((film) => film === oldFilm);
 
     if (index === -1) {
       return;
     }
 
-    this._films = [].concat(this._films.slice(0, index), newFilm, this._films.slice(index + 1));
+    this._movies = [].concat(this._movies.slice(0, index), newFilm, this._movies.slice(index + 1));
 
-    controller.init(this._films[index]);
+    controller.init(this._movies[index]);
   }
 
   _onClick(film) {

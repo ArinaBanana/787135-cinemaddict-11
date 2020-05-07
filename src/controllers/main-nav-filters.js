@@ -24,12 +24,12 @@ export default class MainNavFiltersController {
   }
 
   _createFilters() {
-    const films = this._moviesModel.getAllMovies();
+    const allMovies = this._moviesModel.getAllMovies();
 
     return Object.values(FilterTypes).map((filterType) => {
       return {
         name: filterType,
-        count: getFilmsByFilters(films, filterType).length,
+        count: getFilmsByFilters(allMovies, filterType).length,
         isActive: filterType === this._activeFilterType,
       };
     });
