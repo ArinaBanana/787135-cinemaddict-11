@@ -12,6 +12,9 @@ export default class FilmController {
     this._filmComponent = null;
 
     this._onOpenPopup = this._onOpenPopup.bind(this);
+    this._addToWatchList = this._addToWatchList.bind(this);
+    this._addToWatched = this._addToWatched.bind(this);
+    this._addToFavorites = this._addToFavorites.bind(this);
   }
 
   init(film) {
@@ -23,39 +26,9 @@ export default class FilmController {
     render(this._container, this._filmComponent);
 
     this._filmComponent.setOpenPopupHandler(this._onOpenPopup);
-
-    this._filmComponent.setAddedToWatchlistHandler((evt) => {
-      evt.preventDefault();
-
-      const oldFilm = this._film;
-      const newFilm = Object.assign({}, oldFilm, {
-        addedToWatchlist: !(oldFilm.addedToWatchlist),
-      });
-
-      this._onDataChange(this, oldFilm, newFilm);
-    });
-
-    this._filmComponent.setAddedToWatchedHandler((evt) => {
-      evt.preventDefault();
-
-      const oldFilm = this._film;
-      const newFilm = Object.assign({}, oldFilm, {
-        alreadyWatched: !(oldFilm.alreadyWatched),
-      });
-
-      this._onDataChange(this, oldFilm, newFilm);
-    });
-
-    this._filmComponent.setAddedToFavoriteHandler((evt) => {
-      evt.preventDefault();
-
-      const oldFilm = this._film;
-      const newFilm = Object.assign({}, oldFilm, {
-        addedToFavorite: !(oldFilm.addedToFavorite),
-      });
-
-      this._onDataChange(this, oldFilm, newFilm);
-    });
+    this._filmComponent.setAddedToWatchlistHandler(this._addToWatchList);
+    this._filmComponent.setAddedToWatchedHandler(this._addToWatched);
+    this._filmComponent.setAddedToFavoriteHandler(this._addToFavorites);
 
     if (oldFilmComponent) {
       replace(this._filmComponent, oldFilmComponent);
@@ -70,5 +43,38 @@ export default class FilmController {
 
   _onOpenPopup() {
     this._onClick(this._film);
+  }
+
+  _addToWatchList(evt) {
+    evt.preventDefault();
+
+    const oldFilm = this._film;
+    const newFilm = Object.assign({}, oldFilm, {
+      addedToWatchlist: !(oldFilm.addedToWatchlist),
+    });
+
+    this._onDataChange(this, oldFilm, newFilm);
+  }
+
+  _addToWatched(evt) {
+    evt.preventDefault();
+
+    const oldFilm = this._film;
+    const newFilm = Object.assign({}, oldFilm, {
+      alreadyWatched: !(oldFilm.alreadyWatched),
+    });
+
+    this._onDataChange(this, oldFilm, newFilm);
+  }
+
+  _addToFavorites(evt) {
+    evt.preventDefault();
+
+    const oldFilm = this._film;
+    const newFilm = Object.assign({}, oldFilm, {
+      addedToFavorite: !(oldFilm.addedToFavorite),
+    });
+
+    this._onDataChange(this, oldFilm, newFilm);
   }
 }
