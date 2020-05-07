@@ -19,8 +19,6 @@ export default class FilmController {
 
   init(film) {
     this._film = film;
-    const oldFilmComponent = this._filmComponent;
-
     this._filmComponent = new FilmCard(this._film);
 
     render(this._container, this._filmComponent);
@@ -30,11 +28,16 @@ export default class FilmController {
     this._filmComponent.setAddedToWatchedHandler(this._addToWatched);
     this._filmComponent.setAddedToFavoriteHandler(this._addToFavorites);
 
-    if (oldFilmComponent) {
-      replace(this._filmComponent, oldFilmComponent);
-    } else {
-      render(this._container, this._filmComponent);
-    }
+    render(this._container, this._filmComponent);
+  }
+
+  getFilm() {
+    return this._film;
+  }
+
+  setFilm(film) {
+    this._film = film;
+    this._filmComponent.rerender(this._film);
   }
 
   destroy() {
