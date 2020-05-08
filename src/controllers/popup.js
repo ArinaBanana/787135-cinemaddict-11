@@ -13,6 +13,7 @@ export default class PopupController {
     this._addToWatchList = this._addToWatchList.bind(this);
     this._addToWatched = this._addToWatched.bind(this);
     this._addToFavorites = this._addToFavorites.bind(this);
+    this._onCommentsDataChange = this._onCommentsDataChange.bind(this);
   }
 
   init() {
@@ -39,8 +40,13 @@ export default class PopupController {
 
   _initComments(comments) {
     const container = this._popupComponent.getElement().querySelector(`.form-details__bottom-container`);
-    this._commentsController = new CommentsController(container);
+    this._commentsController = new CommentsController(container, this._onCommentsDataChange);
     this._commentsController.init(comments);
+  }
+
+  _onCommentsDataChange(comments) {
+    const newFilm = Object.assign({}, this._film, {comments});
+    this._onDataChange(newFilm);
   }
 
   _removePopupComponent() {

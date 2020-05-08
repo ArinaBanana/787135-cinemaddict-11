@@ -5,14 +5,17 @@ import NewComment from "../components/new-comment";
 import {render} from "../utils/methods-for-components";
 
 export default class CommentsController {
-  constructor(container) {
+  constructor(container, onCommentsDataChange) {
     this._container = container;
     this._comments = null;
+
+    this._onCommentsDataChange = onCommentsDataChange;
 
     this._commentComponents = null;
     this._newCommentComponent = null;
 
     this._onChangeEmoji = this._onChangeEmoji.bind(this);
+    this._onDelete = this._onDelete.bind(this);
   }
 
   init(comments) {
@@ -23,6 +26,8 @@ export default class CommentsController {
 
     this._commentComponents = this._comments.map((comment) => new Comment(comment));
     this._commentComponents.forEach((commentComponent) => render(this._commentsContainer.getListComments(), commentComponent));
+
+    this._commentComponents.forEach((component) => component.setButtonDeleteHandler(this._onDelete));
 
     this._currentEmoji = null;
 
@@ -45,5 +50,12 @@ export default class CommentsController {
   _onChangeEmoji(emoji) {
     this._currentEmoji = emoji;
     this._newCommentComponent.rerender(this._currentEmoji);
+  }
+
+  _onDelete(deletedComment) {
+    const index = this._comments.findIndex((comment) => comment === deletedComment);
+    const newComments = [].concat(this._comments.slice(0, index), this._comments.slice(index + 1));
+
+    this._onCommentsDataChange(newComments);
   }
 }
