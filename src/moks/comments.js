@@ -22,7 +22,7 @@ const Author = [
   `J. J. Abrams`,
 ];
 
-export const getEmojiUrlByName = (emoji) => `./images/emoji/${emoji}.png`;
+const getEmojiUrlByName = (emoji) => `./images/emoji/${emoji}.png`;
 
 const getRandomEmoji = () => {
   const emoji = getRandomArrayItem(Emoji);
@@ -30,7 +30,7 @@ const getRandomEmoji = () => {
   return getEmojiUrlByName(emoji);
 };
 
-export const createComment = (emoji, author, date, message) => ({emoji, author, date, message});
+const createComment = (emoji, author, date, message) => ({emoji, author, date, message});
 
 const generateComment = (date) => {
   return createComment(getRandomEmoji(), getRandomArrayItem(Author), date, getRandomArrayItem(Messages));
@@ -62,4 +62,4 @@ const generateComments = (count) => {
     });
 };
 
-export {generateComments};
+export {generateComments, createComment, getEmojiUrlByName};
