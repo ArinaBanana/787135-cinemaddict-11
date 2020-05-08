@@ -1,3 +1,5 @@
+import {RenderPosition} from "./utils";
+
 const createElement = (template) => {
   const element = document.createElement(`div`);
   element.innerHTML = template;
@@ -5,8 +7,15 @@ const createElement = (template) => {
   return element.firstChild;
 };
 
-const render = (container, component) => {
-  container.append(component.getElement());
+const render = (container, component, place = `beforeend`) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(component.getElement());
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(component.getElement());
+      break;
+  }
 };
 
 const remove = (component) => {
