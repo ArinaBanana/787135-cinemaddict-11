@@ -34,5 +34,6 @@ render(elementMain, new SortElement());
 const filmsCategoriesComponent = new FilmsCategoriesContainers();
 render(elementMain, filmsCategoriesComponent);
 
-const filmList = new FilmListController(filmsCategoriesComponent, filmsModel);
-filmList.init();
+
+const mainFilmList = new FilmListController(filmsCategoriesComponent, filmsModel);
+mainFilmList.init();
