@@ -22,19 +22,18 @@ const Author = [
   `J. J. Abrams`,
 ];
 
+export const getEmojiUrlByName = (emoji) => `./images/emoji/${emoji}.png`;
+
 const getRandomEmoji = () => {
   const emoji = getRandomArrayItem(Emoji);
 
-  return `./images/emoji/${emoji}.png`;
+  return getEmojiUrlByName(emoji);
 };
 
+export const createComment = (emoji, author, date, message) => ({emoji, author, date, message});
+
 const generateComment = (date) => {
-  return {
-    emoji: getRandomEmoji(),
-    author: getRandomArrayItem(Author),
-    date,
-    message: getRandomArrayItem(Messages),
-  };
+  return createComment(getRandomEmoji(), getRandomArrayItem(Author), date, getRandomArrayItem(Messages));
 };
 
 const getNextDate = (prevDate) => {

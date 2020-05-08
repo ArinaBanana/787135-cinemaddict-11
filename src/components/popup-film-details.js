@@ -156,6 +156,11 @@ export default class PopupFilmDetails extends AbstractSmartComponent {
       .addEventListener(`click`, handler);
   }
 
+  getFormData() {
+    const form = this.getElement().querySelector(`.film-details__inner`);
+    return new FormData(form);
+  }
+
   rerender(film) {
     this._film = film;
     super.rerender();
