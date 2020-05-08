@@ -2,6 +2,11 @@ const BODY_ELEMENT = document.querySelector(`body`);
 const ENTER_KEY = `Enter`;
 const ACTIVE_CLASS = `main-navigation__item--active`;
 
+const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+};
+
 const getRandomNumber = (min, max) => {
   return min + Math.floor(Math.random() * (max - min));
 };
@@ -37,4 +42,5 @@ export {
   BODY_ELEMENT,
   ENTER_KEY,
   ACTIVE_CLASS,
+  RenderPosition,
 };
