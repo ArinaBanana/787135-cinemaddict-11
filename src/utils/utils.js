@@ -1,4 +1,11 @@
 const BODY_ELEMENT = document.querySelector(`body`);
+const ENTER_KEY = `Enter`;
+const ACTIVE_CLASS = `main-navigation__item--active`;
+
+const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+};
 
 const getRandomNumber = (min, max) => {
   return min + Math.floor(Math.random() * (max - min));
@@ -14,4 +21,26 @@ const getRandomArrayItem = (array) => {
   return array[randomIndex];
 };
 
-export {getRandomNumber, getRandomFloatNumber, getRandomArrayItem, BODY_ELEMENT};
+const getRandomBoolean = () => {
+  return Boolean(getRandomNumber(0, 2));
+};
+
+const makeIdGenerator = () => {
+  let counter = 0;
+
+  return () => {
+    return counter++;
+  };
+};
+
+export {
+  getRandomNumber,
+  getRandomFloatNumber,
+  getRandomArrayItem,
+  getRandomBoolean,
+  makeIdGenerator,
+  BODY_ELEMENT,
+  ENTER_KEY,
+  ACTIVE_CLASS,
+  RenderPosition,
+};

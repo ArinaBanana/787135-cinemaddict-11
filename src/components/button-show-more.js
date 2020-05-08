@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract";
+import AbstractSmartComponent from "./abstract-smart";
 
 const createButtonShowMoreTemplate = () => {
   return (
@@ -6,12 +6,17 @@ const createButtonShowMoreTemplate = () => {
   );
 };
 
-export default class ButtonShowMore extends AbstractComponent {
+export default class ButtonShowMore extends AbstractSmartComponent {
   getTemplate() {
     return createButtonShowMoreTemplate();
   }
 
   setShowMoreHandler(handler) {
+    this._handler = handler;
     this.getElement().addEventListener(`click`, handler);
+  }
+
+  recoveryListeners() {
+    this.setShowMoreHandler(this._handler);
   }
 }

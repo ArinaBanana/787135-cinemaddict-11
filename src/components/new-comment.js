@@ -1,15 +1,10 @@
 import AbstractSmartComponent from "./abstract-smart";
 
-const createNewCommentTemplate = (currentEmoji) => {
+const createNewCommentTemplate = () => {
   return (
     `<div class="film-details__new-comment">
-      <div for="add-emoji" class="film-details__add-emoji-label">
-       ${currentEmoji ? `<img src="./images/emoji/${currentEmoji}.png" width="55" height="55" alt="emoji">` : ``}
-      </div>
-
-      <label class="film-details__comment-label">
-        <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
-      </label>
+      <!--Показ выбранного смайла-->
+      <!--Поле для ввода текста-->
 
       <div class="film-details__emoji-list">
         <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile">
@@ -62,11 +57,6 @@ export default class NewComment extends AbstractSmartComponent {
     }
 
     element.addEventListener(`change`, this._wrappedCurrentEmojiHandler);
-  }
-
-  rerender(emoji) {
-    this._emoji = emoji;
-    super.rerender();
   }
 
   recoveryListeners() {

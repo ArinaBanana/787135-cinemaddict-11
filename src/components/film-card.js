@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract";
+import AbstractSmartComponent from "./abstract-smart";
 import {convertDuration} from "../utils/convert-duration";
 
 import moment from "moment";
@@ -47,7 +47,7 @@ const createFilmCardTemplate = (film) => {
   );
 };
 
-export default class FilmCard extends AbstractComponent {
+export default class FilmCard extends AbstractSmartComponent {
   constructor(film) {
     super();
     this._film = film;
@@ -58,26 +58,47 @@ export default class FilmCard extends AbstractComponent {
   }
 
   setOpenPopupHandler(handler) {
+    this._openPopupHandler = handler;
+
     this.getElement()
       .querySelector(`.film-card__poster`)
       .addEventListener(`click`, handler);
   }
 
   setAddedToWatchlistHandler(handler) {
+    this._handleAddToWathcList = handler;
+
     this.getElement()
       .querySelector(`.film-card__controls-item--add-to-watchlist`)
       .addEventListener(`click`, handler);
   }
 
   setAddedToWatchedHandler(handler) {
+    this._handleAddToWatched = handler;
+
     this.getElement()
       .querySelector(`.film-card__controls-item--mark-as-watched`)
       .addEventListener(`click`, handler);
   }
 
   setAddedToFavoriteHandler(handler) {
+    this._handleAddToFavorites = handler;
+
     this.getElement()
       .querySelector(`.film-card__controls-item--favorite`)
       .addEventListener(`click`, handler);
+  }
+
+  recoveryListeners() {
+    this.setOpenPopupHandler(this._openPopupHandler);
+
+    this.setAddedToWatchlistHandler(this._handleAddToWathcList);
+    this.setAddedToWatchedHandler(this._handleAddToWatched);
+    this.setAddedToFavoriteHandler(this._handleAddToFavorites);
+  }
+
+  rerender(film) {
+    this._film = film;
+    super.rerender();
   }
 }
