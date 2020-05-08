@@ -76,6 +76,7 @@ export default class CommentsController {
   _subscribeCmdEnterPress() {
     document.addEventListener(`keydown`, (evt) => {
       if (evt.code === ENTER_KEY && evt.metaKey) {
+        evt.preventDefault();
         this._onFormSubmit(this._getFormData());
       }
     });
