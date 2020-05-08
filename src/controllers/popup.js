@@ -18,6 +18,7 @@ export default class PopupController {
   init() {
     this._popupComponent = new PopupFilmDetails(this._film);
     render(this._container, this._popupComponent);
+    this._initComments(this._film.comments);
 
     this._popupComponent.setButtonCloseHandler(this._onButtonClose);
     this._popupComponent.setAddToWatchListHandler(this._addToWatchList);
@@ -28,7 +29,9 @@ export default class PopupController {
   setFilm(film) {
     this._film = film;
 
-    if (this._popupComponent) {
+    const isAlreadyOpen = Boolean(this._popupComponent);
+
+    if (isAlreadyOpen) {
       this._popupComponent.rerender(this._film);
       this._initComments(this._film.comments);
     }

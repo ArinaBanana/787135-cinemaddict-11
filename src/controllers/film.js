@@ -1,6 +1,6 @@
 import FilmCard from "../components/film-card";
 
-import {remove, render, replace} from "../utils/methods-for-components";
+import {remove, render} from "../utils/methods-for-components";
 
 export default class FilmController {
   constructor(container, onDataChange, onClick) {
