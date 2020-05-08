@@ -8,6 +8,8 @@ import {render} from "../utils/methods-for-components";
 import {createComment, getEmojiUrlByName} from "../moks/comments";
 import {ENTER_KEY, RenderPosition} from "../utils/utils";
 
+import {encode} from "he";
+
 const COMMENT_FORM_FIELDS = [`comment`];
 
 export default class CommentsController {
@@ -82,7 +84,9 @@ export default class CommentsController {
       }
     }
 
-    const newComment = createComment(getEmojiUrlByName(this._currentEmoji), `hello`, new Date(), data.comment);
+    const sanitizedText = encode(data.comment);
+
+    const newComment = createComment(getEmojiUrlByName(this._currentEmoji), `hello`, new Date(), sanitizedText);
     this._onAddingNewComment(newComment);
   }
 
