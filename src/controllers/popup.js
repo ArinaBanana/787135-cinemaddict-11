@@ -8,6 +8,7 @@ export default class PopupController {
     this._onDataChange = onDataChange;
 
     this._film = null;
+    this._commentsController = null;
 
     this._onButtonClose = this._onButtonClose.bind(this);
     this._addToWatchList = this._addToWatchList.bind(this);
@@ -35,12 +36,14 @@ export default class PopupController {
 
     if (isAlreadyOpen) {
       this._popupComponent.rerender(this._film);
+      this._commentsController.destroyListener();
       this._initComments(this._film.comments);
     }
   }
 
   _initComments(comments) {
     const container = this._popupComponent.getElement().querySelector(`.form-details__bottom-container`);
+
     this._commentsController = new CommentsController(container, this._onCommentsDataChange, this._getFormData);
     this._commentsController.init(comments);
   }

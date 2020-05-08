@@ -2,11 +2,11 @@ import CommentsContainer from "../components/comments-container";
 import Comment from "../components/comment";
 import NewComment from "../components/new-comment";
 import AddingEmoji from "../components/adding-emoji";
+import CommentTextarea from "../components/comment-textarea";
 
 import {render} from "../utils/methods-for-components";
 import {createComment, getEmojiUrlByName} from "../moks/comments";
 import {ENTER_KEY, RenderPosition} from "../utils/utils";
-import CommentTextarea from "../components/comment-textarea";
 
 const COMMENT_FORM_FIELDS = [`comment`];
 
@@ -25,6 +25,7 @@ export default class CommentsController {
     this._onDelete = this._onDelete.bind(this);
     this._onAddingNewComment = this._onAddingNewComment.bind(this);
     this._onFormSubmit = this._onFormSubmit.bind(this);
+    this._subscribeHandler = this._subscribeHandler.bind(this);
   }
 
   init(comments) {
@@ -40,6 +41,10 @@ export default class CommentsController {
 
     this._initCreatingComment();
     this._subscribeCmdEnterPress();
+  }
+
+  destroyListener() {
+    document.removeEventListener(`keydown`, this._subscribeHandler);
   }
 
   _initCreatingComment() {
@@ -82,12 +87,14 @@ export default class CommentsController {
   }
 
   _subscribeCmdEnterPress() {
-    document.addEventListener(`keydown`, (evt) => {
-      if (evt.code === ENTER_KEY && evt.metaKey) {
-        evt.preventDefault();
-        this._onFormSubmit(this._getFormData());
-      }
-    });
+    document.addEventListener(`keydown`, this._subscribeHandler);
+  }
+
+  _subscribeHandler(evt) {
+    if (evt.code === ENTER_KEY && evt.metaKey) {
+      evt.preventDefault();
+      this._onFormSubmit(this._getFormData());
+    }
   }
 
   _onAddingNewComment(newComment) {
