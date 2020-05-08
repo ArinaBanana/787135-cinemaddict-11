@@ -1,10 +1,12 @@
 import CommentsContainer from "../components/comments-container";
 import Comment from "../components/comment";
 import NewComment from "../components/new-comment";
+import AddingEmoji from "../components/adding-emoji";
 
 import {render} from "../utils/methods-for-components";
 import {createComment, getEmojiUrlByName} from "../moks/comments";
-import {ENTER_KEY} from "../utils/utils";
+import {ENTER_KEY, RenderPosition} from "../utils/utils";
+import CommentTextarea from "../components/comment-textarea";
 
 const COMMENT_FORM_FIELDS = [`comment`];
 
@@ -46,12 +48,18 @@ export default class CommentsController {
     this._newCommentComponent = new NewComment(this._currentEmoji);
     this._newCommentComponent.setCurrentEmojiHandler(this._onChangeEmoji);
 
+    this._addingEmoji = new AddingEmoji(this._currentEmoji);
+    render(this._newCommentComponent.getElement(), this._addingEmoji, RenderPosition.AFTERBEGIN);
+
+    this._textarea = new CommentTextarea();
+    render(this._newCommentComponent.getElement(), this._textarea);
+
     render(this._commentsContainer.getElement(), this._newCommentComponent);
   }
 
   _onChangeEmoji(emoji) {
     this._currentEmoji = emoji;
-    this._newCommentComponent.rerender(this._currentEmoji);
+    this._addingEmoji.rerender(this._currentEmoji);
   }
 
   _onDelete(deletedComment) {
