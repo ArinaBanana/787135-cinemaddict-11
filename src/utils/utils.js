@@ -1,4 +1,6 @@
 const BODY_ELEMENT = document.querySelector(`body`);
+const ENTER_KEY = `Enter`;
+const ACTIVE_CLASS = `main-navigation__item--active`;
 
 const getRandomNumber = (min, max) => {
   return min + Math.floor(Math.random() * (max - min));
@@ -26,4 +28,13 @@ const makeIdGenerator = () => {
   };
 };
 
-export {getRandomNumber, getRandomFloatNumber, getRandomArrayItem, getRandomBoolean, makeIdGenerator, BODY_ELEMENT};
+export {
+  getRandomNumber,
+  getRandomFloatNumber,
+  getRandomArrayItem,
+  getRandomBoolean,
+  makeIdGenerator,
+  BODY_ELEMENT,
+  ENTER_KEY,
+  ACTIVE_CLASS,
+};

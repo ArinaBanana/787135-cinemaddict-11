@@ -1,6 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart";
-
-const ACTIVE_CLASS = `main-navigation__item--active`;
+import {ACTIVE_CLASS} from "../utils/utils";
 
 const createNavItem = (filter) => {
   const {
