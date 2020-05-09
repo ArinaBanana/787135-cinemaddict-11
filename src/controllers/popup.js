@@ -40,7 +40,6 @@ export default class PopupController {
 
     if (isAlreadyOpen) {
       this._popupComponent.rerender(this._film);
-      this._commentsController.destroyListener();
       this._initComments(this._film.comments);
     }
   }
@@ -48,6 +47,9 @@ export default class PopupController {
   _initComments(comments) {
     const container = this._popupComponent.getElement().querySelector(`.form-details__bottom-container`);
 
+    if (this._commentsController) {
+      this._commentsController.destroyListeners();
+    }
     this._commentsController = new CommentsController(container, this._onCommentsDataChange, this._getFormData);
     this._commentsController.init(comments);
   }
