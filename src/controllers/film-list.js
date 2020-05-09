@@ -1,9 +1,9 @@
 import FilmsContainer from "../components/films-container";
 import ButtonShowMore from "../components/button-show-more";
 import FilmController from "./film";
+import PopupController from "./popup";
 
 import {remove, render} from "../utils/methods-for-components";
-import PopupController from "./popup";
 import {BODY_ELEMENT} from "../utils/utils";
 
 const SHOWING_FILMS_COUNT = 5;

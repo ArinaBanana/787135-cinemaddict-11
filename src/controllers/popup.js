@@ -1,5 +1,6 @@
 import PopupFilmDetails from "../components/popup-film-details";
 import CommentsController from "./comment";
+import PopupContainer from "../components/popup-container";
 import {remove, render} from "../utils/methods-for-components";
 import {ESC_KEY} from "../utils/utils";
 
@@ -21,8 +22,12 @@ export default class PopupController {
   }
 
   init() {
+    this._popupContainer = new PopupContainer();
+    render(this._container, this._popupContainer);
+
     this._popupComponent = new PopupFilmDetails(this._film);
-    render(this._container, this._popupComponent);
+    render(this._popupContainer.getElement(), this._popupComponent);
+
     this._initComments(this._film.comments);
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
@@ -64,7 +69,8 @@ export default class PopupController {
   }
 
   _removePopupComponent() {
-    remove(this._popupComponent);
+    remove(this._popupContainer);
+    this._popupContainer = null;
     this._popupComponent = null;
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
