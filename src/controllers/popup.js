@@ -1,6 +1,7 @@
 import PopupFilmDetails from "../components/popup-film-details";
 import CommentsController from "./comment";
 import {remove, render} from "../utils/methods-for-components";
+import {ESC_KEY} from "../utils/utils";
 
 export default class PopupController {
   constructor(container, onDataChange) {
@@ -11,6 +12,7 @@ export default class PopupController {
     this._commentsController = null;
 
     this._onButtonClose = this._onButtonClose.bind(this);
+    this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._addToWatchList = this._addToWatchList.bind(this);
     this._addToWatched = this._addToWatched.bind(this);
     this._addToFavorites = this._addToFavorites.bind(this);
@@ -22,6 +24,8 @@ export default class PopupController {
     this._popupComponent = new PopupFilmDetails(this._film);
     render(this._container, this._popupComponent);
     this._initComments(this._film.comments);
+
+    document.addEventListener(`keydown`, this._onEscKeyDown);
 
     this._popupComponent.setButtonCloseHandler(this._onButtonClose);
     this._popupComponent.setAddToWatchListHandler(this._addToWatchList);
@@ -60,10 +64,17 @@ export default class PopupController {
   _removePopupComponent() {
     remove(this._popupComponent);
     this._popupComponent = null;
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _onButtonClose() {
     this._removePopupComponent();
+  }
+
+  _onEscKeyDown(evt) {
+    if (evt.key === ESC_KEY) {
+      this._removePopupComponent();
+    }
   }
 
   _addToWatchList(evt) {

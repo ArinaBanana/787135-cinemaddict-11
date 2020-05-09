@@ -1,5 +1,6 @@
 const BODY_ELEMENT = document.querySelector(`body`);
 const ENTER_KEY = `Enter`;
+const ESC_KEY = `Escape`;
 const ACTIVE_CLASS = `main-navigation__item--active`;
 
 const RenderPosition = {
@@ -41,6 +42,7 @@ export {
   makeIdGenerator,
   BODY_ELEMENT,
   ENTER_KEY,
+  ESC_KEY,
   ACTIVE_CLASS,
   RenderPosition,
 };
