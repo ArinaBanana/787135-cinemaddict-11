@@ -2,6 +2,7 @@ import UserProfile from "./components/user-profile";
 import Statistic from "./components/statistic";
 import SortElement from "./components/sort-elements";
 import SectionFilms from "./components/section-films";
+import FilmsAllList from "./components/films-all-list";
 
 import FilmListController from "./controllers/film-list";
 import MainNavFiltersController from "./controllers/main-nav-filters";
@@ -34,5 +35,8 @@ render(elementMain, new SortElement());
 const sectionFilmsComponent = new SectionFilms();
 render(elementMain, sectionFilmsComponent);
 
-const mainFilmList = new FilmListController(sectionFilmsComponent, filmsModel);
+const filmsAllListComponent = new FilmsAllList();
+render(sectionFilmsComponent.getElement(), filmsAllListComponent);
+
+const mainFilmList = new FilmListController(filmsAllListComponent, filmsModel);
 mainFilmList.init();

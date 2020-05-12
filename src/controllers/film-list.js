@@ -44,8 +44,7 @@ export default class FilmListController {
     this._moviesModel.setFilterChangeHandlers(this._onFilterChange);
     this._moviesModel.setDataChangeHandlers(this._onFilmUpdate);
 
-    const container = this._container.getElement();
-    this._filmList = container.querySelector(`.films-list`);
+    this._filmList = this._container.getElement();
 
     render(this._filmList, this._filmsContainer);
     render(this._filmList, this._button);
