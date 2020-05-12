@@ -6,7 +6,7 @@ import FilmController from "./film";
 import PopupController from "./popup";
 
 import {remove, render} from "../utils/methods-for-components";
-import {BODY_ELEMENT, RenderPosition} from "../utils/utils";
+import {BODY_ELEMENT} from "../utils/utils";
 
 const SHOWING_FILMS_COUNT = 5;
 
