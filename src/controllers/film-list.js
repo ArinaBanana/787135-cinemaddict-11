@@ -48,20 +48,21 @@ export default class FilmListController {
     render(this._filmList, this._filmsContainer);
 
     const lengthMovies = this._moviesModel.getAllMovies().length;
+    const isEmpty = lengthMovies === 0;
 
-    if (lengthMovies === 0) {
+    if (isEmpty) {
       render(this._filmList, this._noFilms);
-    } else {
-      this._moviesModel.setFilterChangeHandlers(this._onFilterChange);
-      this._moviesModel.setDataChangeHandlers(this._onFilmUpdate);
-
-      render(this._filmList, this._button);
-      this._button.setShowMoreHandler(this._onButtonShowMore);
-      this._popupController = new PopupController(BODY_ELEMENT, this._onDataChange);
-
-      this._renderFilms();
+      return;
     }
 
+    this._moviesModel.setFilterChangeHandlers(this._onFilterChange);
+    this._moviesModel.setDataChangeHandlers(this._onFilmUpdate);
+
+    render(this._filmList, this._button);
+    this._button.setShowMoreHandler(this._onButtonShowMore);
+    this._popupController = new PopupController(BODY_ELEMENT, this._onDataChange);
+
+    this._renderFilms();
   }
 
   _renderFilms() {
@@ -116,6 +117,6 @@ export default class FilmListController {
   _onClick(film) {
     this._currentFilm = film;
     this._popupController.setFilm(this._currentFilm);
-    this._popupController.init();
+    this._popupController.show();
   }
 }

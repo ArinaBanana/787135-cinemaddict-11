@@ -21,7 +21,12 @@ export default class PopupController {
     this._getFormData = this._getFormData.bind(this);
   }
 
-  init() {
+  show() {
+    const isShowed = Boolean(this._popupContainer);
+    if (isShowed) {
+      return;
+    }
+
     this._popupContainer = new PopupContainer();
     render(this._container, this._popupContainer);
 
@@ -41,9 +46,9 @@ export default class PopupController {
   setFilm(film) {
     this._film = film;
 
-    const isAlreadyOpen = Boolean(this._popupComponent);
+    const isShowed = Boolean(this._popupComponent);
 
-    if (isAlreadyOpen) {
+    if (isShowed) {
       this._popupComponent.rerender(this._film);
       this._initComments(this._film.comments);
     }
