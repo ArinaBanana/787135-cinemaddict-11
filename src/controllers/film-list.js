@@ -1,9 +1,11 @@
 import FilmsContainer from "../components/films-container";
 import ButtonShowMore from "../components/button-show-more";
+import NoFilms from "../components/no-films";
+
 import FilmController from "./film";
+import PopupController from "./popup";
 
 import {remove, render} from "../utils/methods-for-components";
-import PopupController from "./popup";
 import {BODY_ELEMENT} from "../utils/utils";
 
 const SHOWING_FILMS_COUNT = 5;
@@ -26,6 +28,7 @@ export default class FilmListController {
     this._container = container;
     this._button = new ButtonShowMore();
     this._filmsContainer = new FilmsContainer();
+    this._noFilms = new NoFilms();
 
     this._moviesModel = moviesModel;
     this._currentFilm = null;
@@ -41,13 +44,20 @@ export default class FilmListController {
   }
 
   init() {
+    this._filmList = this._container.getElement();
+    render(this._filmList, this._filmsContainer);
+
+    const lengthMovies = this._moviesModel.getAllMovies().length;
+    const isEmpty = lengthMovies === 0;
+
+    if (isEmpty) {
+      render(this._filmList, this._noFilms);
+      return;
+    }
+
     this._moviesModel.setFilterChangeHandlers(this._onFilterChange);
     this._moviesModel.setDataChangeHandlers(this._onFilmUpdate);
 
-    const container = this._container.getElement();
-    this._filmList = container.querySelector(`.films-list`);
-
-    render(this._filmList, this._filmsContainer);
     render(this._filmList, this._button);
     this._button.setShowMoreHandler(this._onButtonShowMore);
     this._popupController = new PopupController(BODY_ELEMENT, this._onDataChange);
@@ -107,6 +117,6 @@ export default class FilmListController {
   _onClick(film) {
     this._currentFilm = film;
     this._popupController.setFilm(this._currentFilm);
-    this._popupController.init();
+    this._popupController.show();
   }
 }

@@ -1,6 +1,8 @@
 import PopupFilmDetails from "../components/popup-film-details";
 import CommentsController from "./comment";
+import PopupContainer from "../components/popup-container";
 import {remove, render} from "../utils/methods-for-components";
+import {ESC_KEY} from "../utils/utils";
 
 export default class PopupController {
   constructor(container, onDataChange) {
@@ -11,6 +13,7 @@ export default class PopupController {
     this._commentsController = null;
 
     this._onButtonClose = this._onButtonClose.bind(this);
+    this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._addToWatchList = this._addToWatchList.bind(this);
     this._addToWatched = this._addToWatched.bind(this);
     this._addToFavorites = this._addToFavorites.bind(this);
@@ -18,10 +21,21 @@ export default class PopupController {
     this._getFormData = this._getFormData.bind(this);
   }
 
-  init() {
+  show() {
+    const isShowed = Boolean(this._popupContainer);
+    if (isShowed) {
+      return;
+    }
+
+    this._popupContainer = new PopupContainer();
+    render(this._container, this._popupContainer);
+
     this._popupComponent = new PopupFilmDetails(this._film);
-    render(this._container, this._popupComponent);
+    render(this._popupContainer.getElement(), this._popupComponent);
+
     this._initComments(this._film.comments);
+
+    document.addEventListener(`keydown`, this._onEscKeyDown);
 
     this._popupComponent.setButtonCloseHandler(this._onButtonClose);
     this._popupComponent.setAddToWatchListHandler(this._addToWatchList);
@@ -32,11 +46,10 @@ export default class PopupController {
   setFilm(film) {
     this._film = film;
 
-    const isAlreadyOpen = Boolean(this._popupComponent);
+    const isShowed = Boolean(this._popupComponent);
 
-    if (isAlreadyOpen) {
+    if (isShowed) {
       this._popupComponent.rerender(this._film);
-      this._commentsController.destroyListener();
       this._initComments(this._film.comments);
     }
   }
@@ -44,6 +57,9 @@ export default class PopupController {
   _initComments(comments) {
     const container = this._popupComponent.getElement().querySelector(`.form-details__bottom-container`);
 
+    if (this._commentsController) {
+      this._commentsController.destroyListeners();
+    }
     this._commentsController = new CommentsController(container, this._onCommentsDataChange, this._getFormData);
     this._commentsController.init(comments);
   }
@@ -58,12 +74,20 @@ export default class PopupController {
   }
 
   _removePopupComponent() {
-    remove(this._popupComponent);
+    remove(this._popupContainer);
+    this._popupContainer = null;
     this._popupComponent = null;
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _onButtonClose() {
     this._removePopupComponent();
+  }
+
+  _onEscKeyDown(evt) {
+    if (evt.key === ESC_KEY) {
+      this._removePopupComponent();
+    }
   }
 
   _addToWatchList(evt) {

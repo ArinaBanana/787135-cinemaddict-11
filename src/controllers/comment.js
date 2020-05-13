@@ -45,7 +45,7 @@ export default class CommentsController {
     this._subscribeCmdEnterPress();
   }
 
-  destroyListener() {
+  destroyListeners() {
     document.removeEventListener(`keydown`, this._subscribeHandler);
   }
 
