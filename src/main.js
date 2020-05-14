@@ -1,6 +1,6 @@
 import UserProfile from "./components/user-profile";
 import Statistic from "./components/statistic";
-import SortElement from "./components/sort-elements";
+
 import SectionFilms from "./components/section-films";
 import FilmsAllList from "./components/films-all-list";
 
@@ -10,6 +10,7 @@ import MoviesModel from "./models/movies";
 
 import {generateFilms} from "./moks/film";
 import {render} from "./utils/methods-for-components";
+import SortController from "./controllers/sort";
 
 const FILMS_COUNT = 20;
 // const FILMS_EXTRA_COUNT = 2;
@@ -30,7 +31,8 @@ render(elementFooterStatistic, new Statistic());
 const filtersController = new MainNavFiltersController(elementMain, filmsModel);
 filtersController.init();
 
-render(elementMain, new SortElement());
+const sortController = new SortController(elementMain, filmsModel);
+sortController.init();
 
 const sectionFilmsComponent = new SectionFilms();
 render(elementMain, sectionFilmsComponent);
