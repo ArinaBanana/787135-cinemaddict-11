@@ -1,7 +1,8 @@
 const BODY_ELEMENT = document.querySelector(`body`);
 const ENTER_KEY = `Enter`;
 const ESC_KEY = `Escape`;
-const ACTIVE_CLASS = `main-navigation__item--active`;
+const ACTIVE_CLASS_FILTER = `main-navigation__item--active`;
+const ACTIVE_CLASS_SORT = `sort__button--active`;
 
 const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
@@ -43,6 +44,7 @@ export {
   BODY_ELEMENT,
   ENTER_KEY,
   ESC_KEY,
-  ACTIVE_CLASS,
+  ACTIVE_CLASS_FILTER,
+  ACTIVE_CLASS_SORT,
   RenderPosition,
 };
