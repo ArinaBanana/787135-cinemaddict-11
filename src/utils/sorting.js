@@ -5,22 +5,18 @@ const SortTypes = {
 };
 
 const getSortedFilms = (films, sortType) => {
-  let sortedFilms = [];
   const showingFilms = films.slice();
 
   switch (sortType) {
     case SortTypes.DATE:
-      sortedFilms = showingFilms.sort((a, b) => a.releaseDate - b.releaseDate);
-      break;
+      return showingFilms.sort((a, b) => b.releaseDate - a.releaseDate);
     case SortTypes.RATING:
-      sortedFilms = showingFilms.sort((a, b) => a.rating - b.rating);
-      break;
+      return showingFilms.sort((a, b) => b.rating - a.rating);
     case SortTypes.DEFAULT:
     default:
-      sortedFilms = showingFilms;
+      return showingFilms;
   }
 
-  return sortedFilms;
 };
 
 export {SortTypes, getSortedFilms};

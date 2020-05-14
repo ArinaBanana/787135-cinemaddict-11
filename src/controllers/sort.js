@@ -22,6 +22,6 @@ export default class SortController {
 
   _onSortTypeChangeHandler(sortType) {
     this._currentSortType = sortType;
-    getSortedFilms(this._moviesModel.getAllMovies(), sortType);
+    this._moviesModel.setSortType(this._currentSortType);
   }
 }
