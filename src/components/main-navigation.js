@@ -1,5 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart";
-import {ACTIVE_CLASS} from "../utils/utils";
+import {ACTIVE_CLASS_FILTER} from "../utils/utils";
 
 const createNavItem = (filter) => {
   const {
@@ -9,7 +9,7 @@ const createNavItem = (filter) => {
   } = filter;
 
   return (
-    `<a href="#${name}" class="main-navigation__item ${isActive ? ACTIVE_CLASS : ``}" data-filter="${name}">
+    `<a href="#${name}" class="main-navigation__item ${isActive ? ACTIVE_CLASS_FILTER : ``}" data-filter="${name}">
       ${name}
       <span class="main-navigation__item-count">${count}</span>
     </a>`

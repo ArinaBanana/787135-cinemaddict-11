@@ -39,7 +39,7 @@ export default class FilmListController {
     this._onClick = this._onClick.bind(this);
     this._onButtonShowMore = this._onButtonShowMore.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
-
+    this._onSortChange = this._onSortChange.bind(this);
     this._onFilmUpdate = this._onFilmUpdate.bind(this);
   }
 
@@ -56,6 +56,7 @@ export default class FilmListController {
     }
 
     this._moviesModel.setFilterChangeHandlers(this._onFilterChange);
+    this._moviesModel.setSortingChangeHandlers(this._onSortChange);
     this._moviesModel.setDataChangeHandlers(this._onFilmUpdate);
 
     render(this._filmList, this._button);
@@ -67,27 +68,35 @@ export default class FilmListController {
 
   _renderFilms() {
     this._showingCountFilms = SHOWING_FILMS_COUNT;
-    this._showedFilmControllers = createFilmControllers(this._filmsContainer.getElement(), this._moviesModel.getMoviesByFiltration().slice(0, this._showingCountFilms), this._onDataChange, this._onClick);
+    this._showedFilmControllers = createFilmControllers(this._filmsContainer.getElement(), this._moviesModel.getMovies().slice(0, this._showingCountFilms), this._onDataChange, this._onClick);
   }
 
   _remove() {
     Object.values(this._showedFilmControllers).forEach((controller) => controller.destroy());
 
     this._showedFilmControllers = {};
+  }
+
+  _rerenderFilms() {
+    this._remove();
     this._renderFilms();
+    render(this._filmList, this._button);
+    this._button.rerender();
   }
 
   _onFilterChange() {
-    this._remove();
-    render(this._filmList, this._button);
-    this._button.rerender();
+    this._rerenderFilms();
+  }
+
+  _onSortChange() {
+    this._rerenderFilms();
   }
 
   _onButtonShowMore() {
     const prevCount = this._showingCountFilms;
     this._showingCountFilms += SHOWING_FILMS_COUNT;
 
-    const filmsForRender = this._moviesModel.getMoviesByFiltration().slice(prevCount, this._showingCountFilms);
+    const filmsForRender = this._moviesModel.getMovies().slice(prevCount, this._showingCountFilms);
 
     if (filmsForRender.length !== SHOWING_FILMS_COUNT) {
       this._showingCountFilms = prevCount + filmsForRender.length;
@@ -96,7 +105,7 @@ export default class FilmListController {
     const newControllers = createFilmControllers(this._filmsContainer.getElement(), filmsForRender, this._onDataChange, this._onClick);
     Object.assign(this._showedFilmControllers, newControllers);
 
-    if (this._showingCountFilms === this._moviesModel.getMoviesByFiltration().length) {
+    if (this._showingCountFilms === this._moviesModel.getMovies().length) {
       remove(this._button);
     }
   }
