@@ -1,16 +1,16 @@
 import UserProfile from "./components/user-profile";
+import QuantityFilms from "./components/quantity-films";
 import Statistic from "./components/statistic";
-
 import SectionFilms from "./components/section-films";
 import FilmsAllList from "./components/films-all-list";
 
 import FilmListController from "./controllers/film-list";
 import MainNavFiltersController from "./controllers/main-nav-filters";
+import SortController from "./controllers/sort";
 import MoviesModel from "./models/movies";
 
 import {generateFilms} from "./moks/film";
 import {render} from "./utils/methods-for-components";
-import SortController from "./controllers/sort";
 
 const FILMS_COUNT = 20;
 // const FILMS_EXTRA_COUNT = 2;
@@ -22,11 +22,11 @@ filmsModel.setMovies(films);
 // const filmsExtra = generateFilms(FILMS_EXTRA_COUNT);
 
 const elementHeader = document.querySelector(`.header`);
-const elementFooterStatistic = document.querySelector(`.footer__statistics`);
+const elementFooter = document.querySelector(`.footer__statistics`);
 const elementMain = document.querySelector(`.main`);
 
 render(elementHeader, new UserProfile());
-render(elementFooterStatistic, new Statistic());
+render(elementFooter, new QuantityFilms(films.length));
 
 const filtersController = new MainNavFiltersController(elementMain, filmsModel);
 filtersController.init();
@@ -42,3 +42,6 @@ render(sectionFilmsComponent.getElement(), filmsAllListComponent);
 
 const mainFilmList = new FilmListController(filmsAllListComponent, filmsModel);
 mainFilmList.init();
+
+const statisticComponent = new Statistic();
+render(elementMain, statisticComponent);
