@@ -1,6 +1,14 @@
 import AbstractSmartComponent from "./abstract-smart";
 import {ACTIVE_CLASS_FILTER} from "../utils/utils";
 
+const MenuItems = {
+  STATS: `Stats`,
+  ALL_MOVIES: `All movies`,
+  WATCHLIST: `Watchlist`,
+  HISTORY: `History`,
+  FAVORITES: `Favorites`,
+};
+
 const createNavItem = (filter) => {
   const {
     name,
@@ -26,7 +34,7 @@ const createMainNavigationTemplate = (filters) => {
       <div class="main-navigation__items">
         ${navItems}
       </div>
-      <a href="#stats" class="main-navigation__additional">Stats</a>
+      <a href="#stats" class="main-navigation__additional" data-stats="Stats">Stats</a>
     </nav>`
   );
 };
@@ -59,7 +67,19 @@ export default class MainNavigation extends AbstractSmartComponent {
     this.rerender();
   }
 
+  setSwitchingScreen(handler) {
+    this.getElement()
+      .querySelector(`.main-navigation__additional`)
+      .addEventListener(`click`, (evt) => {
+        if (evt.target.dataset.stats === MenuItems.STATS) {
+          handler(evt.target.dataset.stats);
+        }
+      });
+  }
+
   recoveryListeners() {
     this.setFilterChangeHandlers(this._handler);
   }
 }
+
+export {MenuItems};

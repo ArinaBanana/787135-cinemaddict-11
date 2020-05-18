@@ -1,4 +1,5 @@
 const BODY_ELEMENT = document.querySelector(`body`);
+const HIDDEN_CLASS = `visually-hidden`;
 const ENTER_KEY = `Enter`;
 const ESC_KEY = `Escape`;
 const ACTIVE_CLASS_FILTER = `main-navigation__item--active`;
@@ -42,6 +43,7 @@ export {
   getRandomBoolean,
   makeIdGenerator,
   BODY_ELEMENT,
+  HIDDEN_CLASS,
   ENTER_KEY,
   ESC_KEY,
   ACTIVE_CLASS_FILTER,

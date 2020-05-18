@@ -1,8 +1,8 @@
 import UserProfile from "./components/user-profile";
 import QuantityFilms from "./components/quantity-films";
-import Statistic from "./components/statistic";
 import SectionFilms from "./components/section-films";
 import FilmsAllList from "./components/films-all-list";
+import Statistic from "./components/statistic";
 
 import FilmListController from "./controllers/film-list";
 import MainNavFiltersController from "./controllers/main-nav-filters";
@@ -11,6 +11,7 @@ import MoviesModel from "./models/movies";
 
 import {generateFilms} from "./moks/film";
 import {render} from "./utils/methods-for-components";
+import {MenuItems} from "./components/main-navigation";
 
 const FILMS_COUNT = 20;
 // const FILMS_EXTRA_COUNT = 2;
@@ -45,3 +46,14 @@ mainFilmList.init();
 
 const statisticComponent = new Statistic();
 render(elementMain, statisticComponent);
+statisticComponent.hide();
+
+filtersController.setSwitchInComponent((menuItem) => {
+  switch (menuItem) {
+    case MenuItems.STATS:
+      sortController.hide();
+      filmsAllListComponent.hide();
+      statisticComponent.show();
+      break;
+  }
+});

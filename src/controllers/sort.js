@@ -19,6 +19,10 @@ export default class SortController {
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChangeHandler);
   }
 
+  hide() {
+    this._sortComponent.hide();
+  }
+
   _createSortElements() {
     return Object.values(SortTypes).map((sortType) => {
       return {

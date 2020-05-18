@@ -25,6 +25,10 @@ export default class MainNavFiltersController {
     this._moviesModel.setDataChangeHandlers(this._onModelDataChange);
   }
 
+  setSwitchInComponent(handler) {
+    this._navComponent.setSwitchingScreen(handler);
+  }
+
   _createFilters() {
     const allMovies = this._moviesModel.getAllMovies();
 
