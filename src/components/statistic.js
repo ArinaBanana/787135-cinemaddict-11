@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract";
+import AbstractSmartComponent from "./abstract-smart";
 
 const createStatisticTemplate = () => {
   return (
@@ -50,7 +50,7 @@ const createStatisticTemplate = () => {
   );
 };
 
-export default class Statistic extends AbstractComponent {
+export default class Statistic extends AbstractSmartComponent {
   getTemplate() {
     return createStatisticTemplate();
   }

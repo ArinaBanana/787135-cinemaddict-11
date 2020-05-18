@@ -16,10 +16,12 @@ const createNavItem = (filter) => {
     isActive,
   } = filter;
 
+  const isFirstFilter = Boolean(name === `All movies`);
+
   return (
     `<a href="#${name}" class="main-navigation__item ${isActive ? ACTIVE_CLASS_FILTER : ``}" data-filter="${name}">
       ${name}
-      <span class="main-navigation__item-count">${count}</span>
+      ${isFirstFilter ? `` : `<span class="main-navigation__item-count">${count}</span>`}
     </a>`
   );
 };
