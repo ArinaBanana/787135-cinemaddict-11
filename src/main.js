@@ -2,23 +2,22 @@ import UserProfile from "./components/user-profile";
 import QuantityFilms from "./components/quantity-films";
 import SectionFilms from "./components/section-films";
 import FilmsAllList from "./components/films-all-list";
-import Statistic from "./components/statistic";
 
-import FilmListController from "./controllers/film-list";
-import MainNavFiltersController from "./controllers/main-nav-filters";
+import MainNavigationController, {MenuItems} from "./controllers/main-navigation";
 import SortController from "./controllers/sort";
+import StatisticController from "./controllers/statistic";
+import FilmListController from "./controllers/film-list";
 import MoviesModel from "./models/movies";
 
 import {generateFilms} from "./moks/film";
 import {render} from "./utils/methods-for-components";
-import {MenuItems} from "./components/main-navigation";
 
 const FILMS_COUNT = 20;
 // const FILMS_EXTRA_COUNT = 2;
 
 const films = generateFilms(FILMS_COUNT);
-const filmsModel = new MoviesModel();
-filmsModel.setMovies(films);
+const moviesModel = new MoviesModel();
+moviesModel.setMovies(films);
 
 // const filmsExtra = generateFilms(FILMS_EXTRA_COUNT);
 
@@ -29,10 +28,10 @@ const elementMain = document.querySelector(`.main`);
 render(elementHeader, new UserProfile());
 render(elementFooter, new QuantityFilms(films.length));
 
-const filtersController = new MainNavFiltersController(elementMain, filmsModel);
-filtersController.init();
+const mainNavigationController = new MainNavigationController(elementMain, moviesModel);
+mainNavigationController.init();
 
-const sortController = new SortController(elementMain, filmsModel);
+const sortController = new SortController(elementMain, moviesModel);
 sortController.init();
 
 const sectionFilmsComponent = new SectionFilms();
@@ -41,19 +40,18 @@ render(elementMain, sectionFilmsComponent);
 const filmsAllListComponent = new FilmsAllList();
 render(sectionFilmsComponent.getElement(), filmsAllListComponent);
 
-const mainFilmList = new FilmListController(filmsAllListComponent, filmsModel);
+const mainFilmList = new FilmListController(filmsAllListComponent, moviesModel);
 mainFilmList.init();
 
-const statisticComponent = new Statistic(filmsModel);
-render(elementMain, statisticComponent);
-statisticComponent.hide();
+const statisticController = new StatisticController(elementMain, moviesModel);
+statisticController.init();
 
-filtersController.setSwitchInComponent((menuItem) => {
+mainNavigationController.setChangeScreenHandler((menuItem) => {
   switch (menuItem) {
     case MenuItems.STATS:
       sortController.hide();
       filmsAllListComponent.hide();
-      statisticComponent.show();
+      statisticController.show();
       break;
   }
 });

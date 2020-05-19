@@ -1,8 +1,9 @@
-import MainNavigation from "../components/main-navigation";
+import Filters from "../components/filters";
 import {render} from "../utils/methods-for-components";
 import {getFilmsByFilters, FilterTypes} from "../utils/filtration";
+import {RenderPosition} from "../utils/utils";
 
-export default class MainNavFiltersController {
+export default class FiltersNavigationController {
   constructor(container, moviesModel) {
     this._container = container;
     this._moviesModel = moviesModel;
@@ -16,17 +17,13 @@ export default class MainNavFiltersController {
 
   init() {
     const filters = this._createFilters();
-    this._navComponent = new MainNavigation(filters);
-    this._navComponent.setFilterChangeHandlers(this._onViewFilterChange);
+    this._filtersComponent = new Filters(filters);
+    this._filtersComponent.setFilterChangeHandlers(this._onViewFilterChange);
 
-    render(this._container, this._navComponent);
+    render(this._container, this._filtersComponent, RenderPosition.AFTERBEGIN);
 
     this._moviesModel.setFilterChangeHandlers(this._onModelFilterChange);
     this._moviesModel.setDataChangeHandlers(this._onModelDataChange);
-  }
-
-  setSwitchInComponent(handler) {
-    this._navComponent.setSwitchingScreen(handler);
   }
 
   _createFilters() {
@@ -55,7 +52,7 @@ export default class MainNavFiltersController {
     }
 
     const newFilters = this._createFilters();
-    this._navComponent.setFilters(newFilters);
+    this._filtersComponent.setFilters(newFilters);
   }
 
   _onViewFilterChange(filterType) {

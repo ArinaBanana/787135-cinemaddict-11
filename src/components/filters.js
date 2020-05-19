@@ -1,15 +1,7 @@
 import AbstractSmartComponent from "./abstract-smart";
 import {ACTIVE_CLASS_FILTER} from "../utils/utils";
 
-const MenuItems = {
-  STATS: `Stats`,
-  ALL_MOVIES: `All movies`,
-  WATCHLIST: `Watchlist`,
-  HISTORY: `History`,
-  FAVORITES: `Favorites`,
-};
-
-const createNavItem = (filter) => {
+const createFilter = (filter) => {
   const {
     name,
     count,
@@ -26,29 +18,26 @@ const createNavItem = (filter) => {
   );
 };
 
-const createMainNavigationTemplate = (filters) => {
+const createFiltersTemplate = (filters) => {
   const navItems = filters
-    .map((filter) => createNavItem(filter))
+    .map((filter) => createFilter(filter))
     .join(`\n`);
 
   return (
-    `<nav class="main-navigation">
-      <div class="main-navigation__items">
-        ${navItems}
-      </div>
-      <a href="#stats" class="main-navigation__additional" data-stats="Stats">Stats</a>
-    </nav>`
+    `<div class="main-navigation__items">
+      ${navItems}
+    </div>`
   );
 };
 
-export default class MainNavigation extends AbstractSmartComponent {
+export default class Filters extends AbstractSmartComponent {
   constructor(filters) {
     super();
     this._filters = filters;
   }
 
   getTemplate() {
-    return createMainNavigationTemplate(this._filters);
+    return createFiltersTemplate(this._filters);
   }
 
   setFilterChangeHandlers(handler) {
@@ -69,19 +58,7 @@ export default class MainNavigation extends AbstractSmartComponent {
     this.rerender();
   }
 
-  setSwitchingScreen(handler) {
-    this.getElement()
-      .querySelector(`.main-navigation__additional`)
-      .addEventListener(`click`, (evt) => {
-        if (evt.target.dataset.stats === MenuItems.STATS) {
-          handler(evt.target.dataset.stats);
-        }
-      });
-  }
-
   recoveryListeners() {
     this.setFilterChangeHandlers(this._handler);
   }
 }
-
-export {MenuItems};

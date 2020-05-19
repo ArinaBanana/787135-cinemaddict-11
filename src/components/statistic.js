@@ -118,19 +118,14 @@ const renderChart = (labels, data) => {
 };
 
 export default class Statistic extends AbstractSmartComponent {
-  constructor(filmsModel) {
+  constructor(genresAndCounts) {
     super();
 
-    this._filmsModel = filmsModel;
+    this._genresAndCounts = genresAndCounts;
   }
 
   getTemplate() {
     return createStatisticTemplate();
-  }
-
-  getFilmsWatched() {
-    const movies = this._filmsModel.getAllMovies();
-    return movies.filter((movie) => movie.alreadyWatched);
   }
 
   show() {
@@ -139,30 +134,10 @@ export default class Statistic extends AbstractSmartComponent {
   }
 
   _render() {
-    const watchedFilms = this.getFilmsWatched();
-
-    const countFilmsByGenres = watchedFilms.reduce((acc, film) => {
-      const genres = film.genres;
-
-      genres.forEach((genre) => {
-
-        if (!acc[genre]) {
-          acc[genre] = 1;
-        } else {
-          acc[genre] += 1;
-        }
-
-      });
-
-      return acc;
-    }, {});
-
-    const sortedKeyAndMeaning = Object.entries(countFilmsByGenres).sort((a, b) => b[1] - a[1]);
-
     const labels = [];
     const data = [];
 
-    sortedKeyAndMeaning.forEach(([genre, count]) => {
+    this._genresAndCounts.forEach(([genre, count]) => {
       labels.push(genre);
       data.push(count);
     });
