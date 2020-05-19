@@ -4,6 +4,7 @@ const ENTER_KEY = `Enter`;
 const ESC_KEY = `Escape`;
 const ACTIVE_CLASS_FILTER = `main-navigation__item--active`;
 const ACTIVE_CLASS_SORT = `sort__button--active`;
+const BAR_HEIGHT = 50;
 
 const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
@@ -48,5 +49,6 @@ export {
   ESC_KEY,
   ACTIVE_CLASS_FILTER,
   ACTIVE_CLASS_SORT,
+  BAR_HEIGHT,
   RenderPosition,
 };

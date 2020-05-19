@@ -44,7 +44,7 @@ render(sectionFilmsComponent.getElement(), filmsAllListComponent);
 const mainFilmList = new FilmListController(filmsAllListComponent, filmsModel);
 mainFilmList.init();
 
-const statisticComponent = new Statistic();
+const statisticComponent = new Statistic(filmsModel);
 render(elementMain, statisticComponent);
 statisticComponent.hide();
 
