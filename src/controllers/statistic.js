@@ -2,19 +2,15 @@ import Statistic from "../components/statistic";
 import {render} from "../utils/methods-for-components";
 
 export default class StatisticController {
-  constructor(container, moviesModel) {
+  constructor(container, watchedFilms, grade) {
     this._container = container;
-    this._moviesModel = moviesModel;
-  }
+    this._watchedFilms = watchedFilms;
 
-  getFilmsWatched() {
-    const movies = this._moviesModel.getAllMovies();
-    return movies.filter((movie) => movie.alreadyWatched);
+    this._grade = grade;
   }
 
   getAllDurationInMin() {
-    const watchedFilms = this.getFilmsWatched();
-    const durations = watchedFilms.map((film) => film.duration);
+    const durations = this._watchedFilms.map((film) => film.duration);
 
     return durations.reduce((acc, num) => {
       return acc + num;
@@ -22,9 +18,7 @@ export default class StatisticController {
   }
 
   getSortedGenreAndCount() {
-    const watchedFilms = this.getFilmsWatched();
-
-    const countFilmsByGenres = watchedFilms.reduce((acc, film) => {
+    const countFilmsByGenres = this._watchedFilms.reduce((acc, film) => {
       const genres = film.genres;
 
       genres.forEach((genre) => {
@@ -45,7 +39,7 @@ export default class StatisticController {
 
   init() {
     const genresAndCounts = this.getSortedGenreAndCount();
-    const filmsLength = this.getFilmsWatched().length;
+    const filmsLength = this._watchedFilms.length;
     const allDurationInMin = this.getAllDurationInMin();
 
     const labels = [];
@@ -56,7 +50,7 @@ export default class StatisticController {
       data.push(count);
     });
 
-    this._statisticComponent = new Statistic(filmsLength, labels, data, allDurationInMin);
+    this._statisticComponent = new Statistic(filmsLength, labels, data, allDurationInMin, this._grade);
 
     render(this._container, this._statisticComponent);
 

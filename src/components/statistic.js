@@ -5,7 +5,7 @@ import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import moment from "moment";
 
-const createStatisticTemplate = (filmsLength, topGenre, allDurationInMin) => {
+const createStatisticTemplate = (filmsLength, topGenre, allDurationInMin, grade) => {
   const duration = moment.duration(allDurationInMin, `minutes`);
   const hours = duration.hours();
   const minutes = duration.minutes();
@@ -15,7 +15,7 @@ const createStatisticTemplate = (filmsLength, topGenre, allDurationInMin) => {
       <p class="statistic__rank">
         Your rank
         <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-        <span class="statistic__rank-label">Movie Buff</span>
+        <span class="statistic__rank-label">${grade}</span>
       </p>
 
       <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
@@ -123,7 +123,7 @@ const renderChart = (labels, data) => {
 };
 
 export default class Statistic extends AbstractSmartComponent {
-  constructor(filmsLength, labels, data, allDurationInMin) {
+  constructor(filmsLength, labels, data, allDurationInMin, grade) {
     super();
 
     this._filmsLength = filmsLength;
@@ -133,10 +133,11 @@ export default class Statistic extends AbstractSmartComponent {
 
     this._topGenre = labels[0];
     this._allDurationInMin = allDurationInMin;
+    this._grade = grade;
   }
 
   getTemplate() {
-    return createStatisticTemplate(this._filmsLength, this._topGenre, this._allDurationInMin);
+    return createStatisticTemplate(this._filmsLength, this._topGenre, this._allDurationInMin, this._grade);
   }
 
   show() {

@@ -11,6 +11,12 @@ const RenderPosition = {
   BEFOREEND: `beforeend`,
 };
 
+const Grades = {
+  NOVICE: `Novice`,
+  FAN: `Fan`,
+  MOVIE_BUFF: `Movie buff`,
+};
+
 const getRandomNumber = (min, max) => {
   return min + Math.floor(Math.random() * (max - min));
 };
@@ -51,4 +57,5 @@ export {
   ACTIVE_CLASS_SORT,
   BAR_HEIGHT,
   RenderPosition,
+  Grades,
 };
