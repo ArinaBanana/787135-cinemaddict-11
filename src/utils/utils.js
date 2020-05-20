@@ -43,11 +43,28 @@ const makeIdGenerator = () => {
   };
 };
 
+const getUserGrade = (movies) => {
+  let grade;
+
+  if (movies.length <= 10) {
+    grade = Grades.NOVICE;
+  } else if (movies.length <= 20) {
+    grade = Grades.FAN;
+  } else if (movies.length >= 21) {
+    grade = Grades.MOVIE_BUFF;
+  } else if (movies.length === 0) {
+    grade = ``;
+  }
+
+  return grade;
+};
+
 export {
   getRandomNumber,
   getRandomFloatNumber,
   getRandomArrayItem,
   getRandomBoolean,
+  getUserGrade,
   makeIdGenerator,
   BODY_ELEMENT,
   HIDDEN_CLASS,
