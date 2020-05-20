@@ -26,6 +26,10 @@ export default class FiltersNavigationController {
     this._moviesModel.setDataChangeHandlers(this._onModelDataChange);
   }
 
+  setChangeScreen(handler) {
+    this._filtersComponent.setSwitchScreenHandler(handler);
+  }
+
   _createFilters() {
     const allMovies = this._moviesModel.getAllMovies();
 

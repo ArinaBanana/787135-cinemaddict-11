@@ -22,12 +22,13 @@ export default class MainNavigationController {
   init() {
     render(this._container, this._navigationComponent);
 
-    const filtersController = new FiltersNavigationController(this._navigationComponent.getElement(), this._moviesModel);
-    filtersController.init();
+    this._filtersController = new FiltersNavigationController(this._navigationComponent.getElement(), this._moviesModel);
+    this._filtersController.init();
   }
 
   setChangeScreenHandler(handler) {
     this._navigationComponent.setSwitchScreenHandler(handler);
+    this._filtersController.setChangeScreen(handler);
   }
 }
 

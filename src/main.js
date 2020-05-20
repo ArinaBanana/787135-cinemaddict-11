@@ -57,5 +57,10 @@ mainNavigationController.setChangeScreenHandler((menuItem) => {
       filmsAllListComponent.hide();
       statisticController.show();
       break;
+    default:
+      sortController.show();
+      filmsAllListComponent.show();
+      statisticController.hide();
+      break;
   }
 });
