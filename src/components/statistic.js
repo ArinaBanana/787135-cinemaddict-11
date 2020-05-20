@@ -3,8 +3,13 @@ import {BAR_HEIGHT} from "../utils/utils";
 
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import moment from "moment";
 
-const createStatisticTemplate = (filmsLength, topGenre, duration) => {
+const createStatisticTemplate = (filmsLength, topGenre, allDurationInMin) => {
+  const duration = moment.duration(allDurationInMin, `minutes`);
+  const hours = duration.hours();
+  const minutes = duration.minutes();
+
   return (
     `<section class="statistic">
       <p class="statistic__rank">
@@ -39,7 +44,7 @@ const createStatisticTemplate = (filmsLength, topGenre, duration) => {
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Total duration</h4>
-          <p class="statistic__item-text">130 <span class="statistic__item-description">h</span> 22 <span class="statistic__item-description">m</span></p>
+          <p class="statistic__item-text">${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description">m</span></p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>
@@ -118,14 +123,20 @@ const renderChart = (labels, data) => {
 };
 
 export default class Statistic extends AbstractSmartComponent {
-  constructor(genresAndCounts) {
+  constructor(filmsLength, labels, data, allDurationInMin) {
     super();
 
-    this._genresAndCounts = genresAndCounts;
+    this._filmsLength = filmsLength;
+
+    this._labels = labels;
+    this._data = data;
+
+    this._topGenre = labels[0];
+    this._allDurationInMin = allDurationInMin;
   }
 
   getTemplate() {
-    return createStatisticTemplate();
+    return createStatisticTemplate(this._filmsLength, this._topGenre, this._allDurationInMin);
   }
 
   show() {
@@ -134,15 +145,7 @@ export default class Statistic extends AbstractSmartComponent {
   }
 
   _render() {
-    const labels = [];
-    const data = [];
-
-    this._genresAndCounts.forEach(([genre, count]) => {
-      labels.push(genre);
-      data.push(count);
-    });
-
-    renderChart(labels, data);
+    renderChart(this._labels, this._data);
   }
 
   recoveryListeners() {

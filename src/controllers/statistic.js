@@ -12,6 +12,15 @@ export default class StatisticController {
     return movies.filter((movie) => movie.alreadyWatched);
   }
 
+  getAllDurationInMin() {
+    const watchedFilms = this.getFilmsWatched();
+    const durations = watchedFilms.map((film) => film.duration);
+
+    return durations.reduce((acc, num) => {
+      return acc + num;
+    });
+  }
+
   getSortedGenreAndCount() {
     const watchedFilms = this.getFilmsWatched();
 
@@ -36,9 +45,21 @@ export default class StatisticController {
 
   init() {
     const genresAndCounts = this.getSortedGenreAndCount();
-    this._statisticComponent = new Statistic(genresAndCounts);
+    const filmsLength = this.getFilmsWatched().length;
+    const allDurationInMin = this.getAllDurationInMin();
+
+    const labels = [];
+    const data = [];
+
+    genresAndCounts.forEach(([genre, count]) => {
+      labels.push(genre);
+      data.push(count);
+    });
+
+    this._statisticComponent = new Statistic(filmsLength, labels, data, allDurationInMin);
 
     render(this._container, this._statisticComponent);
+
     this.hide();
   }
 
