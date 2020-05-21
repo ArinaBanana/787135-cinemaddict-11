@@ -39,6 +39,11 @@ const Genres = [
   `Comedy`,
   `Cartoon`,
   `Mystery`,
+  `Sci-Fi`,
+  `Animation`,
+  `Fantasy`,
+  `Comedy`,
+  `TV Series`,
 ];
 
 export {MovieTitles, PostersUrl, DescriptionItem, Genres};
