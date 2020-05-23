@@ -43,7 +43,8 @@ const makeIdGenerator = () => {
   };
 };
 
-const getUserGrade = (movies) => {
+const getUserGrade = (moviesModel) => {
+  const movies = moviesModel.getWatchedMovies();
   let grade;
 
   if (movies.length <= 10) {

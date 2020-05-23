@@ -31,10 +31,6 @@ export default class FilmController {
     render(this._container, this._filmComponent);
   }
 
-  getFilm() {
-    return this._film;
-  }
-
   setFilm(film) {
     this._film = film;
     this._filmComponent.rerender(this._film);

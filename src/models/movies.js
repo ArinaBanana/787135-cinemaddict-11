@@ -23,6 +23,10 @@ export default class MoviesModel {
     return sorted;
   }
 
+  getWatchedMovies() {
+    return this._movies.filter((movie) => movie.alreadyWatched);
+  }
+
   setMovies(movies) {
     this._movies = Array.from(movies);
   }
