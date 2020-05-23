@@ -2,53 +2,41 @@ import UserProfile from "./components/user-profile";
 import QuantityFilms from "./components/quantity-films";
 import SectionFilms from "./components/section-films";
 import FilmsAllList from "./components/films-all-list";
-
 import MainNavigationController, {MenuItems} from "./controllers/main-navigation";
 import SortController from "./controllers/sort";
 import StatisticController from "./controllers/statistic";
 import FilmListController from "./controllers/film-list";
 import MoviesModel from "./models/movies";
-
-import {generateFilms} from "./moks/film";
+import API from "./api";
 import {render} from "./utils/methods-for-components";
 import {getUserGrade} from "./utils/utils";
 
-const FILMS_COUNT = 20;
-// const FILMS_EXTRA_COUNT = 2;
-
-const films = generateFilms(FILMS_COUNT);
-const moviesModel = new MoviesModel();
-moviesModel.setMovies(films);
-const watchedFilms = films.filter((film) => film.alreadyWatched);
-
-// const filmsExtra = generateFilms(FILMS_EXTRA_COUNT);
-
+const AUTHORIZATION = `Basic hrguy43grgh`;
 const elementHeader = document.querySelector(`.header`);
 const elementFooter = document.querySelector(`.footer__statistics`);
 const elementMain = document.querySelector(`.main`);
 
-const grade = getUserGrade(watchedFilms);
-const user = new UserProfile(grade);
-render(elementHeader, user);
-render(elementFooter, new QuantityFilms(films.length));
-
+const moviesModel = new MoviesModel();
+const api = new API(AUTHORIZATION);
 const mainNavigationController = new MainNavigationController(elementMain, moviesModel);
-mainNavigationController.init();
-
 const sortController = new SortController(elementMain, moviesModel);
+const sectionFilmsComponent = new SectionFilms();
+const filmsAllListComponent = new FilmsAllList();
+const mainFilmList = new FilmListController(filmsAllListComponent, moviesModel);
+
+const grade = getUserGrade(moviesModel);
+const user = new UserProfile(grade);
+
+const statisticController = new StatisticController(elementMain, moviesModel, grade);
+
+mainNavigationController.init();
 sortController.init();
 
-const sectionFilmsComponent = new SectionFilms();
 render(elementMain, sectionFilmsComponent);
-
-const filmsAllListComponent = new FilmsAllList();
 render(sectionFilmsComponent.getElement(), filmsAllListComponent);
+render(elementHeader, user);
 
-const mainFilmList = new FilmListController(filmsAllListComponent, moviesModel);
-mainFilmList.init();
-
-const statisticController = new StatisticController(elementMain, watchedFilms, grade);
-statisticController.init();
+// statisticController.init();
 
 mainNavigationController.setChangeScreenHandler((menuItem) => {
   switch (menuItem) {
@@ -63,4 +51,10 @@ mainNavigationController.setChangeScreenHandler((menuItem) => {
       statisticController.hide();
       break;
   }
+});
+
+api.getMovies().then((movies) => {
+  moviesModel.setMovies(movies);
+  mainFilmList.init();
+  render(elementFooter, new QuantityFilms(movies.length));
 });
