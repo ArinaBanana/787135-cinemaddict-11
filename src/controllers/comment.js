@@ -5,7 +5,6 @@ import AddingEmoji from "../components/adding-emoji";
 import CommentTextarea from "../components/comment-textarea";
 
 import {render} from "../utils/methods-for-components";
-import {createComment, getEmojiUrlByName} from "../moks/comments";
 import {ENTER_KEY, RenderPosition} from "../utils/utils";
 
 import {encode} from "he";
@@ -86,8 +85,8 @@ export default class CommentsController {
 
     const sanitizedText = encode(data.comment);
 
-    const newComment = createComment(getEmojiUrlByName(this._currentEmoji), `hello`, new Date(), sanitizedText);
-    this._onAddingNewComment(newComment);
+    // const newComment = createComment(getEmojiUrlByName(this._currentEmoji), `hello`, new Date(), sanitizedText);
+    // this._onAddingNewComment(newComment);
   }
 
   _subscribeCmdEnterPress() {

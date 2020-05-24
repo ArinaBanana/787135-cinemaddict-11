@@ -3,6 +3,7 @@ import CommentsController from "./comment";
 import PopupContainer from "../components/popup-container";
 import {remove, render} from "../utils/methods-for-components";
 import {ESC_KEY} from "../utils/utils";
+import {api} from "../api";
 
 export default class PopupController {
   constructor(container, onDataChange) {
@@ -33,7 +34,6 @@ export default class PopupController {
     this._popupComponent = new PopupFilmDetails(this._film);
     render(this._popupContainer.getElement(), this._popupComponent);
 
-    this._initComments(this._film.comments);
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
 
@@ -41,6 +41,11 @@ export default class PopupController {
     this._popupComponent.setAddToWatchListHandler(this._addToWatchList);
     this._popupComponent.setAddToWatchedHandler(this._addToWatched);
     this._popupComponent.setAddToFavoriteHandler(this._addToFavorites);
+
+    api.getComments(this._film.id)
+      .then((comments) => {
+        this._initComments(comments);
+      });
   }
 
   setFilm(film) {

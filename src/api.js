@@ -1,6 +1,7 @@
 import Movie from "./models/movie";
+import Comment from "./models/comment";
 
-export default class API {
+class API {
   constructor(authorization) {
     this._authorization = authorization;
   }
@@ -13,4 +14,18 @@ export default class API {
       .then((response) => response.json())
       .then(Movie.parseMovies);
   }
+
+  getComments(filmId) {
+    const headers = new Headers();
+    headers.append(`Authorization`, this._authorization);
+
+    return fetch(`https://11.ecmascript.pages.academy/cinemaddict/comments/${filmId}`, {headers})
+      .then((response) => response.json())
+      .then(Comment.parseComments);
+  }
 }
+
+const AUTHORIZATION = `Basic hrguy43grgh`;
+const api = new API(AUTHORIZATION);
+
+export {api};
