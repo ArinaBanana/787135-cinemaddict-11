@@ -2,6 +2,7 @@ import Navigation from "../components/navigation";
 import FiltersNavigationController from "./filters-navigation";
 
 import {render} from "../utils/methods-for-components";
+import {RenderPosition} from "../utils/utils";
 
 const MenuItems = {
   STATS: `Stats`,
@@ -20,7 +21,7 @@ export default class MainNavigationController {
   }
 
   init() {
-    render(this._container, this._navigationComponent);
+    render(this._container, this._navigationComponent, RenderPosition.AFTERBEGIN);
 
     this._filtersController = new FiltersNavigationController(this._navigationComponent.getElement(), this._moviesModel);
     this._filtersController.init();

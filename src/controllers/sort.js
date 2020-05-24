@@ -1,6 +1,7 @@
 import SortElement from "../components/sort-elements";
 import {render} from "../utils/methods-for-components";
 import {SortTypes} from "../utils/sorting";
+import {RenderPosition} from "../utils/utils";
 
 export default class SortController {
   constructor(container, moviesModel) {
@@ -15,7 +16,7 @@ export default class SortController {
     const sortElements = this._createSortElements();
 
     this._sortComponent = new SortElement(sortElements);
-    render(this._container, this._sortComponent);
+    render(this._container, this._sortComponent, RenderPosition.AFTERBEGIN);
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChangeHandler);
   }
 
