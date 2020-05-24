@@ -47,5 +47,4 @@ export {
   ACTIVE_CLASS_SORT,
   BAR_HEIGHT,
   RenderPosition,
-  Grades,
 };
