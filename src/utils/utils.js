@@ -27,8 +27,6 @@ const getUserGrade = (moviesModel) => {
     grade = Grades.FAN;
   } else if (movies.length >= 21) {
     grade = Grades.MOVIE_BUFF;
-  } else if (movies.length === 0) {
-    grade = ``;
   }
 
   return grade;

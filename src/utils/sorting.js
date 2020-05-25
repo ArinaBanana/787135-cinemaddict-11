@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const SortTypes = {
   DEFAULT: `default`,
   DATE: `date`,
@@ -9,7 +11,7 @@ const getSortedFilms = (films, sortType) => {
 
   switch (sortType) {
     case SortTypes.DATE:
-      return showingFilms.sort((a, b) => b.releaseDate - a.releaseDate);
+      return showingFilms.sort((a, b) => moment(b.releaseDate) - moment(a.releaseDate));
     case SortTypes.RATING:
       return showingFilms.sort((a, b) => b.rating - a.rating);
     case SortTypes.DEFAULT:
