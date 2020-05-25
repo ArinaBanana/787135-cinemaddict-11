@@ -14,7 +14,7 @@ export default class StatisticController {
 
     return durations.reduce((acc, num) => {
       return acc + num;
-    });
+    }, 0);
   }
 
   getSortedGenreAndCount() {
