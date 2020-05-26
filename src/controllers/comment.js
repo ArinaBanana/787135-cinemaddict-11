@@ -8,7 +8,7 @@ import {render} from "../utils/methods-for-components";
 import {RenderPosition} from "../utils/utils";
 import {ENTER_KEY, COMMENT_FORM_FIELDS} from "../utils/constant";
 
-import {encode} from "he";
+// import {encode} from "he";
 
 export default class CommentsController {
   constructor(container, onCommentsDataChange, getFormData) {
