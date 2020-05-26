@@ -130,7 +130,10 @@ export default class FilmListController {
 
     if (filmController) {
       filmController.setFilm(film);
-      this._popupController.setFilm(film);
+
+      if (this._popupController.getIsShowed()) {
+        this._popupController.setFilm(film);
+      }
     }
   }
 

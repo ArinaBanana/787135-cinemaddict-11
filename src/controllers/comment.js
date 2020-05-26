@@ -29,8 +29,11 @@ export default class CommentsController {
   }
 
   init(comments) {
-    this._comments = comments;
-    this._commentsContainer = new CommentsContainer(comments.length);
+    if (comments) {
+      this._comments = comments;
+    }
+
+    this._commentsContainer = new CommentsContainer(this._comments.length);
 
     render(this._container, this._commentsContainer);
 
@@ -41,6 +44,11 @@ export default class CommentsController {
 
     this._initCreatingComment();
     this._subscribeCmdEnterPress();
+  }
+
+  rerender(container) {
+    this._container = container;
+    this.init();
   }
 
   destroyListeners() {

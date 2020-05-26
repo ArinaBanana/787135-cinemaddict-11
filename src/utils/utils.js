@@ -3,6 +3,13 @@ const RenderPosition = {
   BEFOREEND: `beforeend`,
 };
 
+const Method = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
+};
+
 const Grades = {
   NOVICE: `Novice`,
   FAN: `Fan`,
@@ -30,4 +37,5 @@ export {
   getEmojiUrlByName,
   getUserGrade,
   RenderPosition,
+  Method,
 };

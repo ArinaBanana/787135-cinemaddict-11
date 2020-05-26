@@ -1,6 +1,6 @@
 import {getEmojiUrlByName} from "../utils/utils";
 
-export default class Comment {
+export default class CommentAdapter {
   constructor(data) {
     this.emoji = getEmojiUrlByName(data[`emotion`]);
     this.author = data[`author`];
@@ -10,10 +10,10 @@ export default class Comment {
   }
 
   static parseComment(data) {
-    return new Comment(data);
+    return new CommentAdapter(data);
   }
 
   static parseComments(data) {
-    return data.map(Comment.parseComment);
+    return data.map(CommentAdapter.parseComment);
   }
 }
