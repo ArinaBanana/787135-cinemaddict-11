@@ -2,7 +2,7 @@ import PopupFilmDetails from "../components/popup-film-details";
 import CommentsController from "./comment";
 import PopupContainer from "../components/popup-container";
 import {remove, render} from "../utils/methods-for-components";
-import {ESC_KEY} from "../utils/utils";
+import {ESC_KEY} from "../utils/constant";
 import {api} from "../api";
 
 export default class PopupController {

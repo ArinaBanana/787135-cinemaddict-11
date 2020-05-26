@@ -1,11 +1,3 @@
-const BODY_ELEMENT = document.querySelector(`body`);
-const HIDDEN_CLASS = `visually-hidden`;
-const ENTER_KEY = `Enter`;
-const ESC_KEY = `Escape`;
-const ACTIVE_CLASS_FILTER = `main-navigation__item--active`;
-const ACTIVE_CLASS_SORT = `sort__button--active`;
-const BAR_HEIGHT = 50;
-
 const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,
@@ -37,12 +29,5 @@ const getEmojiUrlByName = (emoji) => `./images/emoji/${emoji}.png`;
 export {
   getEmojiUrlByName,
   getUserGrade,
-  BODY_ELEMENT,
-  HIDDEN_CLASS,
-  ENTER_KEY,
-  ESC_KEY,
-  ACTIVE_CLASS_FILTER,
-  ACTIVE_CLASS_SORT,
-  BAR_HEIGHT,
   RenderPosition,
 };

@@ -1,5 +1,6 @@
 import Movie from "./models/movie";
 import Comment from "./models/comment";
+import {AUTHORIZATION, LINK} from "./utils/constant";
 
 class API {
   constructor(authorization) {
@@ -25,7 +26,6 @@ class API {
   }
 }
 
-const AUTHORIZATION = `Basic hrguy43grgh`;
 const api = new API(AUTHORIZATION);
 
 export {api};

@@ -6,9 +6,7 @@ import FilmController from "./film";
 import PopupController from "./popup";
 
 import {remove, render} from "../utils/methods-for-components";
-import {BODY_ELEMENT} from "../utils/utils";
-
-const SHOWING_FILMS_COUNT = 5;
+import {BODY_ELEMENT, SHOWING_FILMS_COUNT} from "../utils/constant";
 
 const createFilmControllers = (filmList, films, onDataChange, onClick) => {
   return films.reduce((acc, film) => {

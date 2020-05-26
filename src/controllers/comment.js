@@ -5,11 +5,10 @@ import AddingEmoji from "../components/adding-emoji";
 import CommentTextarea from "../components/comment-textarea";
 
 import {render} from "../utils/methods-for-components";
-import {ENTER_KEY, RenderPosition} from "../utils/utils";
+import {RenderPosition} from "../utils/utils";
+import {ENTER_KEY, COMMENT_FORM_FIELDS} from "../utils/constant";
 
 import {encode} from "he";
-
-const COMMENT_FORM_FIELDS = [`comment`];
 
 export default class CommentsController {
   constructor(container, onCommentsDataChange, getFormData) {
