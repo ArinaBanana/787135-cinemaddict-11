@@ -90,7 +90,7 @@ export default class CommentsController {
       }
     }
 
-    const sanitizedText = encode(data.comment);
+    // const sanitizedText = encode(data.comment);
 
     // const newComment = createComment(getEmojiUrlByName(this._currentEmoji), `hello`, new Date(), sanitizedText);
     // this._onAddingNewComment(newComment);
