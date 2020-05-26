@@ -24,6 +24,7 @@ export default class PopupController {
 
   show() {
     const isShowed = Boolean(this._popupContainer);
+
     if (isShowed) {
       return;
     }
@@ -33,7 +34,6 @@ export default class PopupController {
 
     this._popupComponent = new PopupFilmDetails(this._film);
     render(this._popupContainer.getElement(), this._popupComponent);
-
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
 
