@@ -6,9 +6,10 @@ import FilmListController from "./film-list";
 import UserProfile from "../components/user-profile";
 import StatisticController from "./statistic";
 import QuantityFilms from "../components/quantity-films";
+import Loading from "../components/loading";
 
 import {getUserGrade} from "../utils/utils";
-import {render} from "../utils/methods-for-components";
+import {remove, render} from "../utils/methods-for-components";
 
 export default class PageController {
   constructor(header, main, footer, moviesModel) {
@@ -16,36 +17,49 @@ export default class PageController {
     this._elementHeader = header;
     this._elementMain = main;
     this._elementFooter = footer;
+
+    this._handleFilmsChange = this._handleFilmsChange.bind(this);
+    this._moviesModel.setFilmsChangeHandlers(this._handleFilmsChange);
   }
 
-  creatingComponents() {
+  _createComponents() {
+    this._loading = new Loading();
     this._mainNavigationController = new MainNavigationController(this._elementMain, this._moviesModel);
     this._sortController = new SortController(this._elementMain, this._moviesModel);
     this._sectionFilmsComponent = new SectionFilms();
     this._filmsAllListComponent = new FilmsAllList();
-    this._mainFilmList = new FilmListController(this._filmsAllListComponent, this._moviesModel);
+    this._mainFilmListController = new FilmListController(this._filmsAllListComponent, this._moviesModel);
+    this._quantity = new QuantityFilms();
 
-    const movies = this._moviesModel.getAllMovies();
-    this._quantity = new QuantityFilms(movies.length);
-
-    const grade = getUserGrade(this._moviesModel);
-    this._user = new UserProfile(grade);
-
-    this._statisticController = new StatisticController(this._elementMain, this._moviesModel, grade);
+    this._user = new UserProfile();
   }
 
-  render() {
-    this.creatingComponents();
-
-    render(this._elementHeader, this._user);
-    render(this._elementFooter, this._quantity);
-    render(this._elementMain, this._sectionFilmsComponent);
-    render(this._sectionFilmsComponent.getElement(), this._filmsAllListComponent);
-
+  init() {
+    this._createComponents();
     this._sortController.init();
     this._mainNavigationController.init();
-    this._mainFilmList.init();
+    this._mainFilmListController.init();
+
+    render(this._elementMain, this._loading);
+    render(this._elementHeader, this._user);
+    render(this._elementFooter, this._quantity);
+
+  }
+
+  _handleFilmsChange() {
+    remove(this._loading);
+
+    const grade = getUserGrade(this._moviesModel);
+    this._user.setGrade(grade);
+
+    const movies = this._moviesModel.getAllMovies();
+    this._quantity.setCount(movies.length);
+
+    this._statisticController = new StatisticController(this._elementMain, this._moviesModel, grade);
     this._statisticController.init();
+
+    render(this._elementMain, this._sectionFilmsComponent);
+    render(this._sectionFilmsComponent.getElement(), this._filmsAllListComponent);
 
     this._mainNavigationController.setChangeScreenHandler((menuItem) => {
       switch (menuItem) {

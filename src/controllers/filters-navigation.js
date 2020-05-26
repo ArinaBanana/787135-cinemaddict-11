@@ -8,11 +8,13 @@ export default class FiltersNavigationController {
     this._container = container;
     this._moviesModel = moviesModel;
 
-    this._activeFilterType = FilterTypes.ALL_MOVIES;
-
     this._onViewFilterChange = this._onViewFilterChange.bind(this);
     this._onModelFilterChange = this._onModelFilterChange.bind(this);
     this._onModelDataChange = this._onModelDataChange.bind(this);
+
+    this._moviesModel.setFilterChangeHandlers(this._onModelFilterChange);
+    this._moviesModel.setFilmChangeHandlers(this._onModelDataChange);
+    this._moviesModel.setFilmsChangeHandlers(this._onModelDataChange);
   }
 
   init() {
@@ -21,9 +23,6 @@ export default class FiltersNavigationController {
     this._filtersComponent.setFilterChangeHandlers(this._onViewFilterChange);
 
     render(this._container, this._filtersComponent, RenderPosition.AFTERBEGIN);
-
-    this._moviesModel.setFilterChangeHandlers(this._onModelFilterChange);
-    this._moviesModel.setDataChangeHandlers(this._onModelDataChange);
   }
 
   setChangeScreen(handler) {
@@ -37,24 +36,20 @@ export default class FiltersNavigationController {
       return {
         name: filterType,
         count: getFilmsByFilters(allMovies, filterType).length,
-        isActive: filterType === this._activeFilterType,
+        isActive: filterType === this._moviesModel.getCurrentFilter(),
       };
     });
   }
 
-  _onModelFilterChange(filterType) {
-    this._updateFilter(filterType);
+  _onModelFilterChange() {
+    this._updateFilter();
   }
 
   _onModelDataChange() {
     this._updateFilter();
   }
 
-  _updateFilter(filterType) {
-    if (filterType) {
-      this._activeFilterType = filterType;
-    }
-
+  _updateFilter() {
     const newFilters = this._createFilters();
     this._filtersComponent.setFilters(newFilters);
   }

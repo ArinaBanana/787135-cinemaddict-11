@@ -7,10 +7,10 @@ const elementFooter = document.querySelector(`.footer__statistics`);
 const elementMain = document.querySelector(`.main`);
 
 const moviesModel = new MoviesModel();
-
 const pageController = new PageController(elementHeader, elementMain, elementFooter, moviesModel);
+
+pageController.init();
 
 api.getMovies().then((movies) => {
   moviesModel.setMovies(movies);
-  pageController.render();
 });
