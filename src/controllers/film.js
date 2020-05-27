@@ -1,6 +1,8 @@
 import FilmCard from "../components/film-card";
+import MovieAdapter from "../models/movieAdapter";
 
 import {remove, render} from "../utils/methods-for-components";
+import {api} from "../api";
 
 export default class FilmController {
   constructor(container, onDataChange, onClick) {
@@ -31,10 +33,6 @@ export default class FilmController {
     render(this._container, this._filmComponent);
   }
 
-  getFilm() {
-    return this._film;
-  }
-
   setFilm(film) {
     this._film = film;
     this._filmComponent.rerender(this._film);
@@ -51,33 +49,33 @@ export default class FilmController {
   _addToWatchList(evt) {
     evt.preventDefault();
 
-    const oldFilm = this._film;
-    const newFilm = Object.assign({}, oldFilm, {
-      addedToWatchlist: !(oldFilm.addedToWatchlist),
-    });
+    const newFilm = MovieAdapter.clone(this._film);
+    newFilm.addedToWatchlist = !newFilm.addedToWatchlist;
 
-    this._onDataChange(newFilm);
+    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
+      this._onDataChange(movie);
+    });
   }
 
   _addToWatched(evt) {
     evt.preventDefault();
 
-    const oldFilm = this._film;
-    const newFilm = Object.assign({}, oldFilm, {
-      alreadyWatched: !(oldFilm.alreadyWatched),
-    });
+    const newFilm = MovieAdapter.clone(this._film);
+    newFilm.alreadyWatched = !newFilm.alreadyWatched;
 
-    this._onDataChange(newFilm);
+    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
+      this._onDataChange(movie);
+    });
   }
 
   _addToFavorites(evt) {
     evt.preventDefault();
 
-    const oldFilm = this._film;
-    const newFilm = Object.assign({}, oldFilm, {
-      addedToFavorite: !(oldFilm.addedToFavorite),
-    });
+    const newFilm = MovieAdapter.clone(this._film);
+    newFilm.addedToFavorite = !newFilm.addedToFavorite;
 
-    this._onDataChange(newFilm);
+    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
+      this._onDataChange(movie);
+    });
   }
 }

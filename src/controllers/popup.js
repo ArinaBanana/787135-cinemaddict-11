@@ -2,7 +2,9 @@ import PopupFilmDetails from "../components/popup-film-details";
 import CommentsController from "./comment";
 import PopupContainer from "../components/popup-container";
 import {remove, render} from "../utils/methods-for-components";
-import {ESC_KEY} from "../utils/utils";
+import {ESC_KEY} from "../utils/constant";
+import {api} from "../api";
+import MovieAdapter from "../models/movieAdapter";
 
 export default class PopupController {
   constructor(container, onDataChange) {
@@ -10,6 +12,7 @@ export default class PopupController {
     this._onDataChange = onDataChange;
 
     this._film = null;
+    this._comments = {};
     this._commentsController = null;
 
     this._onButtonClose = this._onButtonClose.bind(this);
@@ -22,7 +25,8 @@ export default class PopupController {
   }
 
   show() {
-    const isShowed = Boolean(this._popupContainer);
+    const isShowed = this.getIsShowed();
+
     if (isShowed) {
       return;
     }
@@ -33,8 +37,6 @@ export default class PopupController {
     this._popupComponent = new PopupFilmDetails(this._film);
     render(this._popupContainer.getElement(), this._popupComponent);
 
-    this._initComments(this._film.comments);
-
     document.addEventListener(`keydown`, this._onEscKeyDown);
 
     this._popupComponent.setButtonCloseHandler(this._onButtonClose);
@@ -43,19 +45,40 @@ export default class PopupController {
     this._popupComponent.setAddToFavoriteHandler(this._addToFavorites);
   }
 
-  setFilm(film) {
-    this._film = film;
+  getIsShowed() {
+    return Boolean(this._popupComponent);
+  }
 
-    const isShowed = Boolean(this._popupComponent);
+  setFilm(film) {
+    const isSameFilm = Boolean(this._film) && film.id === this._film.id;
+    const isShowed = this.getIsShowed();
+
+    this._film = film;
 
     if (isShowed) {
       this._popupComponent.rerender(this._film);
-      this._initComments(this._film.comments);
+    }
+
+    if (isShowed && isSameFilm) {
+      this._commentsController.rerender(this._getFilmDetailsBottomContainer());
+    }
+
+    if (!isSameFilm) {
+      api.getComments(this._film.id)
+        .then((comments) => {
+          this._comments = {};
+          this._comments[this._film.id] = comments;
+          this._initComments(comments);
+        });
     }
   }
 
+  _getFilmDetailsBottomContainer() {
+    return this._popupComponent.getElement().querySelector(`.form-details__bottom-container`);
+  }
+
   _initComments(comments) {
-    const container = this._popupComponent.getElement().querySelector(`.form-details__bottom-container`);
+    const container = this._getFilmDetailsBottomContainer();
 
     if (this._commentsController) {
       this._commentsController.destroyListeners();
@@ -69,7 +92,7 @@ export default class PopupController {
   }
 
   _onCommentsDataChange(comments) {
-    const newFilm = Object.assign({}, this._film, {comments});
+    const newFilm = Object.assign({}, this._film, {comments: comments.map((comment) => comment.id)});
     this._onDataChange(newFilm);
   }
 
@@ -93,33 +116,33 @@ export default class PopupController {
   _addToWatchList(evt) {
     evt.preventDefault();
 
-    const oldFilm = this._film;
-    const newFilm = Object.assign({}, oldFilm, {
-      addedToWatchlist: !(oldFilm.addedToWatchlist),
-    });
+    const newFilm = MovieAdapter.clone(this._film);
+    newFilm.addedToWatchlist = !newFilm.addedToWatchlist;
 
-    this._onDataChange(newFilm);
+    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
+      this._onDataChange(movie);
+    });
   }
 
   _addToWatched(evt) {
     evt.preventDefault();
 
-    const oldFilm = this._film;
-    const newFilm = Object.assign({}, oldFilm, {
-      alreadyWatched: !(oldFilm.alreadyWatched),
-    });
+    const newFilm = MovieAdapter.clone(this._film);
+    newFilm.alreadyWatched = !newFilm.alreadyWatched;
 
-    this._onDataChange(newFilm);
+    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
+      this._onDataChange(movie);
+    });
   }
 
   _addToFavorites(evt) {
     evt.preventDefault();
 
-    const oldFilm = this._film;
-    const newFilm = Object.assign({}, oldFilm, {
-      addedToFavorite: !(oldFilm.addedToFavorite),
-    });
+    const newFilm = MovieAdapter.clone(this._film);
+    newFilm.addedToFavorite = !newFilm.addedToFavorite;
 
-    this._onDataChange(newFilm);
+    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
+      this._onDataChange(movie);
+    });
   }
 }

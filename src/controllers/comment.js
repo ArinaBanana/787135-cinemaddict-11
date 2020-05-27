@@ -5,12 +5,10 @@ import AddingEmoji from "../components/adding-emoji";
 import CommentTextarea from "../components/comment-textarea";
 
 import {render} from "../utils/methods-for-components";
-import {createComment, getEmojiUrlByName} from "../moks/comments";
-import {ENTER_KEY, RenderPosition} from "../utils/utils";
+import {RenderPosition} from "../utils/utils";
+import {ENTER_KEY, COMMENT_FORM_FIELDS} from "../utils/constant";
 
-import {encode} from "he";
-
-const COMMENT_FORM_FIELDS = [`comment`];
+// import {encode} from "he";
 
 export default class CommentsController {
   constructor(container, onCommentsDataChange, getFormData) {
@@ -31,8 +29,11 @@ export default class CommentsController {
   }
 
   init(comments) {
-    this._comments = comments;
-    this._commentsContainer = new CommentsContainer(comments.length);
+    if (comments) {
+      this._comments = comments;
+    }
+
+    this._commentsContainer = new CommentsContainer(this._comments.length);
 
     render(this._container, this._commentsContainer);
 
@@ -43,6 +44,11 @@ export default class CommentsController {
 
     this._initCreatingComment();
     this._subscribeCmdEnterPress();
+  }
+
+  rerender(container) {
+    this._container = container;
+    this.init();
   }
 
   destroyListeners() {
@@ -84,10 +90,10 @@ export default class CommentsController {
       }
     }
 
-    const sanitizedText = encode(data.comment);
+    // const sanitizedText = encode(data.comment);
 
-    const newComment = createComment(getEmojiUrlByName(this._currentEmoji), `hello`, new Date(), sanitizedText);
-    this._onAddingNewComment(newComment);
+    // const newComment = createComment(getEmojiUrlByName(this._currentEmoji), `hello`, new Date(), sanitizedText);
+    // this._onAddingNewComment(newComment);
   }
 
   _subscribeCmdEnterPress() {

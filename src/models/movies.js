@@ -6,10 +6,11 @@ export default class MoviesModel {
     this._movies = [];
     this._filterChangeHandlers = [];
     this._sortingChangeHandlers = [];
-    this._dataChangeHandlers = [];
+    this._filmChangeHandlers = [];
+    this._filmsChangeHandlers = [];
 
-    this._activeFilterType = FilterTypes.ALL_MOVIES;
-    this._activeSortType = SortTypes.DEFAULT;
+    this._currentFilterType = FilterTypes.ALL_MOVIES;
+    this._currentSortType = SortTypes.DEFAULT;
   }
 
   getAllMovies() {
@@ -17,14 +18,27 @@ export default class MoviesModel {
   }
 
   getMovies() {
-    const filtered = getFilmsByFilters(this._movies, this._activeFilterType);
-    const sorted = getSortedFilms(filtered, this._activeSortType);
+    const filtered = getFilmsByFilters(this._movies, this._currentFilterType);
+    const sorted = getSortedFilms(filtered, this._currentSortType);
 
     return sorted;
   }
 
+  getWatchedMovies() {
+    return this._movies.filter((movie) => movie.alreadyWatched);
+  }
+
   setMovies(movies) {
     this._movies = Array.from(movies);
+    this._callHandlers(this._filmsChangeHandlers, this._movies);
+  }
+
+  getCurrentFilter() {
+    return this._currentFilterType;
+  }
+
+  getCurrentSortType() {
+    return this._currentSortType;
   }
 
   setFilter(filterType) {
@@ -33,15 +47,15 @@ export default class MoviesModel {
       return false;
     }
 
-    this._activeFilterType = filterType;
-    this._callHandlers(this._filterChangeHandlers, this._activeFilterType);
+    this._currentFilterType = filterType;
+    this._callHandlers(this._filterChangeHandlers, this._currentFilterType);
 
     return true;
   }
 
   setSortType(sortType) {
-    this._activeSortType = sortType;
-    this._callHandlers(this._sortingChangeHandlers, this._activeSortType);
+    this._currentSortType = sortType;
+    this._callHandlers(this._sortingChangeHandlers, this._currentSortType);
   }
 
   setFilterChangeHandlers(handler) {
@@ -52,8 +66,12 @@ export default class MoviesModel {
     this._sortingChangeHandlers.push(handler);
   }
 
-  setDataChangeHandlers(handler) {
-    this._dataChangeHandlers.push(handler);
+  setFilmChangeHandlers(handler) {
+    this._filmChangeHandlers.push(handler);
+  }
+
+  setFilmsChangeHandlers(handler) {
+    this._filmsChangeHandlers.push(handler);
   }
 
   updateMovie(movie) {
@@ -64,7 +82,7 @@ export default class MoviesModel {
     }
 
     this._movies = [].concat(this._movies.slice(0, index), movie, this._movies.slice(index + 1));
-    this._callHandlers(this._dataChangeHandlers, movie);
+    this._callHandlers(this._filmChangeHandlers, movie);
 
     return true;
   }

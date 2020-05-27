@@ -2,9 +2,9 @@ import Statistic from "../components/statistic";
 import {render} from "../utils/methods-for-components";
 
 export default class StatisticController {
-  constructor(container, watchedFilms, grade) {
+  constructor(container, moviesModel, grade) {
     this._container = container;
-    this._watchedFilms = watchedFilms;
+    this._watchedFilms = moviesModel.getWatchedMovies();
 
     this._grade = grade;
   }
@@ -14,7 +14,7 @@ export default class StatisticController {
 
     return durations.reduce((acc, num) => {
       return acc + num;
-    });
+    }, 0);
   }
 
   getSortedGenreAndCount() {

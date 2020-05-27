@@ -1,5 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart";
-import {ACTIVE_CLASS_FILTER} from "../utils/utils";
+import {ACTIVE_CLASS_FILTER} from "../utils/constant";
 
 const createFilter = (filter) => {
   const {

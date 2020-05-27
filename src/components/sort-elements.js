@@ -1,6 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart";
 import {SortTypes} from "../utils/sorting";
-import {ACTIVE_CLASS_SORT} from "../utils/utils";
+import {ACTIVE_CLASS_SORT} from "../utils/constant";
 
 const createSortItem = (element) => {
   const {

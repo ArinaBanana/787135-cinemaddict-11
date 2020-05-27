@@ -1,5 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart";
-import {BAR_HEIGHT} from "../utils/utils";
+import {BAR_HEIGHT} from "../utils/constant";
 
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
