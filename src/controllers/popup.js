@@ -60,7 +60,7 @@ export default class PopupController {
     }
 
     if (isShowed && isSameFilm) {
-      this._commentsController.rerender(this._getFilmDetailsBottomContainer());
+      this._commentsController.update(this._getFilmDetailsBottomContainer());
     }
 
     if (!isSameFilm) {
@@ -83,7 +83,7 @@ export default class PopupController {
     if (this._commentsController) {
       this._commentsController.destroyListeners();
     }
-    this._commentsController = new CommentsController(container, this._onCommentsDataChange, this._getFormData);
+    this._commentsController = new CommentsController(container, this._onCommentsDataChange, this._getFormData, this._film.id);
     this._commentsController.init(comments);
   }
 
@@ -93,7 +93,9 @@ export default class PopupController {
 
   _onCommentsDataChange(comments) {
     const newFilm = Object.assign({}, this._film, {comments: comments.map((comment) => comment.id)});
+
     this._onDataChange(newFilm);
+    this._commentsController.init(comments);
   }
 
   _removePopupComponent() {

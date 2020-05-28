@@ -3,17 +3,24 @@ import Comment from "../components/comment";
 import NewComment from "../components/new-comment";
 import AddingEmoji from "../components/adding-emoji";
 import CommentTextarea from "../components/comment-textarea";
+import CommentAdapter from "../models/commentAdapter";
 
-import {render} from "../utils/methods-for-components";
+import {remove, render} from "../utils/methods-for-components";
 import {RenderPosition} from "../utils/utils";
 import {ENTER_KEY, COMMENT_FORM_FIELDS} from "../utils/constant";
+import {api} from "../api";
 
-// import {encode} from "he";
+import {encode} from "he";
+
+const createComment = (emotion, author, date, comment) => {
+  return new CommentAdapter({emotion, author, date, comment});
+};
 
 export default class CommentsController {
-  constructor(container, onCommentsDataChange, getFormData) {
+  constructor(container, onCommentsDataChange, getFormData, filmId) {
     this._container = container;
     this._comments = null;
+    this._filmId = filmId;
 
     this._onCommentsDataChange = onCommentsDataChange;
     this._getFormData = getFormData;
@@ -33,6 +40,9 @@ export default class CommentsController {
       this._comments = comments;
     }
 
+    if (this._commentsContainer) {
+      remove(this._commentsContainer);
+    }
     this._commentsContainer = new CommentsContainer(this._comments.length);
 
     render(this._container, this._commentsContainer);
@@ -46,9 +56,9 @@ export default class CommentsController {
     this._subscribeCmdEnterPress();
   }
 
-  rerender(container) {
+  update(container, comments) {
     this._container = container;
-    this.init();
+    this.init(comments);
   }
 
   destroyListeners() {
@@ -90,10 +100,17 @@ export default class CommentsController {
       }
     }
 
-    // const sanitizedText = encode(data.comment);
+    const sanitizedText = encode(data.comment);
 
-    // const newComment = createComment(getEmojiUrlByName(this._currentEmoji), `hello`, new Date(), sanitizedText);
-    // this._onAddingNewComment(newComment);
+    const newComment = createComment(this._currentEmoji, null, new Date(), sanitizedText);
+    const newData = CommentAdapter.clone(newComment);
+
+    api.createComment(this._filmId, newData).then((response) => {
+      const newComm = response.comments;
+      const comments = CommentAdapter.parseComments(newComm);
+
+      this._onCommentsDataChange(comments);
+    });
   }
 
   _subscribeCmdEnterPress() {

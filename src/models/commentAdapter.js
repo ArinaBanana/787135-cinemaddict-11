@@ -1,12 +1,20 @@
-import {getEmojiUrlByName} from "../utils/utils";
-
 export default class CommentAdapter {
   constructor(data) {
-    this.emoji = getEmojiUrlByName(data[`emotion`]);
+    this.emoji = data[`emotion`];
     this.author = data[`author`];
     this.date = data[`date`];
     this.message = data[`comment`];
     this.id = data[`id`];
+  }
+
+  toRaw() {
+    return {
+      "id": this.id,
+      "author": this.author,
+      "comment": this.message,
+      "date": this.date,
+      "emotion": this.emoji,
+    };
   }
 
   static parseComment(data) {
@@ -15,5 +23,9 @@ export default class CommentAdapter {
 
   static parseComments(data) {
     return data.map(CommentAdapter.parseComment);
+  }
+
+  static clone(data) {
+    return new CommentAdapter(data.toRaw());
   }
 }

@@ -1,4 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart";
+import {getEmojiUrlByName} from "../utils/utils";
 import moment from "moment";
 
 const getFormattingDate = (timestamp) => {
@@ -22,10 +23,12 @@ const createCommentTemplate = (comment) => {
     message,
   } = comment;
 
+  const urlEmoji = getEmojiUrlByName(emoji);
+
   return (
     `<li class="film-details__comment">
       <span class="film-details__comment-emoji">
-        <img src="${emoji}" width="55" height="55" alt="emoji-smile">
+        <img src="${urlEmoji}" width="55" height="55" alt="emoji-smile">
       </span>
       <div>
         <p class="film-details__comment-text">${message}</p>
