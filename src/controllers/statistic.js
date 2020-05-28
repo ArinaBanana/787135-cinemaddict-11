@@ -22,13 +22,7 @@ export default class StatisticController {
       const genres = film.genres;
 
       genres.forEach((genre) => {
-
-        if (!acc[genre]) {
-          acc[genre] = 1;
-        } else {
-          acc[genre] += 1;
-        }
-
+        acc[genre] = acc[genre] ? acc[genre] + 1 : 1;
       });
 
       return acc;
