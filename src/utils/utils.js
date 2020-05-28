@@ -10,6 +10,11 @@ const Method = {
   DELETE: `DELETE`
 };
 
+const CodesResponse = {
+  OK: 200,
+  MULTIPLE_CHOICE: 300,
+};
+
 const Grades = {
   NOVICE: `Novice`,
   FAN: `Fan`,
@@ -38,4 +43,5 @@ export {
   getUserGrade,
   RenderPosition,
   Method,
+  CodesResponse,
 };

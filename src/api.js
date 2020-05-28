@@ -1,10 +1,10 @@
 import MovieAdapter from "./models/movieAdapter";
 import CommentAdapter from "./models/commentAdapter";
 import {AUTHORIZATION, LINK} from "./utils/constant";
-import {Method} from "./utils/utils";
+import {Method, CodesResponse} from "./utils/utils";
 
 const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.status >= CodesResponse.OK && response.status < CodesResponse.MULTIPLE_CHOICE) {
     return response;
   } else {
     throw new Error(`${response.status}: ${response.statusText}`);

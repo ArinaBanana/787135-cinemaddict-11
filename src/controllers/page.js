@@ -72,7 +72,6 @@ export default class PageController {
           this._sortController.show();
           this._filmsAllListComponent.show();
           this._statisticController.hide();
-          break;
       }
     });
   }
