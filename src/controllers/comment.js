@@ -106,8 +106,7 @@ export default class CommentsController {
     const newData = CommentAdapter.clone(newComment);
 
     api.createComment(this._filmId, newData).then((response) => {
-      const newComm = response.comments;
-      const comments = CommentAdapter.parseComments(newComm);
+      const comments = CommentAdapter.parseComments(response.comments);
 
       this._onCommentsDataChange(comments);
     });
