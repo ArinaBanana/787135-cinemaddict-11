@@ -3,6 +3,14 @@ import {convertDuration} from "../utils/convert-duration";
 
 import moment from "moment";
 
+const createGenres = (genres) => {
+  return genres.map((genre) => {
+    return (
+      `<span class="film-details__genre">${genre}</span>`
+    );
+  }).join(`\n`);
+};
+
 const createPopupFilmDetailsTemplate = (film) => {
   const {
     title,
@@ -21,6 +29,8 @@ const createPopupFilmDetailsTemplate = (film) => {
   } = film;
 
   const convertDate = moment(releaseDate).format(`D MMMM YYYY`);
+  const isOneGenre = (genres.length === 1);
+  const isNotGenre = (genres.length === 0);
 
   return (
     `<form class="film-details__inner" action="" method="get">
@@ -73,11 +83,10 @@ const createPopupFilmDetailsTemplate = (film) => {
                 <td class="film-details__cell">${creators.country}</td>
               </tr>
               <tr class="film-details__row">
-                <td class="film-details__term">Genres</td>
+              ${isNotGenre ? `` : `<td class="film-details__term">${isOneGenre ? `Genre` : `Genres`}</td>
                 <td class="film-details__cell">
-                  <span class="film-details__genre">${genres[0]}</span>
-                  <span class="film-details__genre">${genres[1]}</span>
-                  <span class="film-details__genre">${genres[2]}</span></td>
+                 ${createGenres(genres)}
+                </td>`}
               </tr>
             </table>
 

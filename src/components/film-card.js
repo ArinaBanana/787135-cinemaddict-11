@@ -19,6 +19,7 @@ const createFilmCardTemplate = (film) => {
   } = film;
 
   const year = moment(releaseDate).year();
+  const isNotGenre = (genres.length === 0);
 
   return (
     `<article class="film-card">
@@ -27,7 +28,7 @@ const createFilmCardTemplate = (film) => {
       <p class="film-card__info">
         <span class="film-card__year">${year}</span>
         <span class="film-card__duration">${convertDuration(duration)}</span>
-        <span class="film-card__genre">${genres[0]}</span>
+        ${isNotGenre ? `` : `<span class="film-card__genre">${genres[0]}</span>`}
       </p>
       <img src="${poster.url}" alt="${title}" class="film-card__poster">
       <p class="film-card__description">${description}</p>

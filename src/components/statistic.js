@@ -61,7 +61,7 @@ const createStatisticTemplate = (filmsLength, topGenre, allDurationInMin, grade)
 
 const renderChart = (labels, data) => {
   const statisticCtx = document.querySelector(`.statistic__chart`).getContext(`2d`);
-  // Обязательно рассчитайте высоту canvas, она зависит от количества элементов диаграммы
+
   statisticCtx.height = BAR_HEIGHT * 5;
 
   return new Chart(statisticCtx, {
