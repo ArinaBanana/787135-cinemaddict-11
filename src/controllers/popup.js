@@ -61,9 +61,7 @@ export default class PopupController {
 
     if (isShowed && isSameFilm) {
       this._commentsController.update(this._getFilmDetailsBottomContainer());
-    }
-
-    if (!isSameFilm) {
+    } else {
       api.getComments(this._film.id)
         .then((comments) => {
           this._comments = {};

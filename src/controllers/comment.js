@@ -30,7 +30,6 @@ export default class CommentsController {
 
     this._onChangeEmoji = this._onChangeEmoji.bind(this);
     this._onDelete = this._onDelete.bind(this);
-    this._onAddingNewComment = this._onAddingNewComment.bind(this);
     this._onFormSubmit = this._onFormSubmit.bind(this);
     this._subscribeHandler = this._subscribeHandler.bind(this);
   }
@@ -86,10 +85,12 @@ export default class CommentsController {
   }
 
   _onDelete(deletedComment) {
-    const index = this._comments.findIndex((comment) => comment === deletedComment);
-    const newComments = [].concat(this._comments.slice(0, index), this._comments.slice(index + 1));
+    api.deleteComment(deletedComment.id).then(() => {
+      const index = this._comments.findIndex((comment) => comment === deletedComment);
+      const newComments = [].concat(this._comments.slice(0, index), this._comments.slice(index + 1));
 
-    this._onCommentsDataChange(newComments);
+      this._onCommentsDataChange(newComments);
+    });
   }
 
   _onFormSubmit(formData) {
@@ -121,10 +122,5 @@ export default class CommentsController {
       evt.preventDefault();
       this._onFormSubmit(this._getFormData());
     }
-  }
-
-  _onAddingNewComment(newComment) {
-    const newComments = [].concat(this._comments, newComment);
-    this._onCommentsDataChange(newComments);
   }
 }
