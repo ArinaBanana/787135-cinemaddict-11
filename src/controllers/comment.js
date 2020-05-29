@@ -7,7 +7,7 @@ import CommentAdapter from "../models/commentAdapter";
 
 import {remove, render} from "../utils/methods-for-components";
 import {RenderPosition} from "../utils/utils";
-import {ENTER_KEY, COMMENT_FORM_FIELDS} from "../utils/constant";
+import {ENTER_KEY, COMMENT_FORM_FIELDS, SHAKE_ANIMATION_TIMEOUT} from "../utils/constant";
 import {api} from "../api";
 
 import {encode} from "he";
@@ -42,13 +42,12 @@ export default class CommentsController {
     if (this._commentsContainer) {
       remove(this._commentsContainer);
     }
-    this._commentsContainer = new CommentsContainer(this._comments.length);
 
+    this._commentsContainer = new CommentsContainer(this._comments.length);
     render(this._container, this._commentsContainer);
 
     this._commentComponents = this._comments.map((comment) => new Comment(comment));
     this._commentComponents.forEach((commentComponent) => render(this._commentsContainer.getListComments(), commentComponent));
-
     this._commentComponents.forEach((component) => component.setButtonDeleteHandler(this._onDelete));
 
     this._initCreatingComment();
@@ -62,6 +61,14 @@ export default class CommentsController {
 
   destroyListeners() {
     document.removeEventListener(`keydown`, this._subscribeHandler);
+  }
+
+  shake() {
+    this._newCommentComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      this._newCommentComponent.getElement().style.animation = ``;
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _initCreatingComment() {
@@ -106,11 +113,22 @@ export default class CommentsController {
     const newComment = createComment(this._currentEmoji, null, new Date(), sanitizedText);
     const newData = CommentAdapter.clone(newComment);
 
-    api.createComment(this._filmId, newData).then((response) => {
-      const comments = CommentAdapter.parseComments(response.comments);
+    this._textarea.setDisabledAttribute();
+    this._textarea.removeRedBorder();
 
-      this._onCommentsDataChange(comments);
-    });
+    api.createComment(this._filmId, newData)
+      .then((response) => {
+        const comments = CommentAdapter.parseComments(response.comments);
+        this._onCommentsDataChange(comments);
+      })
+      .then(() => {
+        this._textarea.removeDisabledAttribute();
+      })
+      .catch(() => {
+        this.shake();
+        this._textarea.setRedBorder();
+        this._textarea.removeDisabledAttribute();
+      });
   }
 
   _subscribeCmdEnterPress() {
