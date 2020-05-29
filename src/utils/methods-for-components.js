@@ -25,8 +25,6 @@ const remove = (component) => {
 };
 
 const shake = (component) => {
-  console.log(component.getElement())
-
   component.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
 
   setTimeout(() => {
