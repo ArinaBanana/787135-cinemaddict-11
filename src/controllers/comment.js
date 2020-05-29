@@ -5,9 +5,9 @@ import AddingEmoji from "../components/adding-emoji";
 import CommentTextarea from "../components/comment-textarea";
 import CommentAdapter from "../models/commentAdapter";
 
-import {remove, render} from "../utils/methods-for-components";
+import {remove, render, shake} from "../utils/methods-for-components";
 import {RenderPosition} from "../utils/utils";
-import {ENTER_KEY, COMMENT_FORM_FIELDS, SHAKE_ANIMATION_TIMEOUT} from "../utils/constant";
+import {ENTER_KEY, COMMENT_FORM_FIELDS} from "../utils/constant";
 import {api} from "../api";
 
 import {encode} from "he";
@@ -46,7 +46,7 @@ export default class CommentsController {
     this._commentsContainer = new CommentsContainer(this._comments.length);
     render(this._container, this._commentsContainer);
 
-    this._commentComponents = this._comments.map((comment) => new Comment(comment));
+    this._commentComponents = this._comments.map((comment) => new Comment(comment, `Delete`));
     this._commentComponents.forEach((commentComponent) => render(this._commentsContainer.getListComments(), commentComponent));
     this._commentComponents.forEach((component) => component.setButtonDeleteHandler(this._onDelete));
 
@@ -61,14 +61,6 @@ export default class CommentsController {
 
   destroyListeners() {
     document.removeEventListener(`keydown`, this._subscribeHandler);
-  }
-
-  shake() {
-    this._newCommentComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
-
-    setTimeout(() => {
-      this._newCommentComponent.getElement().style.animation = ``;
-    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _initCreatingComment() {
@@ -92,12 +84,22 @@ export default class CommentsController {
   }
 
   _onDelete(deletedComment) {
-    api.deleteComment(deletedComment.id).then(() => {
-      const index = this._comments.findIndex((comment) => comment === deletedComment);
-      const newComments = [].concat(this._comments.slice(0, index), this._comments.slice(index + 1));
+    const index = this._comments.findIndex((comment) => comment === deletedComment);
 
-      this._onCommentsDataChange(newComments);
-    });
+    this._commentComponents[index].setTitleForButton(`Deleting...`);
+    this._commentComponents[index].setAttributeDisabledForButton();
+
+    api.deleteComment(deletedComment.id)
+      .then(() => {
+        const newComments = [].concat(this._comments.slice(0, index), this._comments.slice(index + 1));
+
+        this._onCommentsDataChange(newComments);
+      })
+      .catch(() => {
+        this._commentComponents[index].setTitleForButton(`Delete`);
+        this._commentComponents[index].removeAttributeDisabledForButton();
+        shake(this._commentComponents[index]);
+      });
   }
 
   _onFormSubmit(formData) {
@@ -125,7 +127,7 @@ export default class CommentsController {
         this._textarea.removeDisabledAttribute();
       })
       .catch(() => {
-        this.shake();
+        shake(this._newCommentComponent);
         this._textarea.setRedBorder();
         this._textarea.removeDisabledAttribute();
       });
