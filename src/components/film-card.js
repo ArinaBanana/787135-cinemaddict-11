@@ -19,6 +19,7 @@ const createFilmCardTemplate = (film) => {
   } = film;
 
   const year = moment(releaseDate).year();
+  const isNotGenre = (genres.length === 0);
 
   return (
     `<article class="film-card">
@@ -27,7 +28,7 @@ const createFilmCardTemplate = (film) => {
       <p class="film-card__info">
         <span class="film-card__year">${year}</span>
         <span class="film-card__duration">${convertDuration(duration)}</span>
-        <span class="film-card__genre">${genres[0]}</span>
+        ${isNotGenre ? `` : `<span class="film-card__genre">${genres[0]}</span>`}
       </p>
       <img src="${poster.url}" alt="${title}" class="film-card__poster">
       <p class="film-card__description">${description}</p>
@@ -57,11 +58,27 @@ export default class FilmCard extends AbstractSmartComponent {
     return createFilmCardTemplate(this._film);
   }
 
-  setOpenPopupHandler(handler) {
+  setClickPosterHandler(handler) {
     this._openPopupHandler = handler;
 
     this.getElement()
       .querySelector(`.film-card__poster`)
+      .addEventListener(`click`, handler);
+  }
+
+  setClickTitleHandler(handler) {
+    this._openPopupHandler = handler;
+
+    this.getElement()
+      .querySelector(`.film-card__title`)
+      .addEventListener(`click`, handler);
+  }
+
+  setClickCommentHandler(handler) {
+    this._openPopupHandler = handler;
+
+    this.getElement()
+      .querySelector(`.film-card__comments`)
       .addEventListener(`click`, handler);
   }
 
@@ -90,7 +107,7 @@ export default class FilmCard extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setOpenPopupHandler(this._openPopupHandler);
+    this.setClickPosterHandler(this._openPopupHandler);
 
     this.setAddedToWatchlistHandler(this._handleAddToWathcList);
     this.setAddedToWatchedHandler(this._handleAddToWatched);

@@ -3,17 +3,24 @@ import Comment from "../components/comment";
 import NewComment from "../components/new-comment";
 import AddingEmoji from "../components/adding-emoji";
 import CommentTextarea from "../components/comment-textarea";
+import CommentAdapter from "../models/commentAdapter";
 
-import {render} from "../utils/methods-for-components";
+import {remove, render, shake} from "../utils/methods-for-components";
 import {RenderPosition} from "../utils/utils";
 import {ENTER_KEY, COMMENT_FORM_FIELDS} from "../utils/constant";
+import {api} from "../api";
 
-// import {encode} from "he";
+import {encode} from "he";
+
+const createComment = (emotion, author, date, comment) => {
+  return new CommentAdapter({emotion, author, date, comment});
+};
 
 export default class CommentsController {
-  constructor(container, onCommentsDataChange, getFormData) {
+  constructor(container, onCommentsDataChange, getFormData, filmId) {
     this._container = container;
     this._comments = null;
+    this._filmId = filmId;
 
     this._onCommentsDataChange = onCommentsDataChange;
     this._getFormData = getFormData;
@@ -23,7 +30,6 @@ export default class CommentsController {
 
     this._onChangeEmoji = this._onChangeEmoji.bind(this);
     this._onDelete = this._onDelete.bind(this);
-    this._onAddingNewComment = this._onAddingNewComment.bind(this);
     this._onFormSubmit = this._onFormSubmit.bind(this);
     this._subscribeHandler = this._subscribeHandler.bind(this);
   }
@@ -33,22 +39,24 @@ export default class CommentsController {
       this._comments = comments;
     }
 
-    this._commentsContainer = new CommentsContainer(this._comments.length);
+    if (this._commentsContainer) {
+      remove(this._commentsContainer);
+    }
 
+    this._commentsContainer = new CommentsContainer(this._comments.length);
     render(this._container, this._commentsContainer);
 
-    this._commentComponents = this._comments.map((comment) => new Comment(comment));
+    this._commentComponents = this._comments.map((comment) => new Comment(comment, `Delete`));
     this._commentComponents.forEach((commentComponent) => render(this._commentsContainer.getListComments(), commentComponent));
-
     this._commentComponents.forEach((component) => component.setButtonDeleteHandler(this._onDelete));
 
     this._initCreatingComment();
     this._subscribeCmdEnterPress();
   }
 
-  rerender(container) {
+  update(container, comments) {
     this._container = container;
-    this.init();
+    this.init(comments);
   }
 
   destroyListeners() {
@@ -77,9 +85,21 @@ export default class CommentsController {
 
   _onDelete(deletedComment) {
     const index = this._comments.findIndex((comment) => comment === deletedComment);
-    const newComments = [].concat(this._comments.slice(0, index), this._comments.slice(index + 1));
 
-    this._onCommentsDataChange(newComments);
+    this._commentComponents[index].setTitleForButton(`Deleting...`);
+    this._commentComponents[index].setAttributeDisabledForButton();
+
+    api.deleteComment(deletedComment.id)
+      .then(() => {
+        const newComments = [].concat(this._comments.slice(0, index), this._comments.slice(index + 1));
+
+        this._onCommentsDataChange(newComments);
+      })
+      .catch(() => {
+        this._commentComponents[index].setTitleForButton(`Delete`);
+        this._commentComponents[index].removeAttributeDisabledForButton();
+        shake(this._commentComponents[index]);
+      });
   }
 
   _onFormSubmit(formData) {
@@ -90,10 +110,27 @@ export default class CommentsController {
       }
     }
 
-    // const sanitizedText = encode(data.comment);
+    const sanitizedText = encode(data.comment);
 
-    // const newComment = createComment(getEmojiUrlByName(this._currentEmoji), `hello`, new Date(), sanitizedText);
-    // this._onAddingNewComment(newComment);
+    const newComment = createComment(this._currentEmoji, null, new Date(), sanitizedText);
+    const newData = CommentAdapter.clone(newComment);
+
+    this._textarea.setDisabledAttribute();
+    this._textarea.removeRedBorder();
+
+    api.createComment(this._filmId, newData)
+      .then((response) => {
+        const comments = CommentAdapter.parseComments(response.comments);
+        this._onCommentsDataChange(comments);
+      })
+      .then(() => {
+        this._textarea.removeDisabledAttribute();
+      })
+      .catch(() => {
+        shake(this._newCommentComponent);
+        this._textarea.setRedBorder();
+        this._textarea.removeDisabledAttribute();
+      });
   }
 
   _subscribeCmdEnterPress() {
@@ -105,10 +142,5 @@ export default class CommentsController {
       evt.preventDefault();
       this._onFormSubmit(this._getFormData());
     }
-  }
-
-  _onAddingNewComment(newComment) {
-    const newComments = [].concat(this._comments, newComment);
-    this._onCommentsDataChange(newComments);
   }
 }

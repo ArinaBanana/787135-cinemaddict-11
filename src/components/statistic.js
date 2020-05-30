@@ -1,11 +1,19 @@
 import AbstractSmartComponent from "./abstract-smart";
+import {PeriodStats} from "../utils/utils";
 import {BAR_HEIGHT} from "../utils/constant";
 
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import moment from "moment";
 
-const createStatisticTemplate = (filmsLength, topGenre, allDurationInMin, grade) => {
+const createFilter = (filter, activeType) => {
+  return (
+    `<input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-${filter.type}" value="${filter.type}" ${filter.type === activeType ? `checked` : ``}>
+    <label for="statistic-${filter.type}" class="statistic__filters-label">${filter.label}</label>`
+  );
+};
+
+const createStatisticTemplate = (filmsLength, topGenre, allDurationInMin, grade, filterType) => {
   const duration = moment.duration(allDurationInMin, `minutes`);
   const hours = duration.hours();
   const minutes = duration.minutes();
@@ -20,21 +28,11 @@ const createStatisticTemplate = (filmsLength, topGenre, allDurationInMin, grade)
 
       <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
         <p class="statistic__filters-description">Show stats:</p>
-
-        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-all-time" value="all-time" checked>
-        <label for="statistic-all-time" class="statistic__filters-label">All time</label>
-
-        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-today" value="today">
-        <label for="statistic-today" class="statistic__filters-label">Today</label>
-
-        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-week" value="week">
-        <label for="statistic-week" class="statistic__filters-label">Week</label>
-
-        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-month" value="month">
-        <label for="statistic-month" class="statistic__filters-label">Month</label>
-
-        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-year" value="year">
-        <label for="statistic-year" class="statistic__filters-label">Year</label>
+        ${createFilter(PeriodStats.ALL_TIME, filterType)}
+        ${createFilter(PeriodStats.TODAY, filterType)}
+        ${createFilter(PeriodStats.WEEK, filterType)}
+        ${createFilter(PeriodStats.MONTH, filterType)}
+        ${createFilter(PeriodStats.YEAR, filterType)}
       </form>
 
       <ul class="statistic__text-list">
@@ -47,8 +45,8 @@ const createStatisticTemplate = (filmsLength, topGenre, allDurationInMin, grade)
           <p class="statistic__item-text">${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description">m</span></p>
         </li>
         <li class="statistic__text-item">
-          <h4 class="statistic__item-title">Top genre</h4>
-          <p class="statistic__item-text">${topGenre}</p>
+        ${topGenre ? `<h4 class="statistic__item-title">Top genre</h4>
+          <p class="statistic__item-text">${topGenre}</p>` : ``}
         </li>
       </ul>
 
@@ -61,7 +59,7 @@ const createStatisticTemplate = (filmsLength, topGenre, allDurationInMin, grade)
 
 const renderChart = (labels, data) => {
   const statisticCtx = document.querySelector(`.statistic__chart`).getContext(`2d`);
-  // Обязательно рассчитайте высоту canvas, она зависит от количества элементов диаграммы
+
   statisticCtx.height = BAR_HEIGHT * 5;
 
   return new Chart(statisticCtx, {
@@ -74,6 +72,7 @@ const renderChart = (labels, data) => {
         backgroundColor: `#ffe800`,
         hoverBackgroundColor: `#ffe800`,
         anchor: `start`,
+        barThickness: 24,
       }],
     },
     options: {
@@ -99,7 +98,6 @@ const renderChart = (labels, data) => {
             display: false,
             drawBorder: false,
           },
-          barThickness: 24,
         }],
         xAxes: [{
           ticks: {
@@ -123,9 +121,16 @@ const renderChart = (labels, data) => {
 };
 
 export default class Statistic extends AbstractSmartComponent {
-  constructor(filmsLength, labels, data, allDurationInMin, grade) {
+  constructor(grade) {
     super();
+    this._grade = grade;
+  }
 
+  getTemplate() {
+    return createStatisticTemplate(this._filmsLength, this._topGenre, this._allDurationInMin, this._grade, this._filterType);
+  }
+
+  setData(filmsLength, labels, data, allDurationInMin, filterType) {
     this._filmsLength = filmsLength;
 
     this._labels = labels;
@@ -133,11 +138,26 @@ export default class Statistic extends AbstractSmartComponent {
 
     this._topGenre = labels[0];
     this._allDurationInMin = allDurationInMin;
-    this._grade = grade;
+
+    this._filterType = filterType;
+
+    this.rerender();
   }
 
-  getTemplate() {
-    return createStatisticTemplate(this._filmsLength, this._topGenre, this._allDurationInMin, this._grade);
+  setPeriodStatsHandler(handler) {
+    this._handler = handler;
+
+    this.getElement()
+      .querySelector(`.statistic__filters`)
+      .addEventListener(`change`, (evt) => {
+        evt.preventDefault();
+        handler(evt.target.value);
+      });
+  }
+
+  rerender() {
+    super.rerender();
+    renderChart(this._labels, this._data);
   }
 
   show() {
@@ -145,10 +165,11 @@ export default class Statistic extends AbstractSmartComponent {
     this._render();
   }
 
-  _render() {
-    renderChart(this._labels, this._data);
+  recoveryListeners() {
+    this.setPeriodStatsHandler(this._handler);
   }
 
-  recoveryListeners() {
+  _render() {
+    renderChart(this._labels, this._data);
   }
 }

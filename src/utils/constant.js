@@ -14,6 +14,7 @@ const COMMENT_FORM_FIELDS = [`comment`];
 // Значения
 const BAR_HEIGHT = 50;
 const SHOWING_FILMS_COUNT = 5;
+const SHAKE_ANIMATION_TIMEOUT = 600;
 
 // Сервер
 const AUTHORIZATION = `Basic hrguy43grgh`;
@@ -31,4 +32,5 @@ export {
   LINK,
   COMMENT_FORM_FIELDS,
   SHOWING_FILMS_COUNT,
+  SHAKE_ANIMATION_TIMEOUT,
 };

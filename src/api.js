@@ -1,10 +1,10 @@
 import MovieAdapter from "./models/movieAdapter";
 import CommentAdapter from "./models/commentAdapter";
 import {AUTHORIZATION, LINK} from "./utils/constant";
-import {Method} from "./utils/utils";
+import {Method, CodesResponse} from "./utils/utils";
 
 const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.status >= CodesResponse.OK && response.status < CodesResponse.MULTIPLE_CHOICE) {
     return response;
   } else {
     throw new Error(`${response.status}: ${response.statusText}`);
@@ -39,6 +39,19 @@ class API {
       headers: new Headers({"Content-Type": `application/json`}),
     }).then((response) => response.json())
       .then(MovieAdapter.parseMovie);
+  }
+
+  createComment(filmId, data) {
+    return this._load({
+      url: `comments/${filmId}`,
+      method: Method.POST,
+      body: JSON.stringify(data.toRaw()),
+      headers: new Headers({"Content-Type": `application/json`})
+    }).then((response) => response.json());
+  }
+
+  deleteComment(id) {
+    return this._load({url: `comments/${id}`, method: Method.DELETE});
   }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {

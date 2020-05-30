@@ -12,4 +12,28 @@ export default class CommentTextarea extends AbstractComponent {
   getTemplate() {
     return createCommentTextareaTemplate();
   }
+
+  setDisabledAttribute() {
+    this.getElement()
+      .querySelector(`.film-details__comment-input`)
+      .setAttribute(`disabled`, `disabled`);
+  }
+
+  setRedBorder() {
+    this.getElement()
+      .querySelector(`.film-details__comment-input`)
+      .setAttribute(`style`, `border: 1px solid red`);
+  }
+
+  removeDisabledAttribute() {
+    this.getElement()
+      .querySelector(`.film-details__comment-input`)
+      .removeAttribute(`disabled`);
+  }
+
+  removeRedBorder() {
+    this.getElement()
+      .querySelector(`.film-details__comment-input`)
+      .removeAttribute(`style`);
+  }
 }

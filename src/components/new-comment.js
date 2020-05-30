@@ -3,8 +3,6 @@ import AbstractSmartComponent from "./abstract-smart";
 const createNewCommentTemplate = () => {
   return (
     `<div class="film-details__new-comment">
-      <!--Показ выбранного смайла-->
-      <!--Поле для ввода текста-->
 
       <div class="film-details__emoji-list">
         <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile">

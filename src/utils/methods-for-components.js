@@ -1,4 +1,5 @@
 import {RenderPosition} from "./utils";
+import {SHAKE_ANIMATION_TIMEOUT} from "./constant";
 
 const createElement = (template) => {
   const element = document.createElement(`div`);
@@ -23,16 +24,12 @@ const remove = (component) => {
   component.removeElement();
 };
 
-const replace = (newComponent, oldComponent) => {
-  const oldChild = oldComponent.getElement();
-  const newChild = newComponent.getElement();
-  const parent = oldChild.parentElement;
+const shake = (component) => {
+  component.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
 
-  const isExistElements = !!(parent && newChild && oldChild);
-
-  if (isExistElements && parent.contains(oldChild)) {
-    parent.replaceChild(newChild, oldChild);
-  }
+  setTimeout(() => {
+    component.getElement().style.animation = ``;
+  }, SHAKE_ANIMATION_TIMEOUT);
 };
 
-export {createElement, render, remove, replace};
+export {createElement, render, remove, shake};

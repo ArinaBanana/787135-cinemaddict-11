@@ -8,7 +8,7 @@ const createFilter = (filter) => {
     isActive,
   } = filter;
 
-  const isFirstFilter = Boolean(name === `All movies`);
+  const isFirstFilter = (name === `All movies`);
 
   return (
     `<a href="#${name}" class="main-navigation__item ${isActive ? ACTIVE_CLASS_FILTER : ``}" data-filter="${name}">
