@@ -15,6 +15,14 @@ const CodesResponse = {
   MULTIPLE_CHOICE: 300,
 };
 
+const PeriodStats = {
+  ALL_TIME: {type: `all-time`, label: `All time`},
+  TODAY: {type: `today`, label: `Today`},
+  WEEK: {type: `week`, label: `Week`},
+  MONTH: {type: `month`, label: `Month`},
+  YEAR: {type: `year`, label: `Year`},
+};
+
 const Grades = {
   NOVICE: `Novice`,
   FAN: `Fan`,
@@ -44,4 +52,5 @@ export {
   RenderPosition,
   Method,
   CodesResponse,
+  PeriodStats
 };

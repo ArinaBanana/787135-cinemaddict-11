@@ -57,6 +57,7 @@ export default class PageController {
 
     this._statisticController = new StatisticController(this._elementMain, this._moviesModel, grade);
     this._statisticController.init();
+    this._statisticController.hide();
 
     render(this._elementMain, this._sectionFilmsComponent);
     render(this._sectionFilmsComponent.getElement(), this._filmsAllListComponent);

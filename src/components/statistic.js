@@ -1,4 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart";
+import {PeriodStats} from "../utils/utils";
 import {BAR_HEIGHT} from "../utils/constant";
 
 import Chart from "chart.js";
@@ -120,9 +121,16 @@ const renderChart = (labels, data) => {
 };
 
 export default class Statistic extends AbstractSmartComponent {
-  constructor(filmsLength, labels, data, allDurationInMin, grade) {
+  constructor(grade) {
     super();
+    this._grade = grade;
+  }
 
+  getTemplate() {
+    return createStatisticTemplate(this._filmsLength, this._topGenre, this._allDurationInMin, this._grade, this._filterType);
+  }
+
+  setData(filmsLength, labels, data, allDurationInMin, filterType) {
     this._filmsLength = filmsLength;
 
     this._labels = labels;
@@ -130,11 +138,26 @@ export default class Statistic extends AbstractSmartComponent {
 
     this._topGenre = labels[0];
     this._allDurationInMin = allDurationInMin;
-    this._grade = grade;
+
+    this._filterType = filterType;
+
+    this.rerender();
   }
 
-  getTemplate() {
-    return createStatisticTemplate(this._filmsLength, this._topGenre, this._allDurationInMin, this._grade);
+  setPeriodStatsHandler(handler) {
+    this._handler = handler;
+
+    this.getElement()
+      .querySelector(`.statistic__filters`)
+      .addEventListener(`change`, (evt) => {
+        evt.preventDefault();
+        handler(evt.target.value);
+      });
+  }
+
+  rerender() {
+    super.rerender();
+    renderChart(this._labels, this._data);
   }
 
   show() {
@@ -142,10 +165,11 @@ export default class Statistic extends AbstractSmartComponent {
     this._render();
   }
 
-  _render() {
-    renderChart(this._labels, this._data);
+  recoveryListeners() {
+    this.setPeriodStatsHandler(this._handler);
   }
 
-  recoveryListeners() {
+  _render() {
+    renderChart(this._labels, this._data);
   }
 }
