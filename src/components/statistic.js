@@ -71,6 +71,7 @@ const renderChart = (labels, data) => {
         backgroundColor: `#ffe800`,
         hoverBackgroundColor: `#ffe800`,
         anchor: `start`,
+        barThickness: 24,
       }],
     },
     options: {
@@ -96,7 +97,6 @@ const renderChart = (labels, data) => {
             display: false,
             drawBorder: false,
           },
-          barThickness: 24,
         }],
         xAxes: [{
           ticks: {
