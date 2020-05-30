@@ -25,7 +25,10 @@ export default class FilmController {
 
     render(this._container, this._filmComponent);
 
-    this._filmComponent.setOpenPopupHandler(this._onOpenPopup);
+    this._filmComponent.setClickPosterHandler(this._onOpenPopup);
+    this._filmComponent.setClickTitleHandler(this._onOpenPopup);
+    this._filmComponent.setClickCommentHandler(this._onOpenPopup);
+
     this._filmComponent.setAddedToWatchlistHandler(this._addToWatchList);
     this._filmComponent.setAddedToWatchedHandler(this._addToWatched);
     this._filmComponent.setAddedToFavoriteHandler(this._addToFavorites);

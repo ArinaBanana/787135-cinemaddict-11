@@ -58,11 +58,27 @@ export default class FilmCard extends AbstractSmartComponent {
     return createFilmCardTemplate(this._film);
   }
 
-  setOpenPopupHandler(handler) {
+  setClickPosterHandler(handler) {
     this._openPopupHandler = handler;
 
     this.getElement()
       .querySelector(`.film-card__poster`)
+      .addEventListener(`click`, handler);
+  }
+
+  setClickTitleHandler(handler) {
+    this._openPopupHandler = handler;
+
+    this.getElement()
+      .querySelector(`.film-card__title`)
+      .addEventListener(`click`, handler);
+  }
+
+  setClickCommentHandler(handler) {
+    this._openPopupHandler = handler;
+
+    this.getElement()
+      .querySelector(`.film-card__comments`)
       .addEventListener(`click`, handler);
   }
 
@@ -91,7 +107,7 @@ export default class FilmCard extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setOpenPopupHandler(this._openPopupHandler);
+    this.setClickPosterHandler(this._openPopupHandler);
 
     this.setAddedToWatchlistHandler(this._handleAddToWathcList);
     this.setAddedToWatchedHandler(this._handleAddToWatched);
