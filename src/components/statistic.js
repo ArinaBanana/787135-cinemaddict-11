@@ -45,8 +45,8 @@ const createStatisticTemplate = (filmsLength, topGenre, allDurationInMin, grade,
           <p class="statistic__item-text">${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description">m</span></p>
         </li>
         <li class="statistic__text-item">
-          <h4 class="statistic__item-title">Top genre</h4>
-          <p class="statistic__item-text">${topGenre}</p>
+        ${topGenre ? `<h4 class="statistic__item-title">Top genre</h4>
+          <p class="statistic__item-text">${topGenre}</p>` : ``}
         </li>
       </ul>
 
