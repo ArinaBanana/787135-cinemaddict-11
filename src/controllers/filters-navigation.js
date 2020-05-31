@@ -8,6 +8,9 @@ export default class FiltersNavigationController {
     this._container = container;
     this._moviesModel = moviesModel;
 
+    const filters = this._createFilters();
+    this._filtersComponent = new Filters(filters);
+
     this._onViewFilterChange = this._onViewFilterChange.bind(this);
     this._onModelFilterChange = this._onModelFilterChange.bind(this);
     this._onModelDataChange = this._onModelDataChange.bind(this);
@@ -15,13 +18,10 @@ export default class FiltersNavigationController {
     this._moviesModel.setFilterChangeHandlers(this._onModelFilterChange);
     this._moviesModel.setFilmChangeHandlers(this._onModelDataChange);
     this._moviesModel.setFilmsChangeHandlers(this._onModelDataChange);
+    this._filtersComponent.setLinkClickHandler(this._onViewFilterChange);
   }
 
   init() {
-    const filters = this._createFilters();
-    this._filtersComponent = new Filters(filters);
-    this._filtersComponent.setLinkClickHandler(this._onViewFilterChange);
-
     render(this._container, this._filtersComponent, RenderPosition.AFTERBEGIN);
   }
 

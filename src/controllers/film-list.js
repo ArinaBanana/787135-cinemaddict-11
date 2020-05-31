@@ -12,8 +12,8 @@ const createFilmControllers = (filmList, films, onDataChange, onClick) => {
   return films.reduce((acc, film) => {
     const key = film.id;
 
-    const filmController = new FilmController(filmList, onDataChange, onClick);
-    filmController.init(film);
+    const filmController = new FilmController(filmList, onDataChange, onClick, film);
+    filmController.init();
 
     acc[key] = filmController;
 
