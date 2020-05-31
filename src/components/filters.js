@@ -34,33 +34,22 @@ export default class Filters extends AbstractSmartComponent {
   constructor(filters) {
     super();
     this._filters = filters;
+    this._handlers = [];
   }
 
   getTemplate() {
     return createFiltersTemplate(this._filters);
   }
 
-  setFilterChangeHandlers(handler) {
-    this._changeHandler = handler;
+  setLinkClickHandler(handler, recovery) {
+    if (!recovery) {
+      this._handlers.push(handler);
+    }
 
     const links = this.getElement().querySelectorAll(`.main-navigation__item`);
 
     Array.prototype.forEach.call(links, (link) => link.addEventListener(`click`, (evt) => {
       const filter = evt.currentTarget.dataset.filter;
-      if (filter) {
-        handler(filter);
-      }
-    }));
-  }
-
-  setSwitchScreenHandler(handler) {
-    this._switchHandler = handler;
-
-    const links = this.getElement().querySelectorAll(`.main-navigation__item`);
-
-    Array.prototype.forEach.call(links, (link) => link.addEventListener(`click`, (evt) => {
-      const filter = evt.currentTarget.dataset.filter;
-
       if (filter) {
         handler(filter);
       }
@@ -73,7 +62,6 @@ export default class Filters extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setFilterChangeHandlers(this._changeHandler);
-    this.setSwitchScreenHandler(this._switchHandler);
+    this._handlers.forEach((handler) => this.setLinkClickHandler(handler, true));
   }
 }

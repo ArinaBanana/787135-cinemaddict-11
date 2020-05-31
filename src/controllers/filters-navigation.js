@@ -20,13 +20,13 @@ export default class FiltersNavigationController {
   init() {
     const filters = this._createFilters();
     this._filtersComponent = new Filters(filters);
-    this._filtersComponent.setFilterChangeHandlers(this._onViewFilterChange);
+    this._filtersComponent.setLinkClickHandler(this._onViewFilterChange);
 
     render(this._container, this._filtersComponent, RenderPosition.AFTERBEGIN);
   }
 
   setChangeScreen(handler) {
-    this._filtersComponent.setSwitchScreenHandler(handler);
+    this._filtersComponent.setLinkClickHandler(handler);
   }
 
   _createFilters() {

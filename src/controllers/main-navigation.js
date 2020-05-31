@@ -18,13 +18,12 @@ export default class MainNavigationController {
     this._moviesModel = moviesModel;
 
     this._navigationComponent = new Navigation();
+    this._filtersController = new FiltersNavigationController(this._navigationComponent.getElement(), this._moviesModel);
+    this._filtersController.init();
   }
 
   init() {
     render(this._container, this._navigationComponent, RenderPosition.AFTERBEGIN);
-
-    this._filtersController = new FiltersNavigationController(this._navigationComponent.getElement(), this._moviesModel);
-    this._filtersController.init();
   }
 
   setChangeScreenHandler(handler) {

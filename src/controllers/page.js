@@ -24,7 +24,8 @@ export default class PageController {
 
   _createComponents() {
     this._loading = new Loading();
-    this._mainNavigationController = new MainNavigationController(this._elementMain, this._moviesModel);
+
+    this._createMainNavigationController();
     this._sortController = new SortController(this._elementMain, this._moviesModel);
     this._sectionFilmsComponent = new SectionFilms();
     this._filmsAllListComponent = new FilmsAllList();
@@ -32,6 +33,23 @@ export default class PageController {
     this._quantity = new QuantityFilms();
 
     this._user = new UserProfile();
+  }
+
+  _createMainNavigationController() {
+    this._mainNavigationController = new MainNavigationController(this._elementMain, this._moviesModel);
+    this._mainNavigationController.setChangeScreenHandler((menuItem) => {
+      switch (menuItem) {
+        case MenuItems.STATS:
+          this._sortController.hide();
+          this._filmsAllListComponent.hide();
+          this._statisticController.show();
+          break;
+        default:
+          this._sortController.show();
+          this._filmsAllListComponent.show();
+          this._statisticController.hide();
+      }
+    });
   }
 
   init() {
@@ -62,18 +80,6 @@ export default class PageController {
     render(this._elementMain, this._sectionFilmsComponent);
     render(this._sectionFilmsComponent.getElement(), this._filmsAllListComponent);
 
-    this._mainNavigationController.setChangeScreenHandler((menuItem) => {
-      switch (menuItem) {
-        case MenuItems.STATS:
-          this._sortController.hide();
-          this._filmsAllListComponent.hide();
-          this._statisticController.show();
-          break;
-        default:
-          this._sortController.show();
-          this._filmsAllListComponent.show();
-          this._statisticController.hide();
-      }
-    });
+
   }
 }
