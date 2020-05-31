@@ -57,8 +57,7 @@ class API {
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);
 
-    return fetch(`${this._link}/${url}`, {method, body, headers})
-      .then(checkStatus);
+    return fetch(`${this._link}/${url}`, {method, body, headers}).then(checkStatus);
   }
 }
 

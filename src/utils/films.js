@@ -1,31 +1,38 @@
 import MovieAdapter from "../models/movieAdapter";
+import notification from "../components/notification";
 import {api} from "../api";
 
-const addToWatchlist = (film, filmUpdateHandler) => {
+const updateFilm = (film, transformFilm, filmUpdateHandler) => {
   const newFilm = MovieAdapter.clone(film);
-  newFilm.addedToWatchlist = !newFilm.addedToWatchlist;
+  transformFilm(film, newFilm);
 
-  api.updateMovie(film.id, newFilm).then((movie) => {
-    filmUpdateHandler(movie);
-  });
+  api.updateMovie(film.id, newFilm)
+    .then((movie) => {
+      filmUpdateHandler(movie);
+    })
+    .catch(() => {
+      notification.alert({type: `error`, text: `Please, try again later...`});
+    });
+};
+
+const addToWatchlist = (film, filmUpdateHandler) => {
+  updateFilm(film, (oldFilm, newFilm) => {
+    newFilm.addedToWatchlist = !oldFilm.addedToWatchlist;
+  }, filmUpdateHandler);
 };
 
 const addToWatched = (film, filmUpdateHandler) => {
-  const newFilm = MovieAdapter.clone(film);
-  newFilm.alreadyWatched = !newFilm.alreadyWatched;
-
-  api.updateMovie(film.id, newFilm).then((movie) => {
-    filmUpdateHandler(movie);
-  });
+  updateFilm(film, (oldFilm, newFilm) => {
+    newFilm.alreadyWatched = !oldFilm.alreadyWatched;
+  },
+  filmUpdateHandler);
 };
 
 const addToFavorites = (film, filmUpdateHandler) => {
-  const newFilm = MovieAdapter.clone(film);
-  newFilm.addedToFavorite = !newFilm.addedToFavorite;
-
-  api.updateMovie(film.id, newFilm).then((movie) => {
-    filmUpdateHandler(movie);
-  });
+  updateFilm(film, (oldFilm, newFilm) => {
+    newFilm.addedToFavorite = !oldFilm.addedToFavorite;
+  },
+  filmUpdateHandler);
 };
 
 export {addToWatchlist, addToWatched, addToFavorites};

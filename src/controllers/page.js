@@ -61,7 +61,6 @@ export default class PageController {
     render(this._elementMain, this._loading);
     render(this._elementHeader, this._user);
     render(this._elementFooter, this._quantity);
-
   }
 
   _handleFilmsChange() {
@@ -79,7 +78,5 @@ export default class PageController {
 
     render(this._elementMain, this._sectionFilmsComponent);
     render(this._sectionFilmsComponent.getElement(), this._filmsAllListComponent);
-
-
   }
 }
