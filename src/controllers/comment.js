@@ -80,13 +80,13 @@ export default class CommentsController {
 
   _onChangeEmoji(emoji) {
     this._currentEmoji = emoji;
-    this._addingEmoji.rerender(this._currentEmoji);
+    this._addingEmoji.setEmoji(this._currentEmoji);
   }
 
   _onDelete(deletedComment) {
     const index = this._comments.findIndex((comment) => comment === deletedComment);
 
-    this._commentComponents[index].setTitleForButton(`Deleting...`);
+    this._commentComponents[index].setTitleForDeleteButton(`Deleting...`);
     this._commentComponents[index].setAttributeDisabledForButton();
 
     api.deleteComment(deletedComment.id)
@@ -96,7 +96,7 @@ export default class CommentsController {
         this._onCommentsDataChange(newComments);
       })
       .catch(() => {
-        this._commentComponents[index].setTitleForButton(`Delete`);
+        this._commentComponents[index].setTitleForDeleteButton(`Delete`);
         this._commentComponents[index].removeAttributeDisabledForButton();
         shake(this._commentComponents[index]);
       });

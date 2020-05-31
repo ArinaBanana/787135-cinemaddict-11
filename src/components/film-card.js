@@ -114,7 +114,7 @@ export default class FilmCard extends AbstractSmartComponent {
     this.setAddedToFavoriteHandler(this._handleAddToFavorites);
   }
 
-  rerender(film) {
+  setFilm(film) {
     this._film = film;
     super.rerender();
   }

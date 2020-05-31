@@ -64,7 +64,7 @@ export default class Comment extends AbstractSmartComponent {
       });
   }
 
-  setTitleForButton(title) {
+  setTitleForDeleteButton(title) {
     this._titleForButtonDelete = title;
     super.rerender();
   }

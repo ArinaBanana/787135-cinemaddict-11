@@ -38,7 +38,7 @@ export default class FilmController {
 
   setFilm(film) {
     this._film = film;
-    this._filmComponent.rerender(this._film);
+    this._filmComponent.setFilm(this._film);
   }
 
   destroy() {

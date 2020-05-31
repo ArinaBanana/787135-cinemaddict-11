@@ -22,7 +22,7 @@ export default class AddingEmoji extends AbstractSmartComponent {
     return null;
   }
 
-  rerender(emoji) {
+  setEmoji(emoji) {
     this._currentEmoji = emoji;
     super.rerender();
   }
