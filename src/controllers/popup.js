@@ -1,6 +1,7 @@
 import PopupFilmDetails from "../components/popup-film-details";
 import CommentsController from "./comment";
 import PopupContainer from "../components/popup-container";
+import notification from "../components/notification";
 import {remove, render} from "../utils/components";
 import {addToWatchlist, addToWatched, addToFavorites} from "../utils/films";
 import {ESC_KEY} from "../utils/constant";
@@ -67,6 +68,9 @@ export default class PopupController {
           this._comments = {};
           this._comments[this._film.id] = comments;
           this._initComments(comments);
+        })
+        .catch(() => {
+          notification.alert({type: `error`, text: `Error loading comments... Please, try again later`});
         });
     }
   }

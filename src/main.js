@@ -1,5 +1,6 @@
 import MoviesModel from "./models/movies";
 import PageController from "./controllers/page";
+import notification from "./components/notification";
 import {api} from "./api";
 
 const elementHeader = document.querySelector(`.header`);
@@ -11,6 +12,10 @@ const pageController = new PageController(elementHeader, elementMain, elementFoo
 
 pageController.init();
 
-api.getMovies().then((movies) => {
-  moviesModel.setMovies(movies);
-});
+api.getMovies()
+  .then((movies) => {
+    moviesModel.setMovies(movies);
+  })
+  .catch(() => {
+    notification.alert({type: `error`, text: `Error loading movies... Please, try again later`, stay: true});
+  });
