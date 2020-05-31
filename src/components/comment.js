@@ -1,5 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart";
-import {getEmojiUrlByName} from "../utils/utils";
+import {getEmojiUrlByName, TitlesForButton} from "../utils/utils";
 import moment from "moment";
 
 const getFormattingDate = (timestamp) => {
@@ -43,10 +43,10 @@ const createCommentTemplate = (comment, titleForButtonDelete) => {
 };
 
 export default class Comment extends AbstractSmartComponent {
-  constructor(comment, titleForButtonDelete) {
+  constructor(comment) {
     super();
     this._comment = comment;
-    this._titleForButtonDelete = titleForButtonDelete;
+    this._titleForButtonDelete = TitlesForButton.DELETE;
   }
 
   getTemplate() {
@@ -64,8 +64,8 @@ export default class Comment extends AbstractSmartComponent {
       });
   }
 
-  setTitleForDeleteButton(title) {
-    this._titleForButtonDelete = title;
+  setIsLoading(isLoading) {
+    this._titleForButtonDelete = isLoading ? TitlesForButton.DELETING : TitlesForButton.DELETE;
     super.rerender();
   }
 
@@ -79,11 +79,6 @@ export default class Comment extends AbstractSmartComponent {
     this.getElement()
       .querySelector(`.film-details__comment-delete`)
       .removeAttribute(`disabled`);
-  }
-
-  rerender(comment) {
-    this._comment = comment;
-    super.rerender();
   }
 
   recoveryListeners() {
