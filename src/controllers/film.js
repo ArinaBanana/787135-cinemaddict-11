@@ -1,7 +1,5 @@
 import FilmCard from "../components/film-card";
-import MovieAdapter from "../models/movieAdapter";
-
-import {api} from "../api";
+import {addToWatchlist, addToWatched, addToFavorites} from "../utils/films";
 import {remove, render} from "../utils/components";
 
 export default class FilmController {
@@ -46,34 +44,16 @@ export default class FilmController {
 
   _addToWatchList(evt) {
     evt.preventDefault();
-
-    const newFilm = MovieAdapter.clone(this._film);
-    newFilm.addedToWatchlist = !newFilm.addedToWatchlist;
-
-    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
-      this._onDataChange(movie);
-    });
+    addToWatchlist(this._film, this._onDataChange);
   }
 
   _addToWatched(evt) {
     evt.preventDefault();
-
-    const newFilm = MovieAdapter.clone(this._film);
-    newFilm.alreadyWatched = !newFilm.alreadyWatched;
-
-    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
-      this._onDataChange(movie);
-    });
+    addToWatched(this._film, this._onDataChange);
   }
 
   _addToFavorites(evt) {
     evt.preventDefault();
-
-    const newFilm = MovieAdapter.clone(this._film);
-    newFilm.addedToFavorite = !newFilm.addedToFavorite;
-
-    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
-      this._onDataChange(movie);
-    });
+    addToFavorites(this._film, this._onDataChange);
   }
 }
