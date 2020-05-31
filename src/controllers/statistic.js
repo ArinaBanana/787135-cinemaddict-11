@@ -1,7 +1,7 @@
 import Statistic from "../components/statistic";
 import {PeriodStats} from "../utils/utils";
-import {render} from "../utils/methods-for-components";
-import {filterFilmsByPeriod} from "../utils/methods-for-stats";
+import {render} from "../utils/components";
+import {filterFilmsByPeriod} from "../utils/stats";
 
 export default class StatisticController {
   constructor(container, moviesModel, grade) {

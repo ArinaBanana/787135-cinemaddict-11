@@ -1,10 +1,11 @@
 import PopupFilmDetails from "../components/popup-film-details";
 import CommentsController from "./comment";
 import PopupContainer from "../components/popup-container";
-import {remove, render} from "../utils/methods-for-components";
+import notification from "../components/notification";
+import {remove, render} from "../utils/components";
+import {addToWatchlist, addToWatched, addToFavorites} from "../utils/films";
 import {ESC_KEY} from "../utils/constant";
 import {api} from "../api";
-import MovieAdapter from "../models/movieAdapter";
 
 export default class PopupController {
   constructor(container, onDataChange) {
@@ -56,7 +57,7 @@ export default class PopupController {
     this._film = film;
 
     if (isShowed) {
-      this._popupComponent.rerender(this._film);
+      this._popupComponent.setFilm(this._film);
     }
 
     if (isShowed && isSameFilm) {
@@ -67,6 +68,9 @@ export default class PopupController {
           this._comments = {};
           this._comments[this._film.id] = comments;
           this._initComments(comments);
+        })
+        .catch(() => {
+          notification.alert({type: `error`, text: `Error loading comments... Please, try again later`});
         });
     }
   }
@@ -115,34 +119,16 @@ export default class PopupController {
 
   _addToWatchList(evt) {
     evt.preventDefault();
-
-    const newFilm = MovieAdapter.clone(this._film);
-    newFilm.addedToWatchlist = !newFilm.addedToWatchlist;
-
-    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
-      this._onDataChange(movie);
-    });
+    addToWatchlist(this._film, this._onDataChange);
   }
 
   _addToWatched(evt) {
     evt.preventDefault();
-
-    const newFilm = MovieAdapter.clone(this._film);
-    newFilm.alreadyWatched = !newFilm.alreadyWatched;
-
-    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
-      this._onDataChange(movie);
-    });
+    addToWatched(this._film, this._onDataChange);
   }
 
   _addToFavorites(evt) {
     evt.preventDefault();
-
-    const newFilm = MovieAdapter.clone(this._film);
-    newFilm.addedToFavorite = !newFilm.addedToFavorite;
-
-    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
-      this._onDataChange(movie);
-    });
+    addToFavorites(this._film, this._onDataChange);
   }
 }

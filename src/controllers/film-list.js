@@ -5,15 +5,15 @@ import NoFilms from "../components/no-films";
 import FilmController from "./film";
 import PopupController from "./popup";
 
-import {remove, render} from "../utils/methods-for-components";
+import {remove, render} from "../utils/components";
 import {BODY_ELEMENT, SHOWING_FILMS_COUNT} from "../utils/constant";
 
 const createFilmControllers = (filmList, films, onDataChange, onClick) => {
   return films.reduce((acc, film) => {
     const key = film.id;
 
-    const filmController = new FilmController(filmList, onDataChange, onClick);
-    filmController.init(film);
+    const filmController = new FilmController(filmList, onDataChange, onClick, film);
+    filmController.init();
 
     acc[key] = filmController;
 
@@ -29,7 +29,6 @@ export default class FilmListController {
     this._noFilms = new NoFilms();
 
     this._moviesModel = moviesModel;
-    this._currentFilm = null;
 
     this._showedFilmControllers = {};
 
@@ -142,8 +141,7 @@ export default class FilmListController {
   }
 
   _onClick(film) {
-    this._currentFilm = film;
-    this._popupController.setFilm(this._currentFilm);
+    this._popupController.setFilm(film);
     this._popupController.show();
   }
 }

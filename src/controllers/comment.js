@@ -5,7 +5,7 @@ import AddingEmoji from "../components/adding-emoji";
 import CommentTextarea from "../components/comment-textarea";
 import CommentAdapter from "../models/commentAdapter";
 
-import {remove, render, shake} from "../utils/methods-for-components";
+import {remove, render, shake} from "../utils/components";
 import {RenderPosition} from "../utils/utils";
 import {ENTER_KEY, COMMENT_FORM_FIELDS} from "../utils/constant";
 import {api} from "../api";
@@ -31,7 +31,7 @@ export default class CommentsController {
     this._onChangeEmoji = this._onChangeEmoji.bind(this);
     this._onDelete = this._onDelete.bind(this);
     this._onFormSubmit = this._onFormSubmit.bind(this);
-    this._subscribeHandler = this._subscribeHandler.bind(this);
+    this._cmdEnterPressHandler = this._cmdEnterPressHandler.bind(this);
   }
 
   init(comments) {
@@ -46,7 +46,7 @@ export default class CommentsController {
     this._commentsContainer = new CommentsContainer(this._comments.length);
     render(this._container, this._commentsContainer);
 
-    this._commentComponents = this._comments.map((comment) => new Comment(comment, `Delete`));
+    this._commentComponents = this._comments.map((comment) => new Comment(comment));
     this._commentComponents.forEach((commentComponent) => render(this._commentsContainer.getListComments(), commentComponent));
     this._commentComponents.forEach((component) => component.setButtonDeleteHandler(this._onDelete));
 
@@ -60,7 +60,7 @@ export default class CommentsController {
   }
 
   destroyListeners() {
-    document.removeEventListener(`keydown`, this._subscribeHandler);
+    document.removeEventListener(`keydown`, this._cmdEnterPressHandler);
   }
 
   _initCreatingComment() {
@@ -80,14 +80,14 @@ export default class CommentsController {
 
   _onChangeEmoji(emoji) {
     this._currentEmoji = emoji;
-    this._addingEmoji.rerender(this._currentEmoji);
+    this._addingEmoji.setEmoji(this._currentEmoji);
   }
 
   _onDelete(deletedComment) {
     const index = this._comments.findIndex((comment) => comment === deletedComment);
 
-    this._commentComponents[index].setTitleForButton(`Deleting...`);
-    this._commentComponents[index].setAttributeDisabledForButton();
+    this._commentComponents[index].setIsLoading(true);
+    this._commentComponents[index].disableRemoveButton();
 
     api.deleteComment(deletedComment.id)
       .then(() => {
@@ -96,8 +96,8 @@ export default class CommentsController {
         this._onCommentsDataChange(newComments);
       })
       .catch(() => {
-        this._commentComponents[index].setTitleForButton(`Delete`);
-        this._commentComponents[index].removeAttributeDisabledForButton();
+        this._commentComponents[index].setIsLoading(false);
+        this._commentComponents[index].enableRemoveButton();
         shake(this._commentComponents[index]);
       });
   }
@@ -115,29 +115,28 @@ export default class CommentsController {
     const newComment = createComment(this._currentEmoji, null, new Date(), sanitizedText);
     const newData = CommentAdapter.clone(newComment);
 
-    this._textarea.setDisabledAttribute();
-    this._textarea.removeRedBorder();
+    this._textarea.disableTextarea();
+    this._textarea.removeError();
 
     api.createComment(this._filmId, newData)
       .then((response) => {
         const comments = CommentAdapter.parseComments(response.comments);
         this._onCommentsDataChange(comments);
       })
-      .then(() => {
-        this._textarea.removeDisabledAttribute();
-      })
       .catch(() => {
         shake(this._newCommentComponent);
-        this._textarea.setRedBorder();
-        this._textarea.removeDisabledAttribute();
+        this._textarea.setError();
+      })
+      .then(() => {
+        this._textarea.enableTextarea();
       });
   }
 
   _subscribeCmdEnterPress() {
-    document.addEventListener(`keydown`, this._subscribeHandler);
+    document.addEventListener(`keydown`, this._cmdEnterPressHandler);
   }
 
-  _subscribeHandler(evt) {
+  _cmdEnterPressHandler(evt) {
     if (evt.code === ENTER_KEY && evt.metaKey) {
       evt.preventDefault();
       this._onFormSubmit(this._getFormData());

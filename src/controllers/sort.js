@@ -1,5 +1,5 @@
 import SortElement from "../components/sort-elements";
-import {render} from "../utils/methods-for-components";
+import {render} from "../utils/components";
 import {SortTypes} from "../utils/sorting";
 import {RenderPosition} from "../utils/utils";
 

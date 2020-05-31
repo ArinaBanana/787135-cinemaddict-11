@@ -1,7 +1,7 @@
 import Navigation from "../components/navigation";
 import FiltersNavigationController from "./filters-navigation";
 
-import {render} from "../utils/methods-for-components";
+import {render} from "../utils/components";
 import {RenderPosition} from "../utils/utils";
 
 const MenuItems = {
@@ -18,13 +18,12 @@ export default class MainNavigationController {
     this._moviesModel = moviesModel;
 
     this._navigationComponent = new Navigation();
+    this._filtersController = new FiltersNavigationController(this._navigationComponent.getElement(), this._moviesModel);
+    this._filtersController.init();
   }
 
   init() {
     render(this._container, this._navigationComponent, RenderPosition.AFTERBEGIN);
-
-    this._filtersController = new FiltersNavigationController(this._navigationComponent.getElement(), this._moviesModel);
-    this._filtersController.init();
   }
 
   setChangeScreenHandler(handler) {

@@ -1,29 +1,20 @@
 import FilmCard from "../components/film-card";
-import MovieAdapter from "../models/movieAdapter";
-
-import {remove, render} from "../utils/methods-for-components";
-import {api} from "../api";
+import {addToWatchlist, addToWatched, addToFavorites} from "../utils/films";
+import {remove, render} from "../utils/components";
 
 export default class FilmController {
-  constructor(container, onDataChange, onClick) {
+  constructor(container, onDataChange, onClick, film) {
     this._container = container;
     this._onDataChange = onDataChange;
     this._onClick = onClick;
 
-    this._film = null;
-    this._filmComponent = null;
+    this._film = film;
+    this._filmComponent = new FilmCard(this._film);
 
     this._onOpenPopup = this._onOpenPopup.bind(this);
     this._addToWatchList = this._addToWatchList.bind(this);
     this._addToWatched = this._addToWatched.bind(this);
     this._addToFavorites = this._addToFavorites.bind(this);
-  }
-
-  init(film) {
-    this._film = film;
-    this._filmComponent = new FilmCard(this._film);
-
-    render(this._container, this._filmComponent);
 
     this._filmComponent.setClickPosterHandler(this._onOpenPopup);
     this._filmComponent.setClickTitleHandler(this._onOpenPopup);
@@ -32,13 +23,15 @@ export default class FilmController {
     this._filmComponent.setAddedToWatchlistHandler(this._addToWatchList);
     this._filmComponent.setAddedToWatchedHandler(this._addToWatched);
     this._filmComponent.setAddedToFavoriteHandler(this._addToFavorites);
+  }
 
+  init() {
     render(this._container, this._filmComponent);
   }
 
   setFilm(film) {
     this._film = film;
-    this._filmComponent.rerender(this._film);
+    this._filmComponent.setFilm(this._film);
   }
 
   destroy() {
@@ -51,34 +44,16 @@ export default class FilmController {
 
   _addToWatchList(evt) {
     evt.preventDefault();
-
-    const newFilm = MovieAdapter.clone(this._film);
-    newFilm.addedToWatchlist = !newFilm.addedToWatchlist;
-
-    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
-      this._onDataChange(movie);
-    });
+    addToWatchlist(this._film, this._onDataChange);
   }
 
   _addToWatched(evt) {
     evt.preventDefault();
-
-    const newFilm = MovieAdapter.clone(this._film);
-    newFilm.alreadyWatched = !newFilm.alreadyWatched;
-
-    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
-      this._onDataChange(movie);
-    });
+    addToWatched(this._film, this._onDataChange);
   }
 
   _addToFavorites(evt) {
     evt.preventDefault();
-
-    const newFilm = MovieAdapter.clone(this._film);
-    newFilm.addedToFavorite = !newFilm.addedToFavorite;
-
-    api.changeDataMovie(this._film.id, newFilm).then((movie) => {
-      this._onDataChange(movie);
-    });
+    addToFavorites(this._film, this._onDataChange);
   }
 }

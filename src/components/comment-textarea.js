@@ -13,27 +13,23 @@ export default class CommentTextarea extends AbstractComponent {
     return createCommentTextareaTemplate();
   }
 
-  setDisabledAttribute() {
-    this.getElement()
-      .querySelector(`.film-details__comment-input`)
-      .setAttribute(`disabled`, `disabled`);
+  disableTextarea() {
+    this._getCommentInput().setAttribute(`disabled`, `disabled`);
   }
 
-  setRedBorder() {
-    this.getElement()
-      .querySelector(`.film-details__comment-input`)
-      .setAttribute(`style`, `border: 1px solid red`);
+  enableTextarea() {
+    this._getCommentInput().removeAttribute(`disabled`);
   }
 
-  removeDisabledAttribute() {
-    this.getElement()
-      .querySelector(`.film-details__comment-input`)
-      .removeAttribute(`disabled`);
+  setError() {
+    this._getCommentInput().setAttribute(`style`, `border: 1px solid red`);
   }
 
-  removeRedBorder() {
-    this.getElement()
-      .querySelector(`.film-details__comment-input`)
-      .removeAttribute(`style`);
+  removeError() {
+    this._getCommentInput().removeAttribute(`style`);
+  }
+
+  _getCommentInput() {
+    return this.getElement().querySelector(`.film-details__comment-input`);
   }
 }

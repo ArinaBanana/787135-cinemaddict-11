@@ -168,7 +168,7 @@ export default class PopupFilmDetails extends AbstractSmartComponent {
     return new FormData(form);
   }
 
-  rerender(film) {
+  setFilm(film) {
     this._film = film;
     super.rerender();
   }

@@ -23,6 +23,11 @@ const PeriodStats = {
   YEAR: {type: `year`, label: `Year`},
 };
 
+const TitlesForButton = {
+  DELETE: `Delete`,
+  DELETING: `Deleting...`,
+};
+
 const Grades = {
   NOVICE: `Novice`,
   FAN: `Fan`,
@@ -52,5 +57,6 @@ export {
   RenderPosition,
   Method,
   CodesResponse,
-  PeriodStats
+  PeriodStats,
+  TitlesForButton,
 };

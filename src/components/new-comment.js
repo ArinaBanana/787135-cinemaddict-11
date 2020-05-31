@@ -34,8 +34,7 @@ export default class NewComment extends AbstractSmartComponent {
     super();
     this._emoji = emoji;
 
-    this._originalCurrentEmojiHandler = null;
-    this._wrappedCurrentEmojiHandler = null;
+    this._currentEmojiHandler = null;
   }
 
   getTemplate() {
@@ -43,21 +42,20 @@ export default class NewComment extends AbstractSmartComponent {
   }
 
   setCurrentEmojiHandler(handler) {
-    this._originalCurrentEmojiHandler = handler;
-    this._wrappedCurrentEmojiHandler = function (evt) {
+    this._currentEmojiHandler = handler;
+
+    const emojiList = this._getEmojiList();
+
+    emojiList.addEventListener(`change`, function (evt) {
       handler(evt.target.value);
-    };
-
-    const element = this.getElement().querySelector(`.film-details__emoji-list`);
-
-    if (this._originalCurrentEmojiHandler) {
-      element.removeEventListener(`change`, this._wrappedCurrentEmojiHandler);
-    }
-
-    element.addEventListener(`change`, this._wrappedCurrentEmojiHandler);
+    });
   }
 
   recoveryListeners() {
-    this.setCurrentEmojiHandler(this._originalCurrentEmojiHandler);
+    this.setCurrentEmojiHandler(this._currentEmojiHandler);
+  }
+
+  _getEmojiList() {
+    return this.getElement().querySelector(`.film-details__emoji-list`);
   }
 }

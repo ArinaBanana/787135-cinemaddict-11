@@ -31,7 +31,7 @@ class API {
       .then(CommentAdapter.parseComments);
   }
 
-  changeDataMovie(id, data) {
+  updateMovie(id, data) {
     return this._load({
       url: `movies/${id}`,
       method: Method.PUT,
@@ -57,10 +57,7 @@ class API {
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);
 
-    return fetch(`${this._link}/${url}`, {method, body, headers})
-      .then(checkStatus).catch((err) => {
-        throw err;
-      });
+    return fetch(`${this._link}/${url}`, {method, body, headers}).then(checkStatus);
   }
 }
 

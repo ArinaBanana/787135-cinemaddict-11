@@ -108,13 +108,15 @@ export default class FilmCard extends AbstractSmartComponent {
 
   recoveryListeners() {
     this.setClickPosterHandler(this._openPopupHandler);
+    this.setClickTitleHandler(this._openPopupHandler);
+    this.setClickCommentHandler(this._openPopupHandler);
 
     this.setAddedToWatchlistHandler(this._handleAddToWathcList);
     this.setAddedToWatchedHandler(this._handleAddToWatched);
     this.setAddedToFavoriteHandler(this._handleAddToFavorites);
   }
 
-  rerender(film) {
+  setFilm(film) {
     this._film = film;
     super.rerender();
   }
