@@ -29,7 +29,6 @@ export default class FilmListController {
     this._noFilms = new NoFilms();
 
     this._moviesModel = moviesModel;
-    this._currentFilm = null;
 
     this._showedFilmControllers = {};
 
@@ -142,8 +141,7 @@ export default class FilmListController {
   }
 
   _onClick(film) {
-    this._currentFilm = film;
-    this._popupController.setFilm(this._currentFilm);
+    this._popupController.setFilm(film);
     this._popupController.show();
   }
 }
