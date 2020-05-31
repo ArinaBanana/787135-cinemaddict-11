@@ -123,13 +123,12 @@ export default class CommentsController {
         const comments = CommentAdapter.parseComments(response.comments);
         this._onCommentsDataChange(comments);
       })
-      .then(() => {
-        this._textarea.removeDisabledAttribute();
-      })
       .catch(() => {
         shake(this._newCommentComponent);
-        this._textarea.setRedBorder();
-        this._textarea.removeDisabledAttribute();
+        this._textarea.setError();
+      })
+      .then(() => {
+        this._textarea.enableTextarea();
       });
   }
 
