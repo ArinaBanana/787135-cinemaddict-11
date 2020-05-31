@@ -57,8 +57,8 @@ const createStatisticTemplate = (filmsLength, topGenre, allDurationInMin, grade,
   );
 };
 
-const renderChart = (labels, data) => {
-  const statisticCtx = document.querySelector(`.statistic__chart`).getContext(`2d`);
+const renderChart = (labels, data, canvas) => {
+  const statisticCtx = canvas.getContext(`2d`);
 
   statisticCtx.height = BAR_HEIGHT * 5;
 
@@ -157,7 +157,7 @@ export default class Statistic extends AbstractSmartComponent {
 
   rerender() {
     super.rerender();
-    renderChart(this._labels, this._data);
+    this._renderChart(this._labels, this._data);
   }
 
   show() {
@@ -170,6 +170,14 @@ export default class Statistic extends AbstractSmartComponent {
   }
 
   _render() {
-    renderChart(this._labels, this._data);
+    this._renderChart(this._labels, this._data);
+  }
+
+  _renderChart() {
+    renderChart(this._labels, this._data, this._getStatisticCanvas());
+  }
+
+  _getStatisticCanvas() {
+    return this.getElement().querySelector(`.statistic__chart`);
   }
 }
