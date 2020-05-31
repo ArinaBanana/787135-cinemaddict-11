@@ -1,8 +1,8 @@
 import FilmCard from "../components/film-card";
 import MovieAdapter from "../models/movieAdapter";
 
-import {remove, render} from "../utils/methods-for-components";
 import {api} from "../api";
+import {remove, render} from "../utils/components";
 
 export default class FilmController {
   constructor(container, onDataChange, onClick, film) {

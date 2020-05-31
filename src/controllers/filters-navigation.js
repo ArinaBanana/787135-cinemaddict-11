@@ -1,5 +1,5 @@
 import Filters from "../components/filters";
-import {render} from "../utils/methods-for-components";
+import {render} from "../utils/components";
 import {getFilmsByFilters, FilterTypes} from "../utils/filtration";
 import {RenderPosition} from "../utils/utils";
 

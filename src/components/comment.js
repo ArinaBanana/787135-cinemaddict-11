@@ -69,13 +69,13 @@ export default class Comment extends AbstractSmartComponent {
     super.rerender();
   }
 
-  setAttributeDisabledForButton() {
+  disableRemoveButton() {
     this.getElement()
       .querySelector(`.film-details__comment-delete`)
       .setAttribute(`disabled`, `disabled`);
   }
 
-  removeAttributeDisabledForButton() {
+  enableRemoveButton() {
     this.getElement()
       .querySelector(`.film-details__comment-delete`)
       .removeAttribute(`disabled`);

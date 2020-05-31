@@ -1,7 +1,7 @@
 import Navigation from "../components/navigation";
 import FiltersNavigationController from "./filters-navigation";
 
-import {render} from "../utils/methods-for-components";
+import {render} from "../utils/components";
 import {RenderPosition} from "../utils/utils";
 
 const MenuItems = {

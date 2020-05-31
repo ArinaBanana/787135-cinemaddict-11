@@ -9,7 +9,7 @@ import QuantityFilms from "../components/quantity-films";
 import Loading from "../components/loading";
 
 import {getUserGrade} from "../utils/utils";
-import {remove, render} from "../utils/methods-for-components";
+import {remove, render} from "../utils/components";
 
 export default class PageController {
   constructor(header, main, footer, moviesModel) {

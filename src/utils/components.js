@@ -8,7 +8,7 @@ const createElement = (template) => {
   return element.firstChild;
 };
 
-const render = (container, component, place = `beforeend`) => {
+const render = (container, component, place = RenderPosition.BEFOREEND) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(component.getElement());

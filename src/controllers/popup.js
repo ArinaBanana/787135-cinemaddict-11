@@ -1,7 +1,7 @@
 import PopupFilmDetails from "../components/popup-film-details";
 import CommentsController from "./comment";
 import PopupContainer from "../components/popup-container";
-import {remove, render} from "../utils/methods-for-components";
+import {remove, render} from "../utils/components";
 import {ESC_KEY} from "../utils/constant";
 import {api} from "../api";
 import MovieAdapter from "../models/movieAdapter";
@@ -56,7 +56,7 @@ export default class PopupController {
     this._film = film;
 
     if (isShowed) {
-      this._popupComponent.rerender(this._film);
+      this._popupComponent.setFilm(this._film);
     }
 
     if (isShowed && isSameFilm) {
