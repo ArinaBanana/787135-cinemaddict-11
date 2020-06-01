@@ -72,9 +72,6 @@ export default class FilmListController {
   }
 
   _renderShowMoreButton() {
-    if (this._button) {
-      this._removeShowMoreButton();
-    }
     this._button = new ButtonShowMore();
     this._button.setShowMoreHandler(this._onButtonShowMore);
     render(this._filmList, this._button);
@@ -87,15 +84,29 @@ export default class FilmListController {
 
   _renderFilms() {
     this._remove();
-    this._showingCountFilms = SHOWING_FILMS_COUNT;
+
+    const films = this._moviesModel.getMovies();
+    const filmsForRender = films.slice(0, SHOWING_FILMS_COUNT);
+
+    this._showingCountFilms = filmsForRender.length;
+
     this._showedFilmControllers = createFilmControllers(
         this._filmsContainer.getElement(),
-        this._moviesModel.getMovies().slice(0, this._showingCountFilms),
+        filmsForRender,
         this._onDataChange,
         this._onClick
     );
 
-    this._renderShowMoreButton();
+    const isShowMoreButtonShowed = Boolean(this._button);
+    const needShowMoreButton = films.length > SHOWING_FILMS_COUNT;
+
+    if (isShowMoreButtonShowed && !needShowMoreButton) {
+      this._removeShowMoreButton();
+    }
+
+    if (needShowMoreButton && !isShowMoreButtonShowed) {
+      this._renderShowMoreButton();
+    }
   }
 
   _onFilterChange() {
