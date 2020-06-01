@@ -9,16 +9,11 @@ import {remove, render} from "../utils/components";
 import {BODY_ELEMENT, SHOWING_FILMS_COUNT} from "../utils/constant";
 
 const createFilmControllers = (filmList, films, onDataChange, onClick) => {
-  return films.reduce((acc, film) => {
-    const key = film.id;
-
+  return films.map((film) => {
     const filmController = new FilmController(filmList, onDataChange, onClick, film);
     filmController.init();
-
-    acc[key] = filmController;
-
-    return acc;
-  }, {});
+    return filmController;
+  });
 };
 
 export default class FilmListController {
@@ -30,7 +25,7 @@ export default class FilmListController {
 
     this._moviesModel = moviesModel;
 
-    this._showedFilmControllers = {};
+    this._showedFilmControllers = [];
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onClick = this._onClick.bind(this);
@@ -54,9 +49,8 @@ export default class FilmListController {
   }
 
   _remove() {
-    Object.values(this._showedFilmControllers).forEach((controller) => controller.destroy());
-
-    this._showedFilmControllers = {};
+    this._showedFilmControllers.forEach((controller) => controller.destroy());
+    this._showedFilmControllers = [];
   }
 
   _renderShowMoreButton() {
@@ -70,15 +64,15 @@ export default class FilmListController {
     this._button = null;
   }
 
-  _renderFilms() {
+  _renderFilms(resetShowMore = true) {
     this._remove();
 
-    const films = this._moviesModel.getMovies();
-    const filmsForRender = films.slice(0, SHOWING_FILMS_COUNT);
+    this._filteredFilms = this._moviesModel.getMovies();
+    const filmsForRender = this._filteredFilms.slice(0, resetShowMore ? SHOWING_FILMS_COUNT : this._showingCountFilms);
 
     const isEmpty = filmsForRender.length === 0;
     const isShowMoreButtonShowed = Boolean(this._button);
-    const needShowMoreButton = films.length > SHOWING_FILMS_COUNT;
+    const needShowMoreButton = this._filteredFilms.length > SHOWING_FILMS_COUNT;
 
     if (isShowMoreButtonShowed && !needShowMoreButton) {
       this._removeShowMoreButton();
@@ -121,29 +115,25 @@ export default class FilmListController {
     const prevCount = this._showingCountFilms;
     this._showingCountFilms += SHOWING_FILMS_COUNT;
 
-    const filmsForRender = this._moviesModel.getMovies().slice(prevCount, this._showingCountFilms);
+    const filmsForRender = this._filteredFilms.slice(prevCount, this._showingCountFilms);
 
     if (filmsForRender.length !== SHOWING_FILMS_COUNT) {
       this._showingCountFilms = prevCount + filmsForRender.length;
     }
 
     const newControllers = createFilmControllers(this._filmsContainer.getElement(), filmsForRender, this._onDataChange, this._onClick);
-    Object.assign(this._showedFilmControllers, newControllers);
+    this._showedFilmControllers = this._showedFilmControllers.concat(newControllers);
 
-    if (this._showingCountFilms === this._moviesModel.getMovies().length) {
+    if (this._showingCountFilms === this._filteredFilms.length) {
       this._removeShowMoreButton();
     }
   }
 
   _onFilmUpdate(film) {
-    const filmController = this._showedFilmControllers[film.id];
+    this._renderFilms(false);
 
-    if (filmController) {
-      filmController.setFilm(film);
-
-      if (this._popupController.getIsShowed()) {
-        this._popupController.setFilm(film);
-      }
+    if (this._popupController.getIsShowed()) {
+      this._popupController.setFilm(film);
     }
   }
 
