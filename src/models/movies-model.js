@@ -42,15 +42,8 @@ export default class MoviesModel {
   }
 
   setFilter(filterType) {
-
-    if (!filterType || !Object.values(FilterTypes).includes(filterType)) {
-      return false;
-    }
-
     this._currentFilterType = filterType;
     this._callHandlers(this._filterChangeHandlers, this._currentFilterType);
-
-    return true;
   }
 
   setSortType(sortType) {

@@ -42,11 +42,14 @@ export default class PageController {
         case MenuItems.STATS:
           this._sortController.hide();
           this._filmsAllListComponent.hide();
+          this._moviesModel.setFilter(null);
+          this._mainNavigationController.setActiveStats(true);
           this._statisticController.show();
           break;
         default:
           this._sortController.show();
           this._filmsAllListComponent.show();
+          this._mainNavigationController.setActiveStats(false);
           this._statisticController.hide();
       }
     });
