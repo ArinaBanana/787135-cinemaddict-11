@@ -1,15 +1,22 @@
 import MainNavigationController, {MenuItems} from "./main-navigation";
 import SortController from "./sort";
+import FilmListController from "./film-list";
+import StatisticController from "./statistic";
+
 import SectionFilms from "../components/section-films";
 import FilmsAllList from "../components/films-all-list";
-import FilmListController from "./film-list";
 import UserProfile from "../components/user-profile";
-import StatisticController from "./statistic";
 import QuantityFilms from "../components/quantity-films";
 import Loading from "../components/loading";
 
+import MainMoviesListAdapter from "../models/main-movies-list-adapter";
+
 import {getUserGrade} from "../utils/utils";
 import {remove, render} from "../utils/components";
+import {SHOWED_FILMS_COUNT, SHOWED_EXTRA_FILMS_COUNT} from "../utils/constant";
+import FilmsExtra from "../components/films-extra";
+import TopRatedMoviesListAdapter from "../models/top-rated-movies-list-adapter";
+import MostCommentedMoviesListAdapter from "../models/most-commented-movies-list-adapter";
 
 export default class PageController {
   constructor(header, main, footer, moviesModel) {
@@ -28,8 +35,29 @@ export default class PageController {
     this._createMainNavigationController();
     this._sortController = new SortController(this._elementMain, this._moviesModel);
     this._sectionFilmsComponent = new SectionFilms();
+
     this._filmsAllListComponent = new FilmsAllList();
-    this._mainFilmListController = new FilmListController(this._filmsAllListComponent, this._moviesModel);
+    this._filmsTopRatedComponent = new FilmsExtra(`Top rated`);
+    this._filmsMostCommentedComponent = new FilmsExtra(`Most commented`);
+    this._mainFilmListController = new FilmListController(
+        this._sectionFilmsComponent,
+        this._filmsAllListComponent,
+        new MainMoviesListAdapter(this._moviesModel),
+        {countShowedFilms: SHOWED_FILMS_COUNT}
+    );
+    this._topRatedFilmListController = new FilmListController(
+        this._sectionFilmsComponent,
+        this._filmsTopRatedComponent,
+        new TopRatedMoviesListAdapter(this._moviesModel),
+        {countShowedFilms: SHOWED_EXTRA_FILMS_COUNT, hideOnEmpty: true}
+    );
+    this._mostCommentedFilmListController = new FilmListController(
+        this._sectionFilmsComponent,
+        this._filmsMostCommentedComponent,
+        new MostCommentedMoviesListAdapter(this._moviesModel),
+        {countShowedFilms: SHOWED_EXTRA_FILMS_COUNT, hideOnEmpty: true}
+    );
+
     this._quantity = new QuantityFilms();
 
     this._user = new UserProfile();
@@ -41,14 +69,14 @@ export default class PageController {
       switch (menuItem) {
         case MenuItems.STATS:
           this._sortController.hide();
-          this._filmsAllListComponent.hide();
+          this._sectionFilmsComponent.hide();
           this._moviesModel.setFilter(null);
           this._mainNavigationController.setActiveStats(true);
           this._statisticController.show();
           break;
         default:
           this._sortController.show();
-          this._filmsAllListComponent.show();
+          this._sectionFilmsComponent.show();
           this._mainNavigationController.setActiveStats(false);
           this._statisticController.hide();
       }
@@ -60,6 +88,8 @@ export default class PageController {
     this._sortController.init();
     this._mainNavigationController.init();
     this._mainFilmListController.init();
+    this._topRatedFilmListController.init();
+    this._mostCommentedFilmListController.init();
 
     render(this._elementMain, this._loading);
     render(this._elementHeader, this._user);
@@ -80,6 +110,5 @@ export default class PageController {
     this._statisticController.hide();
 
     render(this._elementMain, this._sectionFilmsComponent);
-    render(this._sectionFilmsComponent.getElement(), this._filmsAllListComponent);
   }
 }
