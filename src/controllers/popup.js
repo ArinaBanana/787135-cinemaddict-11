@@ -1,6 +1,7 @@
 import PopupFilmDetails from "../components/popup-film-details";
 import CommentsController from "./comment";
 import PopupContainer from "../components/popup-container";
+import MovieAdapter from "../models/movie-adapter";
 import notification from "../components/notification";
 import {remove, render} from "../utils/components";
 import {addToWatchlist, addToWatched, addToFavorites} from "../utils/films";
@@ -94,7 +95,8 @@ export default class PopupController {
   }
 
   _onCommentsDataChange(comments) {
-    const newFilm = Object.assign({}, this._film, {comments: comments.map((comment) => comment.id)});
+    const newFilm = MovieAdapter.clone(this._film);
+    newFilm.comments = comments.map((comment) => comment.id);
 
     this._onDataChange(newFilm);
     this._commentsController.init(comments);
