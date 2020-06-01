@@ -32,7 +32,7 @@ export default class MainNavigationController {
 
   setChangeScreenHandler(handler) {
     this._linkStatsComponent.setSwitchScreenHandler(handler);
-    this._filtersController.setChangeScreen(handler);
+    this._filtersController.setChangeScreenHandler(handler);
   }
 
   setActiveStats(isActive) {

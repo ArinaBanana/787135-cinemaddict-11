@@ -25,7 +25,7 @@ export default class FiltersNavigationController {
     render(this._container, this._filtersComponent, RenderPosition.AFTERBEGIN);
   }
 
-  setChangeScreen(handler) {
+  setChangeScreenHandler(handler) {
     this._filtersComponent.setLinkClickHandler(handler);
   }
 
