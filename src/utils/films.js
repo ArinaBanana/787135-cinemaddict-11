@@ -1,4 +1,4 @@
-import MovieAdapter from "../models/movieAdapter";
+import MovieAdapter from "../models/movie-adapter";
 import notification from "../components/notification";
 import {api} from "../api";
 

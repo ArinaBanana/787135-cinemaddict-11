@@ -3,7 +3,7 @@ import Comment from "../components/comment";
 import NewComment from "../components/new-comment";
 import AddingEmoji from "../components/adding-emoji";
 import CommentTextarea from "../components/comment-textarea";
-import CommentAdapter from "../models/commentAdapter";
+import CommentAdapter from "../models/comment-adapter";
 
 import {remove, render, shake} from "../utils/components";
 import {RenderPosition} from "../utils/utils";

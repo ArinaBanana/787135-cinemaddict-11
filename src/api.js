@@ -1,5 +1,5 @@
-import MovieAdapter from "./models/movieAdapter";
-import CommentAdapter from "./models/commentAdapter";
+import MovieAdapter from "./models/movie-adapter";
+import CommentAdapter from "./models/comment-adapter";
 import {AUTHORIZATION, LINK} from "./utils/constant";
 import {Method, CodesResponse} from "./utils/utils";
 

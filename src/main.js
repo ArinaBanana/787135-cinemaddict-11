@@ -1,4 +1,4 @@
-import MoviesModel from "./models/movies";
+import MoviesModel from "./models/movies-model";
 import PageController from "./controllers/page";
 import notification from "./components/notification";
 import {api} from "./api";
