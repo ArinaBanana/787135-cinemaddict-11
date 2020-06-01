@@ -13,9 +13,9 @@ const pageController = new PageController(elementHeader, elementMain, elementFoo
 pageController.init();
 
 api.getMovies()
-  .then((movies) => {
-    moviesModel.setMovies(movies);
-  })
   .catch(() => {
     notification.alert({type: `error`, text: `Error loading movies... Please, try again later`, stay: true});
+  })
+  .then((movies) => {
+    moviesModel.setMovies(movies);
   });
