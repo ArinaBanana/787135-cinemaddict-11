@@ -24,6 +24,9 @@ export default class PopupController {
     this._addToFavorites = this._addToFavorites.bind(this);
     this._onCommentsDataChange = this._onCommentsDataChange.bind(this);
     this._getFormData = this._getFormData.bind(this);
+    this._onOffline = this._onOffline.bind(this);
+    this._onOnline = this._onOnline.bind(this);
+
   }
 
   show() {
@@ -45,6 +48,7 @@ export default class PopupController {
     this._popupComponent.setAddToWatchListHandler(this._addToWatchList);
     this._popupComponent.setAddToWatchedHandler(this._addToWatched);
     this._popupComponent.setAddToFavoriteHandler(this._addToFavorites);
+    this._subscribeNavigator();
   }
 
   getIsShowed() {
@@ -62,18 +66,41 @@ export default class PopupController {
     }
 
     if (isShowed && isSameFilm) {
-      this._commentsController.update(this._getFilmDetailsBottomContainer());
+      this._commentsController.update(this._getFilmDetailsBottomContainer(), this._film.comments.length);
     } else {
-      apiWithProvider.getComments(this._film.id)
-        .then((comments) => {
-          this._comments = {};
-          this._comments[this._film.id] = comments;
-          this._initComments(comments);
-        })
-        .catch(() => {
-          notification.alert({type: `error`, text: `Error loading comments... Please, try again later`});
-        });
+      this._loadComments();
     }
+  }
+
+  _loadComments() {
+    apiWithProvider.getComments(this._film.id)
+      .catch(() => {
+        notification.alert({type: `error`, text: `Error loading comments... Please, try again later`});
+        return [];
+      })
+      .then((comments) => {
+        this._comments = {};
+        this._comments[this._film.id] = comments;
+        this._initComments(comments);
+      });
+  }
+
+  _subscribeNavigator() {
+    window.addEventListener(`online`, this._onOnline);
+    window.addEventListener(`offline`, this._onOffline);
+  }
+
+  _unsubscribeNavigator() {
+    window.removeEventListener(`online`, this._onOnline);
+    window.removeEventListener(`offline`, this._onOffline);
+  }
+
+  _onOffline() {
+    this._commentsController.disableForm();
+  }
+
+  _onOnline() {
+    this._loadComments();
   }
 
   _getFilmDetailsBottomContainer() {
@@ -83,8 +110,13 @@ export default class PopupController {
   _initComments(comments) {
     const container = this._getFilmDetailsBottomContainer();
 
+    if (this._commentsController) {
+      this._commentsController.unsubscribe();
+      this._commentsController.removeContainer();
+    }
+
     this._commentsController = new CommentsController(container, this._onCommentsDataChange, this._getFormData, this._film.id);
-    this._commentsController.init(comments);
+    this._commentsController.init(comments, this._film.comments.length);
   }
 
   _getFormData() {
@@ -104,7 +136,8 @@ export default class PopupController {
     this._popupContainer = null;
     this._popupComponent = null;
     document.removeEventListener(`keydown`, this._onEscKeyDown);
-    this._commentsController.destroyListeners();
+    this._commentsController.unsubscribe();
+    this._unsubscribeNavigator();
   }
 
   _onButtonClose() {

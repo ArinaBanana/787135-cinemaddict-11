@@ -51,9 +51,14 @@ const getUserGrade = (moviesModel) => {
 
 const getEmojiUrlByName = (emoji) => `./images/emoji/${emoji}.png`;
 
+const isOnline = () => {
+  return window.navigator.onLine;
+};
+
 export {
   getEmojiUrlByName,
   getUserGrade,
+  isOnline,
   RenderPosition,
   Method,
   CodesResponse,

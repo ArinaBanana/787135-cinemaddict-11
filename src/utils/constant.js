@@ -20,7 +20,7 @@ const SHAKE_ANIMATION_TIMEOUT = 600;
 
 // Сервер
 const AUTHORIZATION = `Basic hrguy43grgh`;
-const LINK = `https://11.ecmascript.pages.academy/cinemaddict/`;
+const LINK = `https://11.ecmascript.pages.academy/cinemaddict`;
 
 // Store
 const STORE_PREFIX = `cinemaddict-localstorage`;

@@ -1,9 +1,6 @@
 import MovieAdapter from "../models/movie-adapter";
 import CommentAdapter from "../models/comment-adapter";
-
-const isOnline = () => {
-  return window.navigator.onLine;
-};
+import {isOnline} from "../utils/utils";
 
 const createStoreStructure = (items) => {
   return items.reduce((acc, current) => {
@@ -52,8 +49,11 @@ export default class Provider {
     const items = this._store.getItems();
     const movie = items[filmId];
 
-    const comments = (movie && movie.commentsData) || [];
-    return Promise.resolve(CommentAdapter.parseComments(comments));
+    const comments = movie && movie.commentsData;
+    return Promise.resolve()
+      .then(() => {
+        return CommentAdapter.parseComments(comments);
+      });
   }
 
   updateMovie(id, data) {

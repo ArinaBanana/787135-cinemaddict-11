@@ -6,7 +6,7 @@ import CommentTextarea from "../components/comment-textarea";
 import CommentAdapter from "../models/comment-adapter";
 
 import {remove, render, shake} from "../utils/components";
-import {RenderPosition} from "../utils/utils";
+import {RenderPosition, isOnline} from "../utils/utils";
 import {ENTER_KEY, COMMENT_FORM_FIELDS} from "../utils/constant";
 import {api} from "../api/api";
 
@@ -34,16 +34,20 @@ export default class CommentsController {
     this._cmdEnterPressHandler = this._cmdEnterPressHandler.bind(this);
   }
 
-  init(comments) {
+  init(comments, count) {
     if (comments) {
       this._comments = comments;
     }
 
-    if (this._commentsContainer) {
-      remove(this._commentsContainer);
+    if (count) {
+      this._count = count;
     }
 
-    this._commentsContainer = new CommentsContainer(this._comments.length);
+    if (this._commentsContainer) {
+      this.removeContainer();
+    }
+
+    this._commentsContainer = new CommentsContainer(count);
     render(this._container, this._commentsContainer);
 
     this._commentComponents = this._comments.map((comment) => new Comment(comment));
@@ -52,15 +56,30 @@ export default class CommentsController {
 
     this._initCreatingComment();
     this._subscribeCmdEnterPress();
+
+    if (!isOnline()) {
+      this.disableForm();
+    }
   }
 
-  update(container, comments) {
+  update(container, count) {
     this._container = container;
-    this.init(comments);
+    this.init(null, count);
   }
 
-  destroyListeners() {
+  unsubscribe() {
     document.removeEventListener(`keydown`, this._cmdEnterPressHandler);
+  }
+
+  disableForm() {
+    this.unsubscribe();
+    this._textarea.disableTextarea();
+    this._newCommentComponent.disableInputs();
+    this._commentComponents.forEach((component) => component.disableRemoveButton());
+  }
+
+  removeContainer() {
+    remove(this._commentsContainer);
   }
 
   _initCreatingComment() {
