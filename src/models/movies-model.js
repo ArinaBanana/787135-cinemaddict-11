@@ -1,5 +1,6 @@
-import {getFilmsByFilters, FilterTypes} from "../utils/filtration";
+import {FilterTypes, getFilmsByFilters} from "../utils/filtration";
 import {getSortedFilms, SortTypes} from "../utils/sorting";
+import {EXTRA_SORT_TYPE} from "../utils/constant";
 
 export default class MoviesModel {
   constructor() {
@@ -17,11 +18,17 @@ export default class MoviesModel {
     return this._movies;
   }
 
-  getMovies() {
+  getFilteredAndSortedMovies() {
     const filtered = getFilmsByFilters(this._movies, this._currentFilterType);
-    const sorted = getSortedFilms(filtered, this._currentSortType);
+    return getSortedFilms(filtered, this._currentSortType);
+  }
 
-    return sorted;
+  getRatingSortedMovies() {
+    return getSortedFilms(this._movies, SortTypes.RATING);
+  }
+
+  getCommentsSortedMovies() {
+    return getSortedFilms(this._movies, EXTRA_SORT_TYPE);
   }
 
   getWatchedMovies() {

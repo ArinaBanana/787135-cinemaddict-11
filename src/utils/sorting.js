@@ -1,4 +1,5 @@
 import moment from "moment";
+import {EXTRA_SORT_TYPE} from "./constant";
 
 const SortTypes = {
   DEFAULT: `default`,
@@ -14,6 +15,8 @@ const getSortedFilms = (films, sortType) => {
       return showingFilms.sort((a, b) => moment(b.releaseDate) - moment(a.releaseDate));
     case SortTypes.RATING:
       return showingFilms.sort((a, b) => b.rating - a.rating);
+    case EXTRA_SORT_TYPE:
+      return showingFilms.sort((a, b) => b.comments.length - a.comments.length);
     case SortTypes.DEFAULT:
     default:
       return showingFilms;

@@ -83,9 +83,6 @@ export default class PopupController {
   _initComments(comments) {
     const container = this._getFilmDetailsBottomContainer();
 
-    if (this._commentsController) {
-      this._commentsController.destroyListeners();
-    }
     this._commentsController = new CommentsController(container, this._onCommentsDataChange, this._getFormData, this._film.id);
     this._commentsController.init(comments);
   }
@@ -107,6 +104,7 @@ export default class PopupController {
     this._popupContainer = null;
     this._popupComponent = null;
     document.removeEventListener(`keydown`, this._onEscKeyDown);
+    this._commentsController.destroyListeners();
   }
 
   _onButtonClose() {

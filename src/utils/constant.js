@@ -10,6 +10,7 @@ const ACTIVE_CLASS_SORT = `sort__button--active`;
 const ENTER_KEY = `Enter`;
 const ESC_KEY = `Escape`;
 const COMMENT_FORM_FIELDS = [`comment`];
+const EXTRA_SORT_TYPE = `comments`;
 
 // Значения
 const BAR_HEIGHT = 50;
@@ -35,4 +36,5 @@ export {
   SHOWED_FILMS_COUNT,
   SHOWED_EXTRA_FILMS_COUNT,
   SHAKE_ANIMATION_TIMEOUT,
+  EXTRA_SORT_TYPE
 };
