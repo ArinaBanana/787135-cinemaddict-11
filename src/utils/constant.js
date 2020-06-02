@@ -22,6 +22,11 @@ const SHAKE_ANIMATION_TIMEOUT = 600;
 const AUTHORIZATION = `Basic hrguy43grgh`;
 const LINK = `https://11.ecmascript.pages.academy/cinemaddict/`;
 
+// Store
+const STORE_PREFIX = `cinemaddict-localstorage`;
+const STORE_VER = `v1`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+
 export {
   BODY_ELEMENT,
   HIDDEN_CLASS,
@@ -36,5 +41,6 @@ export {
   SHOWED_FILMS_COUNT,
   SHOWED_EXTRA_FILMS_COUNT,
   SHAKE_ANIMATION_TIMEOUT,
-  EXTRA_SORT_TYPE
+  EXTRA_SORT_TYPE,
+  STORE_NAME
 };
