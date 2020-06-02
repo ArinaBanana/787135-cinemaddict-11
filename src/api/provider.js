@@ -1,5 +1,5 @@
-import MovieAdapter from "./models/movie-adapter";
-import CommentAdapter from "./models/comment-adapter";
+import MovieAdapter from "../models/movie-adapter";
+import CommentAdapter from "../models/comment-adapter";
 
 const isOnline = () => {
   return window.navigator.onLine;

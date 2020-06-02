@@ -1,7 +1,7 @@
-import MovieAdapter from "./models/movie-adapter";
-import CommentAdapter from "./models/comment-adapter";
-import {AUTHORIZATION, LINK} from "./utils/constant";
-import {Method, CodesResponse} from "./utils/utils";
+import MovieAdapter from "../models/movie-adapter";
+import CommentAdapter from "../models/comment-adapter";
+import {AUTHORIZATION, LINK} from "../utils/constant";
+import {Method, CodesResponse} from "../utils/utils";
 
 const checkStatus = (response) => {
   if (response.status >= CodesResponse.OK && response.status < CodesResponse.MULTIPLE_CHOICE) {

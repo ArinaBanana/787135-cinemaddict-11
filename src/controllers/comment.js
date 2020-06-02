@@ -8,7 +8,7 @@ import CommentAdapter from "../models/comment-adapter";
 import {remove, render, shake} from "../utils/components";
 import {RenderPosition} from "../utils/utils";
 import {ENTER_KEY, COMMENT_FORM_FIELDS} from "../utils/constant";
-import {api} from "../api";
+import {api} from "../api/api";
 
 import {encode} from "he";
 

@@ -1,9 +1,9 @@
 import MoviesModel from "./models/movies-model";
 import PageController from "./controllers/page";
-import Provider from "./provider";
-import Store from "./store";
+import Provider from "./api/provider";
+import Store from "./api/store";
 import notification from "./components/notification";
-import {api} from "./api";
+import {api} from "./api/api";
 import {STORE_NAME} from "./utils/constant";
 
 const elementHeader = document.querySelector(`.header`);
