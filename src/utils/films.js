@@ -1,6 +1,6 @@
 import MovieAdapter from "../models/movie-adapter";
 import notification from "../components/notification";
-import {apiWithProvider} from "../main";
+import {apiWithProvider} from "../api/provider";
 
 const updateFilm = (film, transformFilm, filmUpdateHandler) => {
   const newFilm = MovieAdapter.clone(film);

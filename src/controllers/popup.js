@@ -6,7 +6,7 @@ import notification from "../components/notification";
 import {remove, render} from "../utils/components";
 import {addToWatchlist, addToWatched, addToFavorites} from "../utils/films";
 import {ESC_KEY} from "../utils/constant";
-import {apiWithProvider} from "../main";
+import {apiWithProvider} from "../api/provider";
 
 export default class PopupController {
   constructor(container, moviesModel) {

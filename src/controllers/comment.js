@@ -8,7 +8,7 @@ import CommentAdapter from "../models/comment-adapter";
 import {remove, render, shake} from "../utils/components";
 import {RenderPosition, isOnline} from "../utils/utils";
 import {ENTER_KEY, COMMENT_FORM_FIELDS} from "../utils/constant";
-import {api} from "../api/api";
+import {apiWithProvider} from '../api/provider';
 
 import {encode} from "he";
 
@@ -108,7 +108,7 @@ export default class CommentsController {
     this._commentComponents[index].setIsLoading(true);
     this._commentComponents[index].disableRemoveButton();
 
-    api.deleteComment(deletedComment.id)
+    apiWithProvider.deleteComment(this._filmId, deletedComment.id)
       .then(() => {
         const newComments = [].concat(this._comments.slice(0, index), this._comments.slice(index + 1));
 
@@ -137,7 +137,7 @@ export default class CommentsController {
     this._textarea.disableTextarea();
     this._textarea.removeError();
 
-    api.createComment(this._filmId, newData)
+    apiWithProvider.createComment(this._filmId, newData)
       .then((response) => {
         const comments = CommentAdapter.parseComments(response.comments);
         this._onCommentsDataChange(comments);

@@ -1,17 +1,12 @@
 import MoviesModel from "./models/movies-model";
 import PageController from "./controllers/page";
-import Provider from "./api/provider";
-import Store from "./api/store";
 import notification from "./components/notification";
-import {api} from "./api/api";
-import {STORE_NAME} from "./utils/constant";
+import {apiWithProvider} from "./api/provider";
 
 const elementHeader = document.querySelector(`.header`);
 const elementFooter = document.querySelector(`.footer__statistics`);
 const elementMain = document.querySelector(`.main`);
 
-const store = new Store(STORE_NAME, window.localStorage);
-const apiWithProvider = new Provider(api, store);
 const moviesModel = new MoviesModel();
 const pageController = new PageController(elementHeader, elementMain, elementFooter, moviesModel);
 
@@ -26,13 +21,7 @@ apiWithProvider.getMovies()
   });
 
 window.addEventListener(`load`, () => {
-  navigator.serviceWorker.register(`/sw.js`)
-    .then(() => {
-
-    })
-    .catch(() => {
-
-    });
+  navigator.serviceWorker.register(`/sw.js`).catch(() => {});
 });
 
 window.addEventListener(`online`, () => {
@@ -45,5 +34,3 @@ window.addEventListener(`online`, () => {
 window.addEventListener(`offline`, () => {
   document.title += ` [offline]`;
 });
-
-export {apiWithProvider};
