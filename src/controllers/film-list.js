@@ -157,12 +157,8 @@ export default class FilmListController {
     }
   }
 
-  _onFilmUpdate(film) {
+  _onFilmUpdate() {
     this._renderFilms(false);
-
-    if (this._popupController.getIsShowed()) {
-      this._popupController.setFilm(film);
-    }
   }
 
   _onDataChange(newFilm) {

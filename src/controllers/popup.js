@@ -9,9 +9,9 @@ import {ESC_KEY} from "../utils/constant";
 import {apiWithProvider} from "../main";
 
 export default class PopupController {
-  constructor(container, onDataChange) {
+  constructor(container, moviesModel) {
     this._container = container;
-    this._onDataChange = onDataChange;
+    this._moviesModel = moviesModel;
 
     this._film = null;
     this._comments = {};
@@ -26,11 +26,14 @@ export default class PopupController {
     this._getFormData = this._getFormData.bind(this);
     this._onOffline = this._onOffline.bind(this);
     this._onOnline = this._onOnline.bind(this);
+    this._onFilmChange = this._onFilmChange.bind(this);
+    this._onDataChange = this._onDataChange.bind(this);
 
+    this._moviesModel.setFilmChangeHandlers(this._onFilmChange);
   }
 
   show() {
-    const isShowed = this.getIsShowed();
+    const isShowed = this._getIsShowed();
 
     if (isShowed) {
       return;
@@ -51,13 +54,9 @@ export default class PopupController {
     this._subscribeNavigator();
   }
 
-  getIsShowed() {
-    return Boolean(this._popupComponent);
-  }
-
   setFilm(film) {
     const isSameFilm = Boolean(this._film) && film.id === this._film.id;
-    const isShowed = this.getIsShowed();
+    const isShowed = this._getIsShowed();
 
     this._film = film;
 
@@ -69,6 +68,16 @@ export default class PopupController {
       this._commentsController.update(this._getFilmDetailsBottomContainer(), this._film.comments.length);
     } else {
       this._loadComments();
+    }
+  }
+
+  _getIsShowed() {
+    return Boolean(this._popupComponent);
+  }
+
+  _onFilmChange(film) {
+    if (this._film && film.id === this._film.id && this._getIsShowed()) {
+      this.setFilm(film);
     }
   }
 
@@ -127,8 +136,8 @@ export default class PopupController {
     const newFilm = MovieAdapter.clone(this._film);
     newFilm.comments = comments.map((comment) => comment.id);
 
-    this._onDataChange(newFilm);
-    this._commentsController.init(comments);
+    this._moviesModel.updateMovie(newFilm);
+    this._commentsController.init(comments, this._film.comments.length);
   }
 
   _removePopupComponent() {
@@ -148,6 +157,10 @@ export default class PopupController {
     if (evt.key === ESC_KEY) {
       this._removePopupComponent();
     }
+  }
+
+  _onDataChange(movie) {
+    this._moviesModel.updateMovie(movie);
   }
 
   _addToWatchList(evt) {

@@ -54,9 +54,7 @@ export default class PageController {
     this._filmsAllListComponent = new FilmsAllList();
     this._filmsTopRatedComponent = new FilmsExtra(`Top rated`);
     this._filmsMostCommentedComponent = new FilmsExtra(`Most commented`);
-    this._popupController = new PopupController(BODY_ELEMENT, (film) => {
-      this._moviesModel.updateMovie(film);
-    });
+    this._popupController = new PopupController(BODY_ELEMENT, this._moviesModel);
     this._mainFilmListController = new FilmListController(
         this._sectionFilmsComponent,
         this._filmsAllListComponent,
