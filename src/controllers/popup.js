@@ -6,7 +6,7 @@ import notification from "../components/notification";
 import {remove, render} from "../utils/components";
 import {addToWatchlist, addToWatched, addToFavorites} from "../utils/films";
 import {ESC_KEY} from "../utils/constant";
-import {api} from "../api";
+import {apiWithProvider} from "../main";
 
 export default class PopupController {
   constructor(container, onDataChange) {
@@ -64,7 +64,7 @@ export default class PopupController {
     if (isShowed && isSameFilm) {
       this._commentsController.update(this._getFilmDetailsBottomContainer());
     } else {
-      api.getComments(this._film.id)
+      apiWithProvider.getComments(this._film.id)
         .then((comments) => {
           this._comments = {};
           this._comments[this._film.id] = comments;

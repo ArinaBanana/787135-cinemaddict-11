@@ -24,3 +24,5 @@ apiWithProvider.getMovies()
   .then((movies) => {
     moviesModel.setMovies(movies);
   });
+
+export {apiWithProvider};
