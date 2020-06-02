@@ -12,7 +12,7 @@ export default class Store {
     }
   }
 
-  setItems(key, value) {
+  setItem(key, value) {
     const store = this.getItems();
 
     this._storage.setItem(

@@ -15,8 +15,7 @@ export default class Provider {
     if (isOnline()) {
       return this._api.getMovies()
         .then((movies) => {
-          movies.forEach((movie) => this._store.setItems(`movie:${movie.id}`, movie.toRaw()));
-
+          movies.forEach((movie) => this._store.setItem(`movie:${movie.id}`, movie.toRaw()));
           return movies;
         });
     }
@@ -38,7 +37,7 @@ export default class Provider {
     if (isOnline()) {
       return this._api.getComments(filmId)
         .then((comments) => {
-          this._store.setItems(`comments:${filmId}`, comments.map((comment) => comment.toRaw()));
+          this._store.setItem(`comments:${filmId}`, comments.map((comment) => comment.toRaw()));
           return comments;
         });
     }
@@ -52,10 +51,18 @@ export default class Provider {
   }
 
   updateMovie(id, data) {
-    if (isOnline) {
-      return this._api.updateMovie(id, data);
+    if (isOnline()) {
+      return this._api.updateMovie(id, data)
+        .then((newMovie) => {
+          this._store.setItem(newMovie.id, newMovie.toRaw());
+          return newMovie;
+        });
     }
 
-    return Promise.reject(`offline logic is not implemented`);
+    const localMovie = MovieAdapter.clone(Object.assign(data, {id}));
+
+    this._store.setItem(id, localMovie.toRaw());
+
+    return Promise.resolve(localMovie);
   }
 }

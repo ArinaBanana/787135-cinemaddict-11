@@ -1,12 +1,12 @@
 import MovieAdapter from "../models/movie-adapter";
 import notification from "../components/notification";
-import {api} from "../api";
+import {apiWithProvider} from "../main";
 
 const updateFilm = (film, transformFilm, filmUpdateHandler) => {
   const newFilm = MovieAdapter.clone(film);
   transformFilm(film, newFilm);
 
-  api.updateMovie(film.id, newFilm)
+  apiWithProvider.updateMovie(film.id, newFilm)
     .then((movie) => {
       filmUpdateHandler(movie);
     })
