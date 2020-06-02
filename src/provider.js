@@ -15,20 +15,19 @@ export default class Provider {
     if (isOnline()) {
       return this._api.getMovies()
         .then((movies) => {
-          movies.forEach((movie) => this._store.setItem(`movie:${movie.id}`, movie.toRaw()));
+          const items = movies.reduce((acc, movie) => {
+            return Object.assign({}, acc, {
+              [movie.id]: movie.toRaw()
+            });
+          }, {});
+
+          this._store.setItems(items);
+
           return movies;
         });
     }
 
-    const items = this._store.getItems();
-
-    const storeMovies = Object.keys(items).reduce((acc, key) => {
-      if (key.indexOf(`movie`) === 0) {
-        acc.push(items[key]);
-      }
-
-      return acc;
-    }, []);
+    const storeMovies = Object.values(this._store.getItems());
 
     return Promise.resolve(MovieAdapter.parseMovies(storeMovies));
   }
@@ -37,16 +36,17 @@ export default class Provider {
     if (isOnline()) {
       return this._api.getComments(filmId)
         .then((comments) => {
-          this._store.setItem(`comments:${filmId}`, comments.map((comment) => comment.toRaw()));
+          const items = this._store.getItems();
+          const movie = items[filmId];
+          this._store.setItem(filmId, Object.assign(movie, {commentsData: comments.map((comment) => comment.toRaw())}));
           return comments;
         });
     }
 
     const items = this._store.getItems();
+    const movie = items[filmId];
 
-    const commentsKey = Object.keys(items).find((key) => key === `comments:${filmId}`);
-    const comments = items[commentsKey] || [];
-
+    const comments = (movie && movie.commentsData) || [];
     return Promise.resolve(CommentAdapter.parseComments(comments));
   }
 
