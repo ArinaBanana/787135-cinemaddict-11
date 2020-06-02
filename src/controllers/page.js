@@ -31,6 +31,19 @@ export default class PageController {
     this._moviesModel.setFilmsChangeHandlers(this._handleFilmsChange);
   }
 
+  init() {
+    this._createComponents();
+    this._sortController.init();
+    this._mainNavigationController.init();
+    this._mainFilmListController.init();
+    this._topRatedFilmListController.init();
+    this._mostCommentedFilmListController.init();
+
+    render(this._elementMain, this._loading);
+    render(this._elementHeader, this._user);
+    render(this._elementFooter, this._quantity);
+  }
+
   _createComponents() {
     this._loading = new Loading();
 
@@ -96,19 +109,6 @@ export default class PageController {
           this._statisticController.hide();
       }
     });
-  }
-
-  init() {
-    this._createComponents();
-    this._sortController.init();
-    this._mainNavigationController.init();
-    this._mainFilmListController.init();
-    this._topRatedFilmListController.init();
-    this._mostCommentedFilmListController.init();
-
-    render(this._elementMain, this._loading);
-    render(this._elementHeader, this._user);
-    render(this._elementFooter, this._quantity);
   }
 
   _handleFilmsChange() {
