@@ -5,6 +5,14 @@ const isOnline = () => {
   return window.navigator.onLine;
 };
 
+const createStoreStructure = (items) => {
+  return items.reduce((acc, current) => {
+    return Object.assign({}, acc, {
+      [current.id]: current,
+    });
+  }, {});
+};
+
 export default class Provider {
   constructor(api, store) {
     this._api = api;
@@ -15,19 +23,17 @@ export default class Provider {
     if (isOnline()) {
       return this._api.getMovies()
         .then((movies) => {
-          const items = movies.reduce((acc, movie) => {
-            return Object.assign({}, acc, {
-              [movie.id]: movie.toRaw()
-            });
-          }, {});
-
+          const items = createStoreStructure(movies.map((movie) => movie.toRaw()));
           this._store.setItems(items);
 
           return movies;
         });
     }
 
-    const storeMovies = Object.values(this._store.getItems());
+    const storeMovies = Object.values(this._store.getItems()).map((movie) => {
+      delete movie.commentsData;
+      return movie;
+    });
 
     return Promise.resolve(MovieAdapter.parseMovies(storeMovies));
   }
@@ -64,5 +70,17 @@ export default class Provider {
     this._store.setItem(id, localMovie.toRaw());
 
     return Promise.resolve(localMovie);
+  }
+
+  sync() {
+    if (isOnline()) {
+      const storeMovies = Object.values(this._store.getItems());
+
+      this._api.sync(storeMovies).then((response) => {
+        const items = createStoreStructure(response[`updated`]);
+
+        this._store.setItems(items);
+      });
+    }
   }
 }
