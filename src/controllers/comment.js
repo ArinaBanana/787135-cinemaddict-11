@@ -123,7 +123,7 @@ export default class CommentsController {
 
   _onFormSubmit(formData) {
     const data = {};
-    for (let [field, value] of formData.entries()) {
+    for (const [field, value] of formData.entries()) {
       if (COMMENT_FORM_FIELDS.includes(field)) {
         data[field] = value;
       }
