@@ -73,14 +73,13 @@ export default class Provider {
   }
 
   sync() {
-    if (isOnline()) {
-      const storeMovies = Object.values(this._store.getItems());
+    const storeMovies = Object.values(this._store.getItems());
 
-      this._api.sync(storeMovies).then((response) => {
-        const items = createStoreStructure(response[`updated`]);
+    return this._api.sync(storeMovies).then((response) => {
+      const items = createStoreStructure(response[`updated`]);
 
-        this._store.setItems(items);
-      });
-    }
+      this._store.setItems(items);
+      return MovieAdapter.parseMovies(response[`updated`]);
+    });
   }
 }

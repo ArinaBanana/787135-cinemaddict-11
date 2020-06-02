@@ -37,7 +37,9 @@ window.addEventListener(`load`, () => {
 
 window.addEventListener(`online`, () => {
   document.title = document.title.replace(` [offline]`, ``);
-  apiWithProvider.sync();
+  apiWithProvider.sync().then((movies) => {
+    moviesModel.setMovies(movies);
+  });
 });
 
 window.addEventListener(`offline`, () => {

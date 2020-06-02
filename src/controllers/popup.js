@@ -27,9 +27,11 @@ export default class PopupController {
     this._onOffline = this._onOffline.bind(this);
     this._onOnline = this._onOnline.bind(this);
     this._onFilmChange = this._onFilmChange.bind(this);
+    this._onFilmsChange = this._onFilmsChange.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
 
     this._moviesModel.setFilmChangeHandlers(this._onFilmChange);
+    this._moviesModel.setFilmsChangeHandlers(this._onFilmsChange);
   }
 
   show() {
@@ -73,6 +75,15 @@ export default class PopupController {
 
   _getIsShowed() {
     return Boolean(this._popupComponent);
+  }
+
+  _onFilmsChange(films) {
+    if (this._film && this._getIsShowed()) {
+      const newFilm = films.find((film) => film.id === this._film.id);
+      if (newFilm) {
+        this.setFilm(newFilm);
+      }
+    }
   }
 
   _onFilmChange(film) {
