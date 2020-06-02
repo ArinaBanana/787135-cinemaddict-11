@@ -56,6 +56,7 @@ export default class StatisticController {
   }
 
   show() {
+    this._onChangePeriodStats(PeriodStats.ALL_TIME.type);
     this._statisticComponent.show();
   }
 

@@ -3,12 +3,12 @@ import Comment from "../components/comment";
 import NewComment from "../components/new-comment";
 import AddingEmoji from "../components/adding-emoji";
 import CommentTextarea from "../components/comment-textarea";
-import CommentAdapter from "../models/commentAdapter";
+import CommentAdapter from "../models/comment-adapter";
 
 import {remove, render, shake} from "../utils/components";
-import {RenderPosition} from "../utils/utils";
+import {RenderPosition, isOnline} from "../utils/utils";
 import {ENTER_KEY, COMMENT_FORM_FIELDS} from "../utils/constant";
-import {api} from "../api";
+import {apiWithProvider} from '../api/provider';
 
 import {encode} from "he";
 
@@ -34,16 +34,20 @@ export default class CommentsController {
     this._cmdEnterPressHandler = this._cmdEnterPressHandler.bind(this);
   }
 
-  init(comments) {
+  init(comments, count) {
     if (comments) {
       this._comments = comments;
     }
 
-    if (this._commentsContainer) {
-      remove(this._commentsContainer);
+    if (count) {
+      this._count = count;
     }
 
-    this._commentsContainer = new CommentsContainer(this._comments.length);
+    if (this._commentsContainer) {
+      this.removeContainer();
+    }
+
+    this._commentsContainer = new CommentsContainer(count);
     render(this._container, this._commentsContainer);
 
     this._commentComponents = this._comments.map((comment) => new Comment(comment));
@@ -52,15 +56,30 @@ export default class CommentsController {
 
     this._initCreatingComment();
     this._subscribeCmdEnterPress();
+
+    if (!isOnline()) {
+      this.disableForm();
+    }
   }
 
-  update(container, comments) {
+  update(container, count) {
     this._container = container;
-    this.init(comments);
+    this.init(null, count);
   }
 
-  destroyListeners() {
+  unsubscribe() {
     document.removeEventListener(`keydown`, this._cmdEnterPressHandler);
+  }
+
+  disableForm() {
+    this.unsubscribe();
+    this._textarea.disableTextarea();
+    this._newCommentComponent.disableInputs();
+    this._commentComponents.forEach((component) => component.disableRemoveButton());
+  }
+
+  removeContainer() {
+    remove(this._commentsContainer);
   }
 
   _initCreatingComment() {
@@ -89,7 +108,7 @@ export default class CommentsController {
     this._commentComponents[index].setIsLoading(true);
     this._commentComponents[index].disableRemoveButton();
 
-    api.deleteComment(deletedComment.id)
+    apiWithProvider.deleteComment(this._filmId, deletedComment.id)
       .then(() => {
         const newComments = [].concat(this._comments.slice(0, index), this._comments.slice(index + 1));
 
@@ -118,7 +137,7 @@ export default class CommentsController {
     this._textarea.disableTextarea();
     this._textarea.removeError();
 
-    api.createComment(this._filmId, newData)
+    apiWithProvider.createComment(this._filmId, newData)
       .then((response) => {
         const comments = CommentAdapter.parseComments(response.comments);
         this._onCommentsDataChange(comments);

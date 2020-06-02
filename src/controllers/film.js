@@ -29,11 +29,6 @@ export default class FilmController {
     render(this._container, this._filmComponent);
   }
 
-  setFilm(film) {
-    this._film = film;
-    this._filmComponent.setFilm(this._film);
-  }
-
   destroy() {
     remove(this._filmComponent);
   }
