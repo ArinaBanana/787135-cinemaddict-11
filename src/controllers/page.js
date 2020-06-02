@@ -2,23 +2,23 @@ import MainNavigationController, {MenuItems} from "./main-navigation";
 import SortController from "./sort";
 import FilmListController from "./film-list";
 import StatisticController from "./statistic";
+import PopupController from "./popup";
 
 import SectionFilms from "../components/section-films";
 import FilmsAllList from "../components/films-all-list";
 import UserProfile from "../components/user-profile";
 import QuantityFilms from "../components/quantity-films";
 import Loading from "../components/loading";
+import FilmsExtra from "../components/films-extra";
 
 import MainMoviesListAdapter from "../models/main-movies-list-adapter";
+import TopRatedMoviesListAdapter from "../models/top-rated-movies-list-adapter";
+import MostCommentedMoviesListAdapter from "../models/most-commented-movies-list-adapter";
 
 import {getUserGrade} from "../utils/utils";
 import {remove, render} from "../utils/components";
 import {SHOWED_FILMS_COUNT, SHOWED_EXTRA_FILMS_COUNT, BODY_ELEMENT} from "../utils/constant";
-import FilmsExtra from "../components/films-extra";
-import TopRatedMoviesListAdapter from "../models/top-rated-movies-list-adapter";
-import MostCommentedMoviesListAdapter from "../models/most-commented-movies-list-adapter";
 import {FilterTypes} from "../utils/filtration";
-import PopupController from "./popup";
 
 export default class PageController {
   constructor(header, main, footer, moviesModel) {
