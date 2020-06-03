@@ -18,7 +18,6 @@ import MostCommentedMoviesListAdapter from "../models/most-commented-movies-list
 import {getUserGrade} from "../utils/utils";
 import {remove, render} from "../utils/components";
 import {SHOWED_FILMS_COUNT, SHOWED_EXTRA_FILMS_COUNT, BODY_ELEMENT} from "../utils/constant";
-import {FilterTypes} from "../utils/filtration";
 
 export default class PageController {
   constructor(header, main, footer, moviesModel) {
