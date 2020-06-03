@@ -17,7 +17,7 @@ import MostCommentedMoviesListAdapter from "../models/most-commented-movies-list
 
 import {getUserGrade} from "../utils/utils";
 import {remove, render} from "../utils/components";
-import {SHOWED_FILMS_COUNT, SHOWED_EXTRA_FILMS_COUNT, BODY_ELEMENT} from "../utils/constant";
+import {SHOWED_FILMS_COUNT, SHOWED_EXTRA_FILMS_COUNT, BODY_ELEMENT, TITLE_MOST_COMMENTED, TITLE_TOP_RATED} from "../utils/constant";
 
 export default class PageController {
   constructor(header, main, footer, moviesModel) {
@@ -51,8 +51,8 @@ export default class PageController {
     this._sectionFilmsComponent = new SectionFilms();
 
     this._filmsAllListComponent = new FilmsAllList();
-    this._filmsTopRatedComponent = new FilmsExtra(`Top rated`);
-    this._filmsMostCommentedComponent = new FilmsExtra(`Most commented`);
+    this._filmsTopRatedComponent = new FilmsExtra(TITLE_TOP_RATED);
+    this._filmsMostCommentedComponent = new FilmsExtra(TITLE_MOST_COMMENTED);
     this._popupController = new PopupController(BODY_ELEMENT, this._moviesModel);
     this._mainFilmListController = new FilmListController(
         this._sectionFilmsComponent,

@@ -11,6 +11,8 @@ const ENTER_KEY = `Enter`;
 const ESC_KEY = `Escape`;
 const COMMENT_FORM_FIELDS = [`comment`];
 const EXTRA_SORT_TYPE = `comments`;
+const TITLE_TOP_RATED = `Top rated`;
+const TITLE_MOST_COMMENTED = `Most commented`;
 
 // Значения
 const BAR_HEIGHT = 50;
@@ -42,5 +44,7 @@ export {
   SHOWED_EXTRA_FILMS_COUNT,
   SHAKE_ANIMATION_TIMEOUT,
   EXTRA_SORT_TYPE,
-  STORE_NAME
+  STORE_NAME,
+  TITLE_MOST_COMMENTED,
+  TITLE_TOP_RATED
 };
